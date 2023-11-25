@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://borisdwggifsf"]
+
+[ext_resource type="Script" path="res://entities/camera_zone/camera_zone.gd" id="1_sds5h"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oen43"]
+size = Vector3(5, 5, 5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_358k3"]
+transparency = 1
+albedo_color = Color(1, 0.737255, 0, 0.188235)
+
+[sub_resource type="BoxMesh" id="BoxMesh_1wdht"]
+material = SubResource("StandardMaterial3D_358k3")
+size = Vector3(5, 5, 5)
+
+[node name="CameraZone" type="Area3D"]
+script = ExtResource("1_sds5h")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_oen43")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+visible = false
+mesh = SubResource("BoxMesh_1wdht")

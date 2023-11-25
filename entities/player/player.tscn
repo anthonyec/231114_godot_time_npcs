@@ -1,0 +1,52 @@
+[gd_scene load_steps=10 format=3 uid="uid://p74i2dc1keqf"]
+
+[ext_resource type="Script" path="res://entities/character/character.gd" id="1_dv40o"]
+[ext_resource type="Script" path="res://entities/player/debug_player.gd" id="2_1ca7g"]
+[ext_resource type="Script" path="res://addons/anthonyec.state_machine/state_machine.gd" id="2_vmdeo"]
+[ext_resource type="Script" path="res://entities/player/states/move.gd" id="3_t48bn"]
+[ext_resource type="Script" path="res://entities/player/states/fall.gd" id="4_nxsqy"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ksb7m"]
+radius = 0.4
+height = 1.5
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_tf33p"]
+radius = 0.4
+
+[sub_resource type="BoxMesh" id="BoxMesh_gmead"]
+size = Vector3(0.5, 0.5, 0.2)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_d6m6j"]
+radius = 0.4
+
+[node name="Player" type="CharacterBody3D"]
+collision_layer = 2
+script = ExtResource("1_dv40o")
+
+[node name="DebugPlayer" type="Node" parent="."]
+script = ExtResource("2_1ca7g")
+
+[node name="PlayerStateMachine" type="Node" parent="."]
+script = ExtResource("2_vmdeo")
+
+[node name="Move" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("3_t48bn")
+
+[node name="Fall" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("4_nxsqy")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 0.251813, 2.08165e-12)
+shape = SubResource("CapsuleShape3D_ksb7m")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_tf33p")
+
+[node name="Head" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.512125, -0.372992)
+mesh = SubResource("BoxMesh_gmead")
+
+[node name="AreaCollision" type="Area3D" parent="." groups=["player"]]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AreaCollision"]
+shape = SubResource("CapsuleShape3D_d6m6j")
