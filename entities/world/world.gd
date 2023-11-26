@@ -1,7 +1,21 @@
 class_name World
 extends Node
 
+signal minute_tick
+signal decasecond_tick
+signal hour_tick
+signal day_tick
+
+@export_group("Time")
+@export var ticking: bool = true
+@export var tick_per_milliseconds: int = 1000
+@export var day: int = 0
+@export var hour: int = 8
+@export var minute: int = 30
+
 static var instance: World = null
+
+var last_time: int = 0
 
 func _ready() -> void:
 	if instance != null:
@@ -9,5 +23,57 @@ func _ready() -> void:
 		
 	instance = self
 
+func _process(_delta: float) -> void:
+	update_time()
+	
+func update_time() -> void:
+	if not ticking:
+		return
+	
+	var now = Time.get_ticks_msec()
+	
+	var minute_ticked = false
+	var hour_ticked = false
+	var day_ticked = false
+	
+	if now - last_time > tick_per_milliseconds:
+		minute += 1
+		last_time = now
+		minute_ticked = true
+	
+	if minute > 59:
+		minute = 0
+		hour += 1
+		hour_ticked = true
+		
+	if hour > 23:
+		minute = 0
+		hour = 0
+		day += 1
+		day_ticked = true
+	
+	# Perform tick events after modifying values to ensure they are up to date.
+	if minute_ticked: minute_tick.emit()
+	if minute_ticked and minute % 10 == 0: decasecond_tick.emit()
+	if hour_ticked: hour_tick.emit()
+	if day_ticked: day_tick.emit()
+
+func get_display_time() -> String:
+	return str(hour).lpad(2, "0") + ":" + str(minute).lpad(2, "0")
+
+func get_time_percent() -> float:
+	return 0
+
 func get_player() -> Character:
-	return get_parent().get_node("./Player")
+	return get_parent().get_node_or_null("./Player")
+	
+func get_npcs() -> Array[Character]:
+	var npcs: Array[Character] = []
+	
+	for child in get_parent().get_children():
+		var groups = child.get_groups()
+		
+		if child is Character and groups.has("npc"):
+			npcs.append(child)
+	
+	return npcs

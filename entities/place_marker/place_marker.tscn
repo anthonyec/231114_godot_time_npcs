@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1fj3v30b44hq"]
+
+[ext_resource type="Script" path="res://entities/place_marker/place_marker.gd" id="1_d5nq4"]
+
+[node name="Place" type="Marker3D"]
+gizmo_extents = 1.0
+script = ExtResource("1_d5nq4")

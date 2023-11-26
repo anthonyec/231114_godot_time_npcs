@@ -1,7 +1,17 @@
 extends PlayerState
 
 var move_direction: Vector3
+
+func update(_delta: float) -> void:
+	var npcs = World.instance.get_npcs()
+	var closest_npc = Utils.get_closest(npcs, player) as Character
 	
+	if not closest_npc:
+		return
+	
+	if closest_npc.global_position.distance_to(player.global_position) < 3:
+		print(closest_npc)
+
 func physics_update(delta: float) -> void:
 	if not player.is_near_ground():
 		return state_machine.transition_to("Fall")

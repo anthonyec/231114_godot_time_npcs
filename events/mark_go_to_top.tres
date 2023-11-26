@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="NPCScheduleEvent" load_steps=2 format=3 uid="uid://devc4qge5vcux"]
+
+[ext_resource type="Script" path="res://entities/npc_schedule/npc_schedule_event.gd" id="1_dxd3m"]
+
+[resource]
+script = ExtResource("1_dxd3m")
+npc = "Mark"
+hour = 9
+minute = 0
+days = Array[int]([])
+level = "test_room"
+place = "TopOfStairs"
+travel_type = 0
+task = 0

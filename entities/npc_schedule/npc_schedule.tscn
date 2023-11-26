@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c6uv20ndwawks"]
+
+[ext_resource type="Script" path="res://entities/npc_schedule/npc_schedule.gd" id="1_f8hq7"]
+
+[node name="NPCSchedule" type="Node"]
+script = ExtResource("1_f8hq7")

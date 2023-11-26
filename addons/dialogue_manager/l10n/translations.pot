@@ -125,7 +125,19 @@ msgstr ""
 msgid "buffer.show_in_filesystem"
 msgstr ""
 
+msgid "settings.invalid_test_scene"
+msgstr ""
+
 msgid "settings.revert_to_default_test_scene"
+msgstr ""
+
+msgid "settings.default_balloon_hint"
+msgstr ""
+
+msgid "settings.revert_to_default_balloon"
+msgstr ""
+
+msgid "settings.default_balloon_path"
 msgstr ""
 
 msgid "settings.autoload"
@@ -158,7 +170,7 @@ msgstr ""
 msgid "settings.custom_test_scene"
 msgstr ""
 
-msgid "settings.default_csv_local"
+msgid "settings.default_csv_locale"
 msgstr ""
 
 msgid "settings.states_shortcuts"

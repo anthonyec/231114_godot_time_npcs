@@ -1,7 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://p74i2dc1keqf"]
+[gd_scene load_steps=9 format=3 uid="uid://p74i2dc1keqf"]
 
-[ext_resource type="Script" path="res://entities/character/character.gd" id="1_dv40o"]
-[ext_resource type="Script" path="res://entities/player/debug_player.gd" id="2_1ca7g"]
+[ext_resource type="Script" path="res://entities/player/player.gd" id="1_ao2qh"]
 [ext_resource type="Script" path="res://addons/anthonyec.state_machine/state_machine.gd" id="2_vmdeo"]
 [ext_resource type="Script" path="res://entities/player/states/move.gd" id="3_t48bn"]
 [ext_resource type="Script" path="res://entities/player/states/fall.gd" id="4_nxsqy"]
@@ -19,12 +18,9 @@ size = Vector3(0.5, 0.5, 0.2)
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_d6m6j"]
 radius = 0.4
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" groups=["player"]]
 collision_layer = 2
-script = ExtResource("1_dv40o")
-
-[node name="DebugPlayer" type="Node" parent="."]
-script = ExtResource("2_1ca7g")
+script = ExtResource("1_ao2qh")
 
 [node name="PlayerStateMachine" type="Node" parent="."]
 script = ExtResource("2_vmdeo")

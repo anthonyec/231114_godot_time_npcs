@@ -3,14 +3,18 @@
 [ext_resource type="Script" path="res://entities/camera_zone/camera_zone.gd" id="1_sds5h"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_oen43"]
+resource_local_to_scene = true
 size = Vector3(5, 5, 5)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_358k3"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_66hmh"]
 transparency = 1
-albedo_color = Color(1, 0.737255, 0, 0.188235)
+shading_mode = 0
+disable_ambient_light = true
+albedo_color = Color(0, 0.807843, 0.556863, 0.392157)
 
-[sub_resource type="BoxMesh" id="BoxMesh_1wdht"]
-material = SubResource("StandardMaterial3D_358k3")
+[sub_resource type="BoxMesh" id="BoxMesh_w2v86"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_66hmh")
 size = Vector3(5, 5, 5)
 
 [node name="CameraZone" type="Area3D"]
@@ -20,5 +24,4 @@ script = ExtResource("1_sds5h")
 shape = SubResource("BoxShape3D_oen43")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-visible = false
-mesh = SubResource("BoxMesh_1wdht")
+mesh = SubResource("BoxMesh_w2v86")

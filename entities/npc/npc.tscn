@@ -1,0 +1,45 @@
+[gd_scene load_steps=8 format=3 uid="uid://ct1hhqerl2lsv"]
+
+[ext_resource type="Script" path="res://entities/npc/npc.gd" id="1_1c244"]
+[ext_resource type="Script" path="res://addons/anthonyec.state_machine/state_machine.gd" id="2_il4er"]
+[ext_resource type="Script" path="res://entities/npc/states/stand.gd" id="3_fni3f"]
+[ext_resource type="Script" path="res://entities/npc/states/move.gd" id="3_yawqp"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ksb7m"]
+radius = 0.4
+height = 1.5
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_tf33p"]
+radius = 0.4
+
+[sub_resource type="BoxMesh" id="BoxMesh_gmead"]
+size = Vector3(0.5, 0.5, 0.2)
+
+[node name="NPC" type="CharacterBody3D" groups=["npc"]]
+script = ExtResource("1_1c244")
+npc_name = "Mark"
+walk_speed = 2.0
+
+[node name="NPCStateMachine" type="Node" parent="."]
+script = ExtResource("2_il4er")
+
+[node name="Move" type="Node" parent="NPCStateMachine"]
+script = ExtResource("3_yawqp")
+
+[node name="Stand" type="Node" parent="NPCStateMachine"]
+script = ExtResource("3_fni3f")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.5
+path_height_offset = -0.5
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.261206, 0)
+shape = SubResource("CapsuleShape3D_ksb7m")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_tf33p")
+
+[node name="Head" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.512125, -0.372992)
+mesh = SubResource("BoxMesh_gmead")

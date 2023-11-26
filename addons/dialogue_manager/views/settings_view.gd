@@ -9,26 +9,39 @@ const DialogueConstants = preload("../constants.gd")
 const DialogueSettings = preload("../components/settings.gd")
 
 
+enum PathTarget {
+	CustomTestScene,
+	Balloon
+}
+
+
 # Editor
 @onready var new_template_button: CheckBox = $Editor/NewTemplateButton
 @onready var missing_translations_button: CheckBox = $Editor/MissingTranslationsButton
 @onready var characters_translations_button: CheckBox = $Editor/CharactersTranslationsButton
 @onready var wrap_lines_button: Button = $Editor/WrapLinesButton
-@onready var test_scene_path_input: LineEdit = $Editor/CustomTestScene/TestScenePath
-@onready var revert_test_scene_button: Button = $Editor/CustomTestScene/RevertTestScene
-@onready var load_test_scene_button: Button = $Editor/CustomTestScene/LoadTestScene
 @onready var default_csv_locale: LineEdit = $Editor/DefaultCSVLocale
 
 # Runtime
 @onready var include_all_responses_button: CheckBox = $Runtime/IncludeAllResponsesButton
 @onready var ignore_missing_state_values: CheckBox = $Runtime/IgnoreMissingStateValues
+@onready var balloon_path_input: LineEdit = $Runtime/CustomBalloon/BalloonPath
+@onready var revert_balloon_button: Button = $Runtime/CustomBalloon/RevertBalloonPath
+@onready var load_balloon_button: Button = $Runtime/CustomBalloon/LoadBalloonPath
 @onready var states_title: Label = $Runtime/StatesTitle
 @onready var globals_list: Tree = $Runtime/GlobalsList
+
+# Advanced
+@onready var test_scene_path_input: LineEdit = $Advanced/CustomTestScene/TestScenePath
+@onready var revert_test_scene_button: Button = $Advanced/CustomTestScene/RevertTestScene
+@onready var load_test_scene_button: Button = $Advanced/CustomTestScene/LoadTestScene
 @onready var custom_test_scene_file_dialog: FileDialog = $CustomTestSceneFileDialog
 
 var editor_plugin: EditorPlugin
 var all_globals: Dictionary = {}
 var enabled_globals: Array = []
+var path_target: PathTarget = PathTarget.CustomTestScene
+
 var _default_test_scene_path: String = preload("../test_scene.tscn").resource_path
 
 
@@ -38,14 +51,16 @@ func _ready() -> void:
 	$Editor/MissingTranslationsHint.text = DialogueConstants.translate("settings.missing_keys_hint")
 	characters_translations_button.text = DialogueConstants.translate("settings.characters_translations")
 	wrap_lines_button.text = DialogueConstants.translate("settings.wrap_long_lines")
-	$Editor/CustomTestSceneLabel.text = DialogueConstants.translate("settings.custom_test_scene")
-	$Editor/DefaultCSVLocaleLabel.text = DialogueConstants.translate("settings.default_csv_local")
+	$Editor/DefaultCSVLocaleLabel.text = DialogueConstants.translate("settings.default_csv_locale")
 
 	include_all_responses_button.text = DialogueConstants.translate("settings.include_failed_responses")
 	ignore_missing_state_values.text = DialogueConstants.translate("settings.ignore_missing_state_values")
+	$Runtime/CustomBalloonLabel.text = DialogueConstants.translate("settings.default_balloon_hint")
 	states_title.text = DialogueConstants.translate("settings.states_shortcuts")
 	$Runtime/StatesMessage.text = DialogueConstants.translate("settings.states_message")
 	$Runtime/StatesHint.text = DialogueConstants.translate("settings.states_hint")
+
+	$Advanced/CustomTestSceneLabel.text = DialogueConstants.translate("settings.custom_test_scene")
 
 
 func prepare() -> void:
@@ -54,6 +69,13 @@ func prepare() -> void:
 	revert_test_scene_button.icon = get_theme_icon("RotateLeft", "EditorIcons")
 	revert_test_scene_button.tooltip_text = DialogueConstants.translate("settings.revert_to_default_test_scene")
 	load_test_scene_button.icon = get_theme_icon("Load", "EditorIcons")
+
+	var balloon_path: String = DialogueSettings.get_setting("balloon_path", "")
+	balloon_path_input.placeholder_text = balloon_path if balloon_path != "" else DialogueConstants.translate("settings.default_balloon_path")
+	revert_balloon_button.visible = balloon_path != ""
+	revert_balloon_button.icon = get_theme_icon("RotateLeft", "EditorIcons")
+	revert_balloon_button.tooltip_text = DialogueConstants.translate("settings.revert_to_default_balloon")
+	load_balloon_button.icon = get_theme_icon("Load", "EditorIcons")
 
 	var scale: float = editor_plugin.get_editor_interface().get_editor_scale()
 	custom_test_scene_file_dialog.min_size = Vector2(600, 500) * scale
@@ -150,13 +172,29 @@ func _on_revert_test_scene_pressed() -> void:
 
 
 func _on_load_test_scene_pressed() -> void:
+	path_target = PathTarget.CustomTestScene
 	custom_test_scene_file_dialog.popup_centered()
 
 
 func _on_custom_test_scene_file_dialog_file_selected(path: String) -> void:
-	DialogueSettings.set_setting("custom_test_scene_path", path)
-	test_scene_path_input.placeholder_text = path
-	revert_test_scene_button.visible = test_scene_path_input.placeholder_text != _default_test_scene_path
+	match path_target:
+		PathTarget.CustomTestScene:
+			# Check that the test scene is a subclass of BaseDialogueTestScene
+			var test_scene: PackedScene = load(path)
+			if test_scene and test_scene.instantiate() is BaseDialogueTestScene:
+				DialogueSettings.set_setting("custom_test_scene_path", path)
+				test_scene_path_input.placeholder_text = path
+				revert_test_scene_button.visible = test_scene_path_input.placeholder_text != _default_test_scene_path
+			else:
+				var accept: AcceptDialog = AcceptDialog.new()
+				accept.dialog_text = DialogueConstants.translate("settings.invalid_test_scene").format({ path = path })
+				add_child(accept)
+				accept.popup_centered.call_deferred()
+
+		PathTarget.Balloon:
+			DialogueSettings.set_setting("balloon_path", path)
+			balloon_path_input.placeholder_text = path
+			revert_balloon_button.visible = balloon_path_input.placeholder_text != ""
 
 
 func _on_ignore_missing_state_values_toggled(button_pressed: bool) -> void:
@@ -165,3 +203,14 @@ func _on_ignore_missing_state_values_toggled(button_pressed: bool) -> void:
 
 func _on_default_csv_locale_text_changed(new_text: String) -> void:
 	DialogueSettings.set_setting("default_csv_locale", new_text)
+
+
+func _on_revert_balloon_path_pressed() -> void:
+	DialogueSettings.set_setting("balloon_path", "")
+	balloon_path_input.placeholder_text = DialogueConstants.translate("settings.default_balloon_path")
+	revert_balloon_button.visible = DialogueSettings.get_setting("balloon_path", "") != ""
+
+
+func _on_load_balloon_path_pressed() -> void:
+	path_target = PathTarget.Balloon
+	custom_test_scene_file_dialog.popup_centered()
