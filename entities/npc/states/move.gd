@@ -7,8 +7,8 @@ func exit() -> void:
 	npc.velocity = Vector3.ZERO
 
 func physics_update(delta: float) -> void:
-	if npc.global_position.distance_to(npc.target_position) < 1:
-		return state_machine.transition_to("Stand")
+#	if npc.global_position.distance_to(npc.target_position) < 1:
+#		return state_machine.transition_to("Stand")
 		
 	var next_position = npc.nav_agent.get_next_path_position()
 	

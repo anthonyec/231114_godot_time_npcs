@@ -4,11 +4,10 @@
 
 [resource]
 script = ExtResource("1_dxd3m")
-npc = "Mark"
-hour = 9
-minute = 0
-days = Array[int]([])
+npc = "mark"
+start_hour = 11
+start_minute = 0
+end_hour = 12
+end_minute = 0
 level = "test_room"
-place = "TopOfStairs"
-travel_type = 0
-task = 0
+location = "TopOfStairs"

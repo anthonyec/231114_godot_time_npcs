@@ -4,9 +4,10 @@
 
 [resource]
 script = ExtResource("1_5rw52")
-npc = "Mark"
-hour = 10
-minute = 30
+npc = "mark"
+start_hour = 9
+start_minute = 30
+end_hour = 10
+end_minute = 30
 level = "test_room"
-place = "BottomOfStairs"
-travel_type = 0
+location = "BottomOfStairs"

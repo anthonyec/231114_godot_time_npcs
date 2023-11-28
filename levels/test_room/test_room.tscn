@@ -1,10 +1,6 @@
-[gd_scene load_steps=11 format=3 uid="uid://bhccb2wwe3npb"]
+[gd_scene load_steps=7 format=3 uid="uid://bhccb2wwe3npb"]
 
 [ext_resource type="Script" path="res://levels/test_room/test_room.gd" id="1_7f8jk"]
-[ext_resource type="PackedScene" uid="uid://daghraqki8qvm" path="res://entities/world/world.tscn" id="2_gjppo"]
-[ext_resource type="PackedScene" uid="uid://c6uv20ndwawks" path="res://entities/npc_schedule/npc_schedule.tscn" id="3_v5cqt"]
-[ext_resource type="Resource" uid="uid://devc4qge5vcux" path="res://events/mark_go_to_top.tres" id="4_wepfu"]
-[ext_resource type="Resource" uid="uid://drf3o66fl1rx3" path="res://events/mark_go_to_bottom.tres" id="5_2dlqv"]
 [ext_resource type="PackedScene" uid="uid://p74i2dc1keqf" path="res://entities/player/player.tscn" id="5_iaicj"]
 [ext_resource type="PackedScene" uid="uid://ct1hhqerl2lsv" path="res://entities/npc/npc.tscn" id="6_0o5pf"]
 [ext_resource type="PackedScene" uid="uid://borisdwggifsf" path="res://entities/camera_zone/camera_zone.tscn" id="6_mya4x"]
@@ -17,12 +13,6 @@ agent_radius = 1.0
 
 [node name="TestRoom" type="Node3D"]
 script = ExtResource("1_7f8jk")
-
-[node name="World" parent="." instance=ExtResource("2_gjppo")]
-minute = 58
-
-[node name="NPCSchedule" parent="." instance=ExtResource("3_v5cqt")]
-events = Array[Resource("res://entities/npc_schedule/npc_schedule_event.gd")]([ExtResource("4_wepfu"), ExtResource("5_2dlqv")])
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.203864, 0.847992, -0.489234, -1.00621e-15, 0.499728, 0.866182, 0.978999, -0.176583, 0.101877, 0, 4.9453, 0)
@@ -107,6 +97,10 @@ size = Vector3(0.320049, 0.75161, 11.5425)
 [node name="NPC" parent="." instance=ExtResource("6_0o5pf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.12943, 1.47607, 7.21356)
 
+[node name="NPC2" parent="." instance=ExtResource("6_0o5pf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.12943, 1.47607, 4.15374)
+npc_name = "John"
+
 [node name="Player" parent="." instance=ExtResource("5_iaicj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.84283, 1.04239, 1.57602)
 
@@ -144,6 +138,10 @@ bounds = Vector3(8, 2, 3.2)
 
 [node name="BottomOfStairs" parent="." instance=ExtResource("8_cmy05")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25382, 0.772218, 9.51834)
+place = 1
+
+[node name="BehindStairs" parent="." instance=ExtResource("8_cmy05")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9817, 0.772218, -11.4758)
 place = 1
 
 [node name="TopOfStairs" parent="." instance=ExtResource("8_cmy05")]

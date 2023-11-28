@@ -1,45 +1,71 @@
 class_name NPCSchedule
 extends Node
 
-# TODO: Maybe make it autoload from a folder.
-@export var events: Array[NPCScheduleEvent] = []
-
-#var characters_to_current_event: Dictionary = {}
-
-var characters_to_events: Dictionary = {}
+var schedule: Array[Dictionary] = [
+	{
+		"npc": "mark",
+		"start_time": [9, 0],
+		"end_time": [9, 20],
+		"level": "test_room",
+		"location": "TopOfStairs"
+	},
+	{
+		"npc": "mark",
+		"start_time": [10, 00],
+		"end_time": [10, 30],
+		"level": "test_room",
+		"location": "BottomOfStairs"
+	},
+	{
+		"npc": "john",
+		"start_time": [8, 30],
+		"end_time": [9, 0],
+		"level": "test_room",
+		"location": "BottomOfStairs"
+	},
+	{
+		"npc": "john",
+		"start_time": [9, 50],
+		"end_time": [13, 0],
+		"level": "test_room",
+		"location": "BehindStairs"
+	}
+]
 
 func _ready() -> void:
-	assert(World.instance, "World node in scene required")
-#	World.instance.connect("minute_tick", _on_world_minute_tick)
-
-	for event in events:
-		if not characters_to_events.has(event.npc):
-			characters_to_events[event.npc] = []
-		
-		var character_events = characters_to_events.get(event.npc) as Array[NPCScheduleEvent]
-		character_events.append(event)
-	
-	for character in characters_to_events:
-		var events = characters_to_events[character] as Array[NPCScheduleEvent]
-		
-		events.sort_custom(func(a: NPCScheduleEvent, b: NPCScheduleEvent):
-			var timestamp_a = a.get_timestamp()
-			var timestamp_b = b.get_timestamp()
-			return timestamp_a < timestamp_b
-		)
-		
-		characters_to_events[character] = events
-		
-	print(characters_to_events)
+	var world = World.instance
+	world.minute_tick.connect(_on_world_minute_tick)
 	
 func _on_world_minute_tick() -> void:
 	var world = World.instance
-	print(world.hour, ", ", world.minute)
+	var events = get_events_for_time(world.hour, world.minute)
 	
 	for event in events:
-#		print(event.hour, ", ", event.minute)
-		if event.hour == world.hour and event.minute == world.minute:
-			print("DAMN")
+		var npc_name = event.get("npc")
+		assert(npc_name, "Expected event to have npc")
+		
+		var existing_npc = world.find_npc_or_null(npc_name)
+		
+		if existing_npc:
+			existing_npc.set_schedule_event(event)
 
-func event(event: NPCScheduleEvent) -> void:
-	pass
+func get_timestamp(hour: int, minute: int) -> int:
+	# https://stackoverflow.com/a/51011191
+	return minute * 60 + hour * 3600
+
+func get_events_for_time(hour: int, minute: int) -> Array[Dictionary]:
+	var current_timestamp = get_timestamp(hour, minute)
+	var events: Array[Dictionary] = []
+	
+	for event in schedule:
+		var start_time = event.get("start_time")
+		var end_time = event.get("end_time")
+		assert(start_time != null and end_time != null, "Expected event to have start and end time")
+		
+		var start_timestamp = get_timestamp(start_time[0], start_time[1])
+		var end_timestamp = get_timestamp(end_time[0], end_time[1])
+		
+		if current_timestamp >= start_timestamp and current_timestamp <= end_timestamp:
+			events.append(event)
+		
+	return events

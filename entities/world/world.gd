@@ -13,6 +13,8 @@ signal day_tick
 @export var hour: int = 8
 @export var minute: int = 30
 
+@onready var root: Node3D = get_parent()
+
 static var instance: World = null
 
 var last_time: int = 0
@@ -64,16 +66,39 @@ func get_display_time() -> String:
 func get_time_percent() -> float:
 	return 0
 
-func get_player() -> Character:
-	return get_parent().get_node_or_null("./Player")
+func get_player() -> Player:
+	return root.get_node_or_null("./Player")
 	
-func get_npcs() -> Array[Character]:
-	var npcs: Array[Character] = []
+func get_npcs() -> Array[NPC]:
+	var npcs: Array[NPC] = []
 	
-	for child in get_parent().get_children():
+	for child in root.get_children():
 		var groups = child.get_groups()
 		
-		if child is Character and groups.has("npc"):
+		if child is NPC and groups.has("npc"):
 			npcs.append(child)
 	
 	return npcs
+
+func find_npc_or_null(npc_name: String) -> NPC:
+	var found_npc: NPC
+	var npcs = get_npcs()
+	
+	for npc in npcs:
+		if npc.npc_name.to_lower() == npc_name.to_lower():
+			return npc
+	
+	return found_npc
+
+func find_node_or_null(node_name: String) -> Node3D:
+	var found_node: Node3D
+	
+	for child in root.get_children():
+		if not (child is Node3D):
+			continue
+			
+		if child.name.to_lower() == node_name.to_lower():
+			found_node = child
+			break
+			
+	return found_node

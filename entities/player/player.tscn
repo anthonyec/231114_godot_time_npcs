@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://p74i2dc1keqf"]
+[gd_scene load_steps=10 format=3 uid="uid://p74i2dc1keqf"]
 
 [ext_resource type="Script" path="res://entities/player/player.gd" id="1_ao2qh"]
 [ext_resource type="Script" path="res://addons/anthonyec.state_machine/state_machine.gd" id="2_vmdeo"]
@@ -9,10 +9,15 @@
 radius = 0.4
 height = 1.5
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kg1wt"]
+albedo_color = Color(0.403922, 0.756863, 0.733333, 1)
+
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_tf33p"]
+material = SubResource("StandardMaterial3D_kg1wt")
 radius = 0.4
 
 [sub_resource type="BoxMesh" id="BoxMesh_gmead"]
+material = SubResource("StandardMaterial3D_kg1wt")
 size = Vector3(0.5, 0.5, 0.2)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_d6m6j"]
@@ -22,13 +27,13 @@ radius = 0.4
 collision_layer = 2
 script = ExtResource("1_ao2qh")
 
-[node name="PlayerStateMachine" type="Node" parent="."]
+[node name="StateMachine" type="Node" parent="."]
 script = ExtResource("2_vmdeo")
 
-[node name="Move" type="Node" parent="PlayerStateMachine"]
+[node name="Move" type="Node" parent="StateMachine"]
 script = ExtResource("3_t48bn")
 
-[node name="Fall" type="Node" parent="PlayerStateMachine"]
+[node name="Fall" type="Node" parent="StateMachine"]
 script = ExtResource("4_nxsqy")
 
 [node name="Collision" type="CollisionShape3D" parent="."]

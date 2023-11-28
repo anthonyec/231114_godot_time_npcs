@@ -20,13 +20,13 @@ script = ExtResource("1_1c244")
 npc_name = "Mark"
 walk_speed = 2.0
 
-[node name="NPCStateMachine" type="Node" parent="."]
+[node name="StateMachine" type="Node" parent="."]
 script = ExtResource("2_il4er")
 
-[node name="Move" type="Node" parent="NPCStateMachine"]
+[node name="Move" type="Node" parent="StateMachine"]
 script = ExtResource("3_yawqp")
 
-[node name="Stand" type="Node" parent="NPCStateMachine"]
+[node name="Stand" type="Node" parent="StateMachine"]
 script = ExtResource("3_fni3f")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]

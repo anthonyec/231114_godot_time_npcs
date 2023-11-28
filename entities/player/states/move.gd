@@ -10,7 +10,7 @@ func update(_delta: float) -> void:
 		return
 	
 	if closest_npc.global_position.distance_to(player.global_position) < 3:
-		print(closest_npc)
+		pass
 
 func physics_update(delta: float) -> void:
 	if not player.is_near_ground():

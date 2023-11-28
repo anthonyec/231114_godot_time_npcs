@@ -1,0 +1,15 @@
+[gd_scene load_steps=5 format=3 uid="uid://lqgmmvrfaqm7"]
+
+[ext_resource type="Script" path="res://game.gd" id="1_aifxf"]
+[ext_resource type="PackedScene" uid="uid://daghraqki8qvm" path="res://entities/world/world.tscn" id="2_ifymh"]
+[ext_resource type="PackedScene" uid="uid://cbp13ffa7nrjh" path="res://entities/debug/debug.tscn" id="2_jnppa"]
+[ext_resource type="PackedScene" uid="uid://c6uv20ndwawks" path="res://entities/npc_schedule/npc_schedule.tscn" id="3_5nqap"]
+
+[node name="Game" type="Node3D"]
+script = ExtResource("1_aifxf")
+
+[node name="Debug" parent="." instance=ExtResource("2_jnppa")]
+
+[node name="World" parent="." instance=ExtResource("2_ifymh")]
+
+[node name="NPCSchedule" parent="." instance=ExtResource("3_5nqap")]
