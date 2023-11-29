@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://bhccb2wwe3npb"]
+[gd_scene load_steps=6 format=3 uid="uid://bhccb2wwe3npb"]
 
 [ext_resource type="Script" path="res://levels/test_room/test_room.gd" id="1_7f8jk"]
-[ext_resource type="PackedScene" uid="uid://p74i2dc1keqf" path="res://entities/player/player.tscn" id="5_iaicj"]
-[ext_resource type="PackedScene" uid="uid://ct1hhqerl2lsv" path="res://entities/npc/npc.tscn" id="6_0o5pf"]
+[ext_resource type="PackedScene" uid="uid://bfpjbjjoy6qmi" path="res://entities/level_portal/level_portal.tscn" id="4_x11fc"]
 [ext_resource type="PackedScene" uid="uid://borisdwggifsf" path="res://entities/camera_zone/camera_zone.tscn" id="6_mya4x"]
 [ext_resource type="PackedScene" uid="uid://b1fj3v30b44hq" path="res://entities/place_marker/place_marker.tscn" id="8_cmy05"]
 
@@ -94,16 +93,6 @@ use_collision = true
 collision_layer = 3
 size = Vector3(0.320049, 0.75161, 11.5425)
 
-[node name="NPC" parent="." instance=ExtResource("6_0o5pf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.12943, 1.47607, 7.21356)
-
-[node name="NPC2" parent="." instance=ExtResource("6_0o5pf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.12943, 1.47607, 4.15374)
-npc_name = "John"
-
-[node name="Player" parent="." instance=ExtResource("5_iaicj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.84283, 1.04239, 1.57602)
-
 [node name="Camera1" type="Camera3D" parent="."]
 transform = Transform3D(0.738738, 0.155121, -0.6559, -7.63617e-10, 0.973155, 0.230152, 0.673993, -0.170022, 0.718906, -5.83999, 4.14903, 13.6607)
 fov = 48.6
@@ -115,6 +104,12 @@ fov = 48.6
 [node name="Camera3" type="Camera3D" parent="."]
 transform = Transform3D(0.0222875, -0.0904358, 0.995653, -0.00317754, 0.995889, 0.0905284, -0.999747, -0.00518137, 0.0219085, 17.0555, 9.43539, 1.92363)
 fov = 48.6
+
+[node name="LevelPortal" parent="." instance=ExtResource("4_x11fc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.705361, 0.922763, 9.17707)
+collision_layer = 3
+collision_mask = 3
+level_name = "test_room_2"
 
 [node name="CameraZone" parent="." node_paths=PackedStringArray("switch_to_camera") instance=ExtResource("6_mya4x")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.93376, 2.39404, -2.46009)
@@ -138,12 +133,9 @@ bounds = Vector3(8, 2, 3.2)
 
 [node name="BottomOfStairs" parent="." instance=ExtResource("8_cmy05")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25382, 0.772218, 9.51834)
-place = 1
 
 [node name="BehindStairs" parent="." instance=ExtResource("8_cmy05")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9817, 0.772218, -11.4758)
-place = 1
 
 [node name="TopOfStairs" parent="." instance=ExtResource("8_cmy05")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.46431, 7.37785, 7.97975)
-place = 1

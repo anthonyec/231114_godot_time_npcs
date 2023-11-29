@@ -23,6 +23,10 @@ func set_schedule_event(event: Dictionary) -> void:
 	
 	var world = World.instance
 	var location_node = world.find_node_or_null(location)
+	if not location_node: return
+	
+	# TODO: This is a hack. Find a way to find out if nav agent is ready.
+	await get_tree().create_timer(0.5).timeout
 	
 	nav_agent.target_position = location_node.global_position
 

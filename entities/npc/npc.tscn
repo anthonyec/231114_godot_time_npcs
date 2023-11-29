@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://ct1hhqerl2lsv"]
+[gd_scene load_steps=9 format=3 uid="uid://ct1hhqerl2lsv"]
 
 [ext_resource type="Script" path="res://entities/npc/npc.gd" id="1_1c244"]
 [ext_resource type="Script" path="res://addons/anthonyec.state_machine/state_machine.gd" id="2_il4er"]
@@ -14,6 +14,9 @@ radius = 0.4
 
 [sub_resource type="BoxMesh" id="BoxMesh_gmead"]
 size = Vector3(0.5, 0.5, 0.2)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_csn0b"]
+radius = 0.4
 
 [node name="NPC" type="CharacterBody3D" groups=["npc"]]
 script = ExtResource("1_1c244")
@@ -43,3 +46,8 @@ mesh = SubResource("CapsuleMesh_tf33p")
 [node name="Head" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.512125, -0.372992)
 mesh = SubResource("BoxMesh_gmead")
+
+[node name="AreaCollision" type="Area3D" parent="." groups=["npc"]]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AreaCollision"]
+shape = SubResource("CapsuleShape3D_csn0b")

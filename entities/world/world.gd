@@ -66,10 +66,16 @@ func get_display_time() -> String:
 func get_time_percent() -> float:
 	return 0
 
-func get_player() -> Player:
+func get_player_or_null() -> Player:
 	return root.get_node_or_null("./Player")
 	
+func get_level_or_null() -> Node3D:
+	return root
+	
 func get_npcs() -> Array[NPC]:
+	if not root:
+		return []
+		
 	var npcs: Array[NPC] = []
 	
 	for child in root.get_children():
@@ -81,6 +87,9 @@ func get_npcs() -> Array[NPC]:
 	return npcs
 
 func find_npc_or_null(npc_name: String) -> NPC:
+	if not root:
+		return null
+	
 	var found_npc: NPC
 	var npcs = get_npcs()
 	
@@ -91,6 +100,9 @@ func find_npc_or_null(npc_name: String) -> NPC:
 	return found_npc
 
 func find_node_or_null(node_name: String) -> Node3D:
+	if not root:
+		return null
+		
 	var found_node: Node3D
 	
 	for child in root.get_children():
@@ -102,3 +114,17 @@ func find_node_or_null(node_name: String) -> Node3D:
 			break
 			
 	return found_node
+
+# TODO: Add a way for world to spawn NPCs and Players with extra checks
+# to make sure things don't spawn inside each other. And they always
+# spawn on floor.
+func spawn_npc_or_null(npc_name: String) -> NPC:
+	if not root:
+		return null
+		
+	var npc_scene = preload("res://entities/npc/npc.tscn") as PackedScene
+	var npc = npc_scene.instantiate() as NPC
+	
+	root.add_child(npc)
+	
+	return npc
