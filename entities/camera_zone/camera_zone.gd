@@ -16,28 +16,18 @@ func _ready() -> void:
 	(mesh.mesh as BoxMesh).size = bounds
 	mesh.visible = false
 		
-	connect("area_entered", _on_area_entered)
-	connect("area_exited", _on_area_exited)
+	connect("body_entered", _on_body_entered)
 	
 func _process(_delta: float) -> void:
-	if not Engine.is_editor_hint():
-		return
+	if Engine.is_editor_hint():
+		(collision.shape as BoxShape3D).size = bounds
+		(mesh.mesh as BoxMesh).size = bounds
+
+func activate() -> void:
+	switch_to_camera.make_current()
+
+func _on_body_entered(body: Node3D) -> void:
+	var groups = body.get_groups()
 	
-	(collision.shape as BoxShape3D).size = bounds
-	(mesh.mesh as BoxMesh).size = bounds
-	
-func _on_area_entered(area: Area3D) -> void:
-	var groups = area.get_groups()
-	
-	if not groups.has("player"):
-		return
-		
-	var current_camera = get_viewport().get_camera_3d()
-	current_camera.current = false
-	switch_to_camera.current = true
-	
-func _on_area_exited(area: Area3D) -> void:
-	var groups = area.get_groups()
-	
-	if not groups.has("player"):
-		return
+	if groups.has("player"):
+		activate()

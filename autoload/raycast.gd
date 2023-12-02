@@ -42,7 +42,7 @@ func intersect_ray(start_position: Vector3, end_position: Vector3, collision_mas
 	return space_state.intersect_ray(query)
 	
 # TODO: Fix return type. Should be Dictionary[] but couldn't get it working.
-func intersect_cylinder(position: Vector3, height: float = 2.0, radius: float = 0.5, collision_mask: int = DEFAULT_COLLISION_MASK, exclude: Array = []) -> Array:
+func intersect_cylinder(origin: Vector3, height: float = 2.0, radius: float = 0.5, collision_mask: int = DEFAULT_COLLISION_MASK, exclude: Array = []) -> Array:
 	var space_state = get_world_3d().direct_space_state
 	var params = PhysicsShapeQueryParameters3D.new()
 	var shape = CylinderShape3D.new()
@@ -51,7 +51,7 @@ func intersect_cylinder(position: Vector3, height: float = 2.0, radius: float = 
 	shape.radius = radius
 	
 	params.shape = shape
-	params.transform.origin = position
+	params.transform.origin = origin
 	params.collision_mask = collision_mask
 	params.exclude = exclude
 
@@ -66,7 +66,7 @@ class CollideCylinderParams:
 	var max_results: int = 32
 	
 func collide_cylinder(
-	position: Vector3, 
+	origin: Vector3, 
 	height: float = 2.0, 
 	radius: float = 0.5, 
 	params: CollideCylinderParams = CollideCylinderParams.new()
@@ -81,7 +81,7 @@ func collide_cylinder(
 	shape.radius = radius
 	
 	physics.shape = shape
-	physics.transform.origin = position
+	physics.transform.origin = origin
 	physics.collision_mask = params.collision_mask
 	physics.exclude = params.exclude
 	

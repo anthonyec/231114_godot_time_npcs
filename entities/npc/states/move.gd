@@ -1,8 +1,5 @@
 extends NPCState
 
-func enter(params: Dictionary) -> void:
-	var target_position = params.get("target_position", Vector3.ZERO)
-	
 func exit() -> void:
 	npc.velocity = Vector3.ZERO
 
