@@ -17,6 +17,9 @@ func physics_update(delta: float) -> void:
 	if not player.is_near_ground():
 		return state_machine.transition_to("Fall")
 	
+	if player.global_position.distance_to(player.last_grounded_position) > 3:
+		player.last_grounded_position = player.global_position
+	
 	var rotation_input = Input.get_action_strength("move_left") - Input.get_action_strength("move_right") 
 	player.rotate(Vector3.UP, rotation_input * 3 * delta)
 	
