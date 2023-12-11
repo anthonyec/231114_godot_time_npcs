@@ -71,8 +71,7 @@ func get_level_or_null() -> Node3D:
 	return root
 	
 func get_npcs() -> Array[NPC]:
-	if not root:
-		return []
+	if not root: return []
 		
 	var nodes: Array[NPC] = []
 	
@@ -85,8 +84,7 @@ func get_npcs() -> Array[NPC]:
 	return nodes
 	
 func get_level_portals() -> Array[LevelPortal]:
-	if not root:
-		return []
+	if not root: return []
 		
 	var nodes: Array[LevelPortal] = []
 	
@@ -96,9 +94,41 @@ func get_level_portals() -> Array[LevelPortal]:
 	
 	return nodes
 	
+func get_place_markers() -> Array[PlaceMarker]:
+	if not root: return []
+		
+	var nodes: Array[PlaceMarker] = []
+	
+	for child in root.get_children():
+		if child is PlaceMarker:
+			nodes.append(child)
+	
+	return nodes
+	
+func get_cameras() -> Array[Camera3D]:
+	if not root: return []
+		
+	var nodes: Array[Camera3D] = []
+	
+	for child in root.get_children():
+		if child is Camera3D:
+			nodes.append(child)
+	
+	return nodes
+	
+func get_camera_zones() -> Array[CameraZone]:
+	if not root: return []
+		
+	var nodes: Array[CameraZone] = []
+	
+	for child in root.get_children():
+		if child is CameraZone:
+			nodes.append(child)
+	
+	return nodes
+	
 func get_random_position_on_nav_mesh() -> Vector3:
-	if not root:
-		return Vector3.ZERO
+	if not root: return Vector3.ZERO
 	
 	var nav_region: NavigationRegion3D
 	
@@ -120,8 +150,7 @@ func is_position_obstructed() -> bool:
 	return false
 
 func find_npc_or_null(npc_name: String) -> NPC:
-	if not root:
-		return null
+	if not root: return null
 	
 	for npc in get_npcs():
 		if npc.npc_name.to_lower() == npc_name.to_lower():
@@ -130,8 +159,7 @@ func find_npc_or_null(npc_name: String) -> NPC:
 	return null
 	
 func find_level_portal_or_null(level_name: String) -> LevelPortal:
-	if not root:
-		return null
+	if not root: return null
 		
 	for level_portal in get_level_portals():
 		if level_portal.level_name == level_name:
@@ -140,8 +168,7 @@ func find_level_portal_or_null(level_name: String) -> LevelPortal:
 	return null
 
 func find_node_or_null(node_name: String) -> Node3D:
-	if not root:
-		return null
+	if not root: return null
 		
 	for child in root.get_children():
 		if not (child is Node3D):
@@ -153,8 +180,7 @@ func find_node_or_null(node_name: String) -> Node3D:
 	return null
 	
 func spawn_player_or_null() -> Player:
-	if not root:
-		return null
+	if not root: return null
 	
 	var scene = preload("res://entities/player/player.tscn") as PackedScene
 	var node = scene.instantiate() as Player
@@ -162,13 +188,24 @@ func spawn_player_or_null() -> Player:
 	root.add_child(node)
 	
 	return node
+	
+func teleport_player(position: Vector3) -> void:
+	var player = get_player_or_null()
+	if not player: return
+	
+	player.global_position = position
+	
+	var camera_zones = get_camera_zones()
+	var closest_camera_zone := Utils.get_closest(camera_zones, player) as CameraZone
+	if not closest_camera_zone: return
+	
+	closest_camera_zone.switch_to_camera.make_current()
 
 # TODO: Add a way for world to spawn NPCs and Players with extra checks
 # to make sure things don't spawn inside each other. And they always
 # spawn on floor.
 func spawn_npc_or_null(npc_name: String) -> NPC:
-	if not root:
-		return null
+	if not root: return null
 		
 	var scene = preload("res://entities/npc/npc.tscn") as PackedScene
 	var node = scene.instantiate() as NPC

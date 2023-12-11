@@ -18,7 +18,8 @@ material = SubResource("StandardMaterial3D_v1g03")
 size = Vector3(2, 2, 2)
 
 [node name="LevelPortal" type="Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.93376, 2.39404, -2.46009)
+collision_layer = 3
+collision_mask = 3
 script = ExtResource("1_a6tjq")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

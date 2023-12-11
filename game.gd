@@ -14,7 +14,7 @@ func _ready() -> void:
 		
 	instance = self
 	
-	load_level("test_room")
+	load_level("pier")
 
 func load_level(level_name: String) -> void:
 	if current_level != null:

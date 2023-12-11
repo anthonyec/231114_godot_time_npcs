@@ -144,10 +144,11 @@ func draw_ray_3d(origin: Vector3, direction: Vector3, length: float, color : Col
 ## Multiple calls with the same `key` will override previous text.
 ## @param key: identifier of the line
 ## @param text: text to show next to the key
-func set_text(key: String, value=""):
+func set_text(key: String, value="", world_position = null):
 	_texts[key] = {
 		"text": value if typeof(value) == TYPE_STRING else str(value),
-		"frame": Engine.get_frames_drawn() + TEXT_LINGER_FRAMES
+		"frame": Engine.get_frames_drawn() + TEXT_LINGER_FRAMES,
+		"world_position": world_position
 	}
 
 
@@ -280,10 +281,22 @@ func _on_CanvasItem_draw():
 		var t = _texts[key]
 		var text := str(key, ": ", t.text)
 		var ss := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, TEXT_SIZE)
-		ci.draw_rect(Rect2(pos, Vector2(ss.x + xpad * 2, line_height)), TEXT_BG_COLOR)
-		ci.draw_string(font, pos + font_offset, text, HORIZONTAL_ALIGNMENT_LEFT, -1, TEXT_SIZE,
+		
+		var draw_position: Vector2 = pos
+		var world_position = t.world_position
+		
+		if world_position != null:
+			var camera = get_viewport().get_camera_3d()
+			
+			if camera:
+				draw_position = camera.unproject_position(world_position)
+				
+		ci.draw_rect(Rect2(draw_position, Vector2(ss.x + xpad * 2, line_height)), TEXT_BG_COLOR)
+		ci.draw_string(font, draw_position + font_offset, text, HORIZONTAL_ALIGNMENT_LEFT, -1, TEXT_SIZE,
 			TEXT_COLOR)
-		pos.y += line_height
+			
+		if world_position == null:
+			pos.y += line_height
 
 
 static func _create_wirecube_mesh(color := Color.WHITE) -> ArrayMesh:

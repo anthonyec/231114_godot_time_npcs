@@ -53,6 +53,4 @@ fov = 48.6
 
 [node name="LevelPortal" parent="." instance=ExtResource("4_65j2q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.49137, 0.922763, -1.91762)
-collision_layer = 3
-collision_mask = 3
 level_name = "test_room"

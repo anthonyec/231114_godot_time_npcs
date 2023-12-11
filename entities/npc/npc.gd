@@ -6,6 +6,9 @@ extends Character
 @onready var nav_agent = $NavigationAgent3D as NavigationAgent3D
 
 func _process(_delta: float) -> void:
+	if Flags.is_enabled(Flags.DEBUG_NPC_NAMES):
+		DebugDraw.set_text("NPC " + npc_name, "", global_position)
+	
 	if Flags.is_enabled(Flags.DEBUG_NAV_AGENT):
 		DebugDraw.draw_cube(nav_agent.target_position, 0.3, Color.WHITE)
 		DebugDraw.draw_ray_3d(nav_agent.target_position, Vector3.UP, 5, Color.WHITE)

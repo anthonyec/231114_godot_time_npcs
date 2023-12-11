@@ -7,6 +7,41 @@ var schedule: Array[Dictionary] = [
 	{
 		"npc": "john",
 		"start_time": [8, 30],
+		"end_time": [9, 0],
+		"level": "pier",
+		"location": "PierEndLower"
+	},
+		{
+		"npc": "john",
+		"start_time": [9, 0],
+		"end_time": [10, 30],
+		"level": "pier",
+		"location": "PierEndMiddle"
+	},
+	{
+		"npc": "john",
+		"start_time": [10, 30],
+		"end_time": [11, 00],
+		"level": "pier",
+		"location": "PierEndLower"
+	},
+	{
+		"npc": "john",
+		"start_time": [11, 30],
+		"end_time": [12, 30],
+		"level": "pier",
+		"location": "PierWater"
+	},
+		{
+		"npc": "john",
+		"start_time": [12, 30],
+		"end_time": [13, 0],
+		"level": "pier",
+		"location": "PierEndLower"
+	},
+	{
+		"npc": "john",
+		"start_time": [8, 30],
 		"end_time": [8, 40],
 		"level": "test_room",
 		"location": "BottomOfStairs"
@@ -114,6 +149,10 @@ func query_events(hour: int, minute: int, npc_name: String = "") -> Array[Dictio
 		
 	return events
 	
+func get_current_events_for_npc(npc_name: String) -> Array[Dictionary]:
+	var world = World.instance
+	return query_events(world.hour, world.minute, npc_name)
+
 func spawn_npcs_if_needed() -> void:
 	var game = Game.instance
 	var world = World.instance
