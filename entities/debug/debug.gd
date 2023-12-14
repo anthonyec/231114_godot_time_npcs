@@ -30,6 +30,7 @@ var menu: Array[Dictionary] = [
 ]
 
 var current_menu: Array[Dictionary] = menu
+var current_menu_getter: Callable
 var current_index: Array[int] = [0]
 
 func get_flags_menu() -> Array[Dictionary]:
@@ -136,8 +137,13 @@ func get_npcs_menu() -> Array[Dictionary]:
 
 	return items
 	
-func goto_menu(items: Array[Dictionary]) -> void:
-	current_index.append(0)
+func goto_menu(items: Array[Dictionary], menu_getter = null, keep_index: bool = false) -> void:
+	if menu_getter and typeof(menu_getter) == TYPE_CALLABLE:
+		current_menu_getter = menu_getter
+	
+	if not keep_index:
+		current_index.append(0)
+		
 	current_menu = items
 	
 func navigate_menu(direction: int) -> void:
@@ -148,6 +154,11 @@ func _process(_delta: float) -> void:
 	var world = World.instance
 	
 	DebugDraw.set_text("Time", world.get_display_time() + " Day: " + str(world.day))
+	
+	if not show_menu:
+		DebugDraw.set_text("Debug", "Press [ESC] to open menu")
+	else:
+		DebugDraw.set_text("Debug", "Press [ESC] to go back / close menu, [UP/DOWN] to navigate, [ENTER] to select")
 	
 	if not show_menu and Input.is_action_pressed("ui_up"):
 		world.tick_per_milliseconds = 0
@@ -177,13 +188,18 @@ func _process(_delta: float) -> void:
 			var action = current_menu_item.get("action")
 			
 			if action and typeof(action) == TYPE_CALLABLE:
-				return (action as Callable).call()
+				(action as Callable).call()
+				
+				if current_menu_getter:
+					goto_menu(current_menu_getter.call(), current_menu_getter, true)
+				
+				return
 			
 			var items = current_menu_item.get("items")
 			if not items: return
 			
 			if typeof(items) == TYPE_CALLABLE:
-				return goto_menu((items as Callable).call() as Array[Dictionary])
+				return goto_menu((items as Callable).call() as Array[Dictionary], (items as Callable))
 				
 			if typeof(items) == TYPE_ARRAY:
 				return goto_menu((items as Array[Dictionary]))
