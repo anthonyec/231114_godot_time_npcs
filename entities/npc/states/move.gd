@@ -2,10 +2,16 @@ extends NPCState
 
 func exit() -> void:
 	npc.velocity = Vector3.ZERO
+	
+func enter(_params: Dictionary) -> void:
+	npc.animation.play("Run")
 
 func physics_update(delta: float) -> void:
-#	if npc.global_position.distance_to(npc.target_position) < 1:
-#		return state_machine.transition_to("Stand")
+	# TODO: Make this position dynamic based on if the area is blocked by people.
+	# Could be an area instead if a point, which has multiple positions that get 
+	# to people?.
+	if npc.global_position.distance_to(npc.nav_agent.target_position) < 1:
+		return state_machine.transition_to("Stand")
 		
 	var next_position = npc.nav_agent.get_next_path_position()
 	

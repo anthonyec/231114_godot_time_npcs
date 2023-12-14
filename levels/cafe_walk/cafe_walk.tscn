@@ -408,6 +408,7 @@ level_name = "pier"
 
 [node name="FullScene" type="Camera3D" parent="."]
 transform = Transform3D(-1, 9.34112e-17, -8.74228e-08, 5.07963e-09, 0.998311, -0.0581042, 8.72751e-08, -0.0581042, -0.998311, 21.092, 4.42019, -64.7698)
+current = true
 fov = 37.6
 
 [node name="UnderBridge" type="Camera3D" parent="."]

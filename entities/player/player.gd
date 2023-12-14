@@ -2,6 +2,8 @@ class_name Player
 extends Character
 
 @onready var state_machine = $StateMachine as StateMachine
+@onready var model = $Model as Node3D
+@onready var animation = $Model/AnimationPlayer as AnimationPlayer
 
 var last_grounded_position: Vector3
 

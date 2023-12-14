@@ -3,6 +3,13 @@ extends PlayerState
 var move_direction: Vector3
 
 func update(_delta: float) -> void:
+	var forwards_input = Input.get_action_strength("move_forward") - Input.get_action_strength("move_backward")
+	
+	if forwards_input == 1:
+		player.animation.play("Run")
+	else:
+		player.animation.play("Idle")
+	
 	if not World.instance: return
 	var npcs = World.instance.get_npcs()
 	var closest_npc = Utils.get_closest(npcs, player) as Character

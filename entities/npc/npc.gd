@@ -4,6 +4,8 @@ extends Character
 @export var npc_name: String
 
 @onready var nav_agent = $NavigationAgent3D as NavigationAgent3D
+@onready var model = $Model as Node3D
+@onready var animation = $Model/AnimationPlayer as AnimationPlayer
 
 func _process(_delta: float) -> void:
 	if Flags.is_enabled(Flags.DEBUG_NPC_NAMES):
