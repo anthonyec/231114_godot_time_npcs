@@ -8,6 +8,9 @@ extends Character
 
 var last_grounded_position: Vector3
 
+func _ready() -> void:
+	assert(get_groups().has("player"), "Player node needs to be in the player group")
+
 func _process(_delta: float) -> void:
 	if Flags.is_enabled(Flags.DEBUG_PLAYER):
 		DebugDraw.set_text("Player", state_machine.get_current_state_path(), global_position)

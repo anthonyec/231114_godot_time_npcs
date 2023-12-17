@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3 uid="uid://dh3g6c6ssvoby"]
+
+[ext_resource type="Script" path="res://entities/character/character.gd" id="1_7iyhm"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xfmkw"]
+radius = 0.3
+height = 1.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kg1wt"]
+albedo_color = Color(0.403922, 0.756863, 0.733333, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_n87qh"]
+material = SubResource("StandardMaterial3D_kg1wt")
+
+[sub_resource type="BoxMesh" id="BoxMesh_ft8a8"]
+material = SubResource("StandardMaterial3D_kg1wt")
+size = Vector3(0.5, 0.3, 0.5)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_dyin6"]
+radius = 0.25
+
+[node name="Character" type="CharacterBody3D"]
+script = ExtResource("1_7iyhm")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 0.25, 2.08165e-12)
+shape = SubResource("CapsuleShape3D_xfmkw")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+visible = false
+mesh = SubResource("CapsuleMesh_n87qh")
+
+[node name="Head" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.512125, -0.328364)
+visible = false
+mesh = SubResource("BoxMesh_ft8a8")
+
+[node name="ShapeCast3D" type="ShapeCast3D" parent="."]
+shape = SubResource("SphereShape3D_dyin6")
+target_position = Vector3(2.08165e-12, -2, 2.08165e-12)
+max_results = 12

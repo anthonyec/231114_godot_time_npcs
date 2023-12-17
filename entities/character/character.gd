@@ -7,6 +7,8 @@ const WORLD_COLLISION_MASK: int = 1
 @export var height: float = 2
 @export var leg_height: float = 1
 
+@onready var shape_cast = $ShapeCast3D as ShapeCast3D
+
 var forward: Vector3: get = _get_forward
 
 func _ready() -> void:
@@ -35,33 +37,30 @@ func face_towards(target: Vector3, speed: float = 0.0, delta: float = 0.0) -> vo
 		global_rotation.y = lerp_angle(rotation.y, atan2(-direction.x, -direction.z), speed * delta)
 
 func is_on_ground() -> bool:
-	var floor_hit = Raycast.cast_in_direction(global_transform.origin, Vector3.DOWN, height, WORLD_COLLISION_MASK)
+	if not shape_cast.is_colliding(): return false
 	
-	if floor_hit.is_empty():
-		return false
+	var fraction = shape_cast.get_closest_collision_safe_fraction()
+	var floor_position = shape_cast.global_position.lerp(shape_cast.global_position + shape_cast.target_position, fraction)
+	
+	var shape = shape_cast.shape
+	assert(shape is SphereShape3D)
+	shape = shape as SphereShape3D
 	
 	var feet_position = global_transform.origin.y - (height / 2) # TODO: Add a foot height.
 	
-	return floor_hit.position.y >= feet_position
+	return floor_position.y >= feet_position
 	
 func is_near_ground() -> bool:
-	var floor_hit = Raycast.cast_in_direction(global_transform.origin, Vector3.DOWN, height, WORLD_COLLISION_MASK)
-	
-	if floor_hit.is_empty():
-		return false
-	
-	return true 
+	return shape_cast.is_colliding()
 	
 func snap_to_ground() -> void:
-	var floor_hit = Raycast.cast_in_direction(global_transform.origin, Vector3.DOWN, height, WORLD_COLLISION_MASK)
+	if not shape_cast.is_colliding(): return
 	
-	if floor_hit.is_empty():
-		return
+	var fraction = shape_cast.get_closest_collision_safe_fraction()
+	var floor_position = shape_cast.global_position.lerp(shape_cast.global_position + shape_cast.target_position, fraction)
 	
-	var position_when_grounded: Vector3 = Vector3(
-		global_transform.origin.x,
-		floor_hit.position.y + (height / 2),
-		global_transform.origin.z
-	)
+	var shape = shape_cast.shape
+	assert(shape is SphereShape3D)
+	shape = shape as SphereShape3D
 	
-	global_transform.origin = position_when_grounded
+	global_position.y = floor_position.y + (height / 2) - shape.radius

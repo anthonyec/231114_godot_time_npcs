@@ -1,9 +1,5 @@
 extends PlayerState
 
-func enter(_params: Dictionary) -> void:
-	# TODO: Dirty hack until I work out better collision so it doesn't get stuck.
-	player.global_position += player.forward * 0.35
-	
 func update(_delta: float) -> void:
 	player.animation.play("Fall")
 

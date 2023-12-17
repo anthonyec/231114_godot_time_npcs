@@ -26,12 +26,26 @@ var menu: Array[Dictionary] = [
 	{
 		"label": "Flags",
 		"items": get_flags_menu
+	},
+	{
+		"label": "Reset Player and NPC states",
+		"action": reset_player_and_npc_states
 	}
 ]
 
 var current_menu: Array[Dictionary] = menu
 var current_menu_getter: Callable
 var current_index: Array[int] = [0]
+
+func reset_player_and_npc_states() -> void:
+	var player = World.instance.get_player_or_null()
+	if not player: return
+	
+	# TODO: Why does state_machine type here not auto complete?
+	player.state_machine.transition_to("Move")
+	
+	var npcs = World.instance.get_npcs()
+	for npc in npcs: npc.state_machine.transition_to("Move")
 
 func get_flags_menu() -> Array[Dictionary]:
 	var items: Array[Dictionary]

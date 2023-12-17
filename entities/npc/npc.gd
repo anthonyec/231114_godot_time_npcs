@@ -8,6 +8,9 @@ extends Character
 @onready var animation = $Model/AnimationPlayer as AnimationPlayer
 @onready var state_machine = $StateMachine as StateMachine
 
+func _ready() -> void:
+	assert(get_groups().has("npc"), "NPC node needs to be in the npc group")
+
 func _process(_delta: float) -> void:
 	if Flags.is_enabled(Flags.DEBUG_NPCS):
 		DebugDraw.set_text("NPC " + npc_name, state_machine.get_current_state_path(), global_position)
