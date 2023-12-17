@@ -17,7 +17,10 @@ func update(_delta: float) -> void:
 	var closest_npc = Utils.get_closest(npcs, player) as NPC
 	if not closest_npc: return
 	
-	if closest_npc.global_position.distance_to(player.global_position) < 2:
+	var is_within_distance = closest_npc.global_position.distance_to(player.global_position) < 3
+	var is_facing = player.forward.dot(player.global_position.direction_to(closest_npc.global_position)) > 0.6
+	
+	if is_within_distance and is_facing:
 		DebugDraw.draw_cube(closest_npc.global_position, 1, Color.WHITE)
 		
 		if Input.is_action_just_pressed("interact"):
@@ -38,6 +41,18 @@ func physics_update(delta: float) -> void:
 	
 	player.move_and_slide()
 	player.snap_to_ground()
+	
+func handle_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.is_action_pressed("select"):
+		var camera = get_viewport().get_camera_3d()
+		var from = camera.project_ray_origin(event.position)
+		var to = from + camera.project_ray_normal(event.position) * 100
+		
+		var hit = Raycast.intersect_ray(from, to, player.WORLD_COLLISION_MASK)
+		if not hit: return
+		
+		state_machine.transition_to("Goto", { "position": hit.position })
+		DebugDraw.draw_cube(hit.position, 0.2, Color.RED)
 
 func handle_message(title: String, _params: Dictionary) -> void:
 	if title == "start_conversation":
