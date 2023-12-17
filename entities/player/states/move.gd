@@ -44,11 +44,7 @@ func physics_update(delta: float) -> void:
 	
 func handle_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_action_pressed("select"):
-		var camera = get_viewport().get_camera_3d()
-		var from = camera.project_ray_origin(event.position)
-		var to = from + camera.project_ray_normal(event.position) * 100
-		
-		var hit = Raycast.intersect_ray(from, to, player.WORLD_COLLISION_MASK)
+		var hit = Raycast.cast_from_screen(event.position, 100, player.WORLD_COLLISION_MASK)
 		if not hit: return
 		
 		state_machine.transition_to("Goto", { "position": hit.position })

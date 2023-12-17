@@ -114,3 +114,10 @@ func sweep_find_edge(start_position: Vector3, end_position: Vector3, direction: 
 		edge_hit = hit
 			
 	return edge_hit
+
+func cast_from_screen(screen_position: Vector2, length: float = 100, collision_mask: int = DEFAULT_COLLISION_MASK) -> Dictionary:
+	var camera = get_viewport().get_camera_3d()
+	var from = camera.project_ray_origin(screen_position)
+	var to = from + camera.project_ray_normal(screen_position) * length
+	
+	return Raycast.intersect_ray(from, to, collision_mask)
