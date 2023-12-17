@@ -5,6 +5,7 @@ const WORLD_COLLISION_MASK: int = 1
 
 @export var walk_speed: float = 3
 @export var height: float = 2
+@export var leg_height: float = 1
 
 var forward: Vector3: get = _get_forward
 
@@ -34,7 +35,6 @@ func face_towards(target: Vector3, speed: float = 0.0, delta: float = 0.0) -> vo
 		global_rotation.y = lerp_angle(rotation.y, atan2(-direction.x, -direction.z), speed * delta)
 
 func is_on_ground() -> bool:
-	Raycast.debug = true
 	var floor_hit = Raycast.cast_in_direction(global_transform.origin, Vector3.DOWN, height, WORLD_COLLISION_MASK)
 	
 	if floor_hit.is_empty():

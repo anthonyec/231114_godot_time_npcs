@@ -10,15 +10,18 @@ func update(_delta: float) -> void:
 	else:
 		player.animation.play("Idle")
 	
-	if not World.instance: return
-	var npcs = World.instance.get_npcs()
-	var closest_npc = Utils.get_closest(npcs, player) as Character
+	var world = World.instance
+	if not world: return
 	
-	if not closest_npc:
-		return
+	var npcs = world.get_npcs()
+	var closest_npc = Utils.get_closest(npcs, player) as NPC
+	if not closest_npc: return
 	
-	if closest_npc.global_position.distance_to(player.global_position) < 3:
-		pass
+	if closest_npc.global_position.distance_to(player.global_position) < 2:
+		DebugDraw.draw_cube(closest_npc.global_position, 1, Color.WHITE)
+		
+		if Input.is_action_just_pressed("interact"):
+			closest_npc.request_conversation()
 
 func physics_update(delta: float) -> void:
 	if not player.is_near_ground():
@@ -35,3 +38,7 @@ func physics_update(delta: float) -> void:
 	
 	player.move_and_slide()
 	player.snap_to_ground()
+
+func handle_message(title: String, _params: Dictionary) -> void:
+	if title == "start_conversation":
+		return state_machine.transition_to("Conversation")

@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://ct1hhqerl2lsv"]
+[gd_scene load_steps=11 format=3 uid="uid://ct1hhqerl2lsv"]
 
 [ext_resource type="Script" path="res://entities/npc/npc.gd" id="1_1c244"]
 [ext_resource type="Script" path="res://addons/anthonyec.state_machine/state_machine.gd" id="2_il4er"]
 [ext_resource type="Script" path="res://entities/npc/states/stand.gd" id="3_fni3f"]
 [ext_resource type="Script" path="res://entities/npc/states/move.gd" id="3_yawqp"]
 [ext_resource type="PackedScene" uid="uid://b8g4d7v3el4j3" path="res://entities/npc/npc_model.glb" id="5_bmh0m"]
+[ext_resource type="Script" path="res://entities/npc/states/conversation.gd" id="5_mkyxd"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ksb7m"]
 radius = 0.4
@@ -32,6 +33,9 @@ script = ExtResource("3_fni3f")
 
 [node name="Move" type="Node" parent="StateMachine"]
 script = ExtResource("3_yawqp")
+
+[node name="Conversation" type="Node" parent="StateMachine"]
+script = ExtResource("5_mkyxd")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 path_desired_distance = 0.5

@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://lqgmmvrfaqm7"]
+[gd_scene load_steps=7 format=3 uid="uid://lqgmmvrfaqm7"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_aifxf"]
 [ext_resource type="PackedScene" uid="uid://daghraqki8qvm" path="res://entities/world/world.tscn" id="2_ifymh"]
 [ext_resource type="PackedScene" uid="uid://cbp13ffa7nrjh" path="res://entities/debug/debug.tscn" id="2_jnppa"]
 [ext_resource type="PackedScene" uid="uid://c6uv20ndwawks" path="res://entities/npc_schedule/npc_schedule.tscn" id="3_5nqap"]
+[ext_resource type="Script" path="res://entities/dialogue/dialogue.gd" id="5_4542m"]
+[ext_resource type="PackedScene" uid="uid://73jm5qjy52vq" path="res://addons/dialogue_manager/example_balloon/example_balloon.tscn" id="6_1kfyb"]
 
 [node name="Game" type="Node3D"]
 script = ExtResource("1_aifxf")
@@ -11,7 +13,15 @@ script = ExtResource("1_aifxf")
 [node name="Debug" parent="." instance=ExtResource("2_jnppa")]
 
 [node name="World" parent="." instance=ExtResource("2_ifymh")]
+hour = 11
 
 [node name="NPCSchedule" parent="." instance=ExtResource("3_5nqap")]
+
+[node name="Dialogue" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("5_4542m")
+
+[node name="ExampleBalloon" parent="." instance=ExtResource("6_1kfyb")]
 
 [connection signal="level_loaded" from="." to="NPCSchedule" method="_on_game_level_loaded"]

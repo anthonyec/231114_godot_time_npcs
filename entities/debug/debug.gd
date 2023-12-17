@@ -203,8 +203,6 @@ func _process(_delta: float) -> void:
 				
 			if typeof(items) == TYPE_ARRAY:
 				return goto_menu((items as Array[Dictionary]))
-				
-		DebugDraw.set_text("DEBUG MENU")
 		
 		for index in current_menu.size():
 			var item = current_menu[index]

@@ -12,3 +12,11 @@ func physics_update(delta: float) -> void:
 	
 	npc.face_towards(player.global_position, 5, delta)
 	npc.snap_to_ground()
+
+func handle_message(title: String, _params: Dictionary) -> void:
+	if title == "start_conversation":
+		var player = World.instance.get_player_or_null()
+		if not player: return
+		
+		player.request_conversation()
+		return state_machine.transition_to("Conversation")

@@ -9,7 +9,8 @@ var schedule: Array[Dictionary] = [
 		"start_time": [8, 30],
 		"end_time": [9, 0],
 		"level": "pier",
-		"location": "PierEndLower"
+		"location": "PierEndLower",
+		"dialogue": "test"
 	},
 		{
 		"npc": "john",
@@ -91,9 +92,7 @@ var schedule: Array[Dictionary] = [
 ]
 
 func _ready() -> void:
-	if instance != null:
-		push_error("NPCSchedule instance already exists in this scene, overriding previous")
-		
+	if instance != null: push_error("NPCSchedule instance already exists in this scene, overriding previous")
 	instance = self
 	
 	var world = World.instance

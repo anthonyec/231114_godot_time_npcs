@@ -7,14 +7,15 @@ static var instance: Game = null
 
 var current_level: Node3D = null
 var current_level_name: String
+var temp_balloon
 
 func _ready() -> void:
-	if instance != null:
-		push_error("Game instance already exists in this scene, overriding previous")
-		
+	if instance != null: push_error("Game instance already exists in this scene, overriding previous")
 	instance = self
 	
 	load_level("pier")
+	
+	temp_balloon = get_node("ExampleBalloon")
 
 func load_level(level_name: String) -> void:
 	if current_level != null:
