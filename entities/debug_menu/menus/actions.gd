@@ -5,7 +5,7 @@ func get_items() -> Array[Dictionary]:
 		{
 			"label": "Reset Player and NPC states",
 			"action": reset_player_and_npc_states
-		}
+		},
 	]
 
 func reset_player_and_npc_states() -> void:

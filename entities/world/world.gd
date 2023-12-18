@@ -26,6 +26,9 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	update_time()
 	
+	if Flags.is_enabled(Flags.DEBUG_WORLD_TIME):
+		DebugDraw.set_text("Time", get_display_time() + " Day: " + str(day))
+	
 func update_time() -> void:
 	if not ticking:
 		return

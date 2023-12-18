@@ -13,10 +13,7 @@ func get_items() -> Array[Dictionary]:
 				
 				World.instance.teleport_player(marker.global_position)
 		})
-		
-	if items.is_empty():
-		items.append({ "label": "No place markers found in level" })
-	
+
 	return items
 	
 func _on_highlight_place_menu_item(marker_name: String) -> void:

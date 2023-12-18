@@ -14,7 +14,6 @@ func _ready() -> void:
 	instance = self
 	
 	load_level("pier")
-	
 	temp_balloon = get_node("ExampleBalloon")
 
 func load_level(level_name: String) -> void:

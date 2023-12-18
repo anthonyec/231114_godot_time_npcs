@@ -192,7 +192,7 @@ func spawn_npcs_if_needed() -> void:
 		npc.set_schedule_event(target_position)
 		npc.global_position = target_position
 
-func get_timestamp(hour: int, minute: int) -> int:
+static func get_timestamp(hour: int, minute: int) -> int:
 	# https://stackoverflow.com/a/51011191
 	return minute * 60 + hour * 3600
 	
@@ -243,7 +243,7 @@ func get_npc_target_position(npc_name: String) -> Vector3:
 	
 	return location_node.global_position
 
-func assert_valid_event(event: Dictionary) -> void:
+static func assert_valid_event(event: Dictionary) -> void:
 	assert(event.get("npc"), "Expected event to have npc")
 	assert(event.get("location"), "Expected event to have location")
 	assert(event.get("start_time"), "Expected event to have start_time")
