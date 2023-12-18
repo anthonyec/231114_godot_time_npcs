@@ -9,6 +9,7 @@ signal day_tick
 @export_group("Time")
 @export var ticking: bool = true
 @export var tick_per_milliseconds: int = 1000
+# TODO: Convert time to military time EVERWHERE. It's easier.
 @export var day: int = 0
 @export var hour: int = 8
 @export var minute: int = 30
@@ -66,6 +67,9 @@ func get_display_time() -> String:
 
 func get_time_percent() -> float:
 	return 0
+	
+func get_military_time() -> int:
+	return hour * 100  + minute
 
 func get_player_or_null() -> Player:
 	return root.get_node_or_null("./Player")
