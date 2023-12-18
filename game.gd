@@ -16,7 +16,7 @@ func _ready() -> void:
 	load_level("pier")
 	temp_balloon = get_node("ExampleBalloon")
 
-func load_level(level_name: String) -> void:
+func load_level(level_name: String, ignore_level_portal: bool = false) -> void:
 	if current_level != null:
 		current_level.queue_free()
 	
@@ -36,16 +36,19 @@ func load_level(level_name: String) -> void:
 		player.global_position = safe_spawn.global_position
 		player.global_rotation.y = safe_spawn.global_rotation.y
 	
-	for child in level.get_children():
-		if child is LevelPortal:
-			var level_portal = child as LevelPortal
-			
-			if level_portal.level_name == current_level_name:
-				# TODO: Fix flip flopping when teleporting. Moving the player 
-				# forward is just a hack to fix that.
-				var forward = -level_portal.global_transform.basis.z
-				player.global_position = level_portal.global_position + forward * 2
-				player.global_rotation.y = level_portal.global_rotation.y
+	if not ignore_level_portal:
+		# Move player to level portal that corosponds to previous level name.
+		# This makes it seem the player has just from that portal.
+		for child in level.get_children():
+			if child is LevelPortal:
+				var level_portal = child as LevelPortal
+				
+				if level_portal.level_name == current_level_name:
+					# TODO: Fix flip flopping when teleporting. Moving the player 
+					# forward is just a hack to fix that.
+					var forward = -level_portal.global_transform.basis.z
+					player.global_position = level_portal.global_position + forward * 2
+					player.global_rotation.y = level_portal.global_rotation.y
 	
 	current_level = level
 	current_level_name = level_name

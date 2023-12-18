@@ -151,6 +151,7 @@ func get_npc_target_position(npc_name: String) -> Vector3:
 	if event.level != game.current_level_name:
 		var level_portal_node = world.find_level_portal_or_null(event.level)
 		
+		# TODO: Find a better way to handle this? Fade out character? Assert?
 		if not level_portal_node:
 			push_error("No level_portal found for level: ", event.level)
 			return Vector3.ZERO

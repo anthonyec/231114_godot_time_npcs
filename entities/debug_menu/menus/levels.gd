@@ -15,7 +15,7 @@ func get_items() -> Array[Dictionary]:
 	while filename:
 		items.append({
 			"label": filename,
-			"action": func(): game.load_level(filename)
+			"action": func(): game.load_level(filename, true)
 		})
 		
 		filename = directory.get_next()

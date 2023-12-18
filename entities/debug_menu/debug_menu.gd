@@ -49,17 +49,19 @@ func _process(delta: float) -> void:
 		if highlight_action and typeof(highlight_action) == TYPE_CALLABLE:
 			(highlight_action as Callable).call()
 		
-	DebugDraw.visible = !visible
+	#DebugDraw.visible = !visible # TODO: Find a way to layer menu ontop.
 	queue_redraw()
 	
 func _draw() -> void:
 	var current = get_current()
 	
-	var font_height = menu_item_font.get_height(12)
-	var title_text_size = menu_item_font.get_string_size("Debug Menu", HORIZONTAL_ALIGNMENT_LEFT, -1, 16)
-	draw_string(menu_item_font, Vector2(5, title_text_size.y), "Debug Menu", HORIZONTAL_ALIGNMENT_LEFT, -1, 16)
+	var title_params = TextInBoxParams.new()
 	
-	var items_origin = Vector2(5, title_text_size.y + 10)
+	title_params.box_color = Color.DARK_BLUE
+	
+	var title_rect = draw_text_in_box(Vector2(8, 0), "Debug Menu", title_params)
+	
+	var items_origin = Vector2(8, title_rect.position.y + title_rect.size.y)
 	var total_items_height: float = 0
 	
 	for index in get_current().menu.size():
@@ -78,15 +80,12 @@ func _draw() -> void:
 		var rect = Rect2(menu_item_origin, Vector2(width, height))
 		var color = Color.DARK_VIOLET if get_current().index == index else Color.BLACK
 		
-		var text_position = Vector2(rect.position.x + menu_item_padding, rect.position.y + font_height)
+		var text_position = Vector2(rect.position.x + menu_item_padding, rect.position.y)
 		
 		if has_checkbox:
 			var checkbox_width = checkbox_rect.size.x + menu_item_padding * 2
 			text_position.x += checkbox_width
 			rect.size.x += checkbox_width
-		
-		#draw_rect(rect, color)
-		#draw_string(menu_item_font, text_position, label, HORIZONTAL_ALIGNMENT_LEFT, -1, 12)
 		
 		var text_box_params = TextInBoxParams.new()
 		
