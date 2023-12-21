@@ -37,6 +37,8 @@ func _input(event: InputEvent) -> void:
 		
 	if event.is_action_pressed("ui_accept"):
 		select()
+		
+	get_viewport().set_input_as_handled()
 
 func _process(delta: float) -> void:
 	var current = get_current()
@@ -157,7 +159,7 @@ func noop_draw(_control: Control) -> void:
 	pass
 	
 func load_menu(entry: String) -> void:
-	var exists = FileAccess.file_exists("res://entities/debug_menu/menus/" + entry + ".gd")
+	var exists = ResourceLoader.exists("res://entities/debug_menu/menus/" + entry + ".gd")
 	if not exists: return push_error("Debug menu does not exist for: " + entry)
 	
 	var resource = load("res://entities/debug_menu/menus/" + entry + ".gd")
@@ -168,6 +170,7 @@ func load_menu(entry: String) -> void:
 	
 	var menu_items = menu.get_items()
 	if typeof(menu_items) != TYPE_ARRAY: return push_error("Menu needs to return array")
+	menu_items = menu_items as Array[Dictionary]
 	
 	if menu_items.is_empty():
 		menu_items.append({ "label": "<no items>" })

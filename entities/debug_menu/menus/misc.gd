@@ -6,6 +6,11 @@ func get_items() -> Array[Dictionary]:
 			"label": "Reset Player and NPC states",
 			"action": reset_player_and_npc_states
 		},
+		{ "label": "Set FPS 5", "action": func(): Engine.max_fps = 5 },
+		{ "label": "Set FPS 12", "action": func(): Engine.max_fps = 12 },
+		{ "label": "Set FPS 20", "action": func(): Engine.max_fps = 20 },
+		{ "label": "Set FPS 30", "action": func(): Engine.max_fps = 30 },
+		{ "label": "Set FPS 60", "action": func(): Engine.max_fps = 60 },
 	]
 
 func reset_player_and_npc_states() -> void:

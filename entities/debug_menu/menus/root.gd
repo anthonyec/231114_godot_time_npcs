@@ -20,4 +20,8 @@ func get_items() -> Array[Dictionary]:
 		
 		filename = directory.get_next()
 	
+	items.sort_custom(func(a: Dictionary, b: Dictionary):
+		return a.get("label", "") < b.get("label", "")
+	)
+	
 	return items

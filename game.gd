@@ -13,7 +13,7 @@ func _ready() -> void:
 	if instance != null: push_error("Game instance already exists in this scene, overriding previous")
 	instance = self
 	
-	load_level("pier")
+	load_level(Metadata.Levels.PIER)
 	temp_balloon = get_node("ExampleBalloon")
 
 func load_level(level_name: String, ignore_level_portal: bool = false) -> void:

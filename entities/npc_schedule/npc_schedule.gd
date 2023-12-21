@@ -19,12 +19,21 @@ class Event:
 		
 	func get_start_minute() -> int:
 		return start_time % 100
+		
+	func get_end_hour() -> int:
+		return int(floor(end_time / 100))
+		
+	func get_end_minute() -> int:
+		return end_time % 100
 	
 	func get_start_display_time() -> String:
 		return str(get_start_hour()).lpad(2, "0") + ":" + str(get_start_minute()).lpad(2, "0")
 		
-	func set_npc(npc: String) -> Event:
-		self.npc = npc
+	func get_end_display_time() -> String:
+		return str(get_end_hour()).lpad(2, "0") + ":" + str(get_end_minute()).lpad(2, "0")
+		
+	func set_npc(npc_name: String) -> Event:
+		self.npc = npc_name
 		return self
 		
 	func set_level(level: String) -> Event:
@@ -39,10 +48,11 @@ class Event:
 		return "<NPCSchedule.Event " + get_start_display_time() + ">"
 
 var events: Array[Event] = [
-	Event.new(08_30, 09_00).set_npc("john").set_level("pier").set_location("PierEndLower"),
-	Event.new(09_00, 10_30).set_npc("john").set_level("pier").set_location("PierEndMiddle"),
-	Event.new(10_30, 12_00).set_npc("john").set_level("test_room").set_location("BehindStairs"),
-	Event.new(12_30, 14_00).set_npc("john").set_level("pier").set_location("PierEndLower"),
+	Event.new(13_30, 15_00).set_npc("john").set_level(Metadata.Levels.PIER).set_location(Metadata.Places.PIER_BEACH),
+	Event.new(08_30, 09_00).set_npc("john").set_level(Metadata.Levels.PIER).set_location(Metadata.Places.PIER_PIER_END_LOWER),
+	Event.new(09_00, 10_30).set_npc("john").set_level(Metadata.Levels.PIER).set_location(Metadata.Places.PIER_PIER_END_MIDDLE),
+	Event.new(10_30, 12_00).set_npc("john").set_level(Metadata.Levels.CAFE_WALK).set_location(Metadata.Places.CAFE_WALK_CAFE_SIDE_BIT),
+	Event.new(12_30, 14_00).set_npc("john").set_level(Metadata.Levels.PIER).set_location(Metadata.Places.PIER_PIER_END_LOWER),
 ]
 
 func _ready() -> void:
@@ -51,6 +61,12 @@ func _ready() -> void:
 	
 	var world = World.instance
 	world.minute_tick.connect(_on_world_minute_tick)
+	
+	# Sort by start time. Not required to tell NPCs what to do since the whole
+	# list is currently looped over every tick, but means less sorting elsewhere.
+	events.sort_custom(func(a: Event, b: Event):
+		return a.start_time < b.start_time
+	)
 
 func _on_world_minute_tick() -> void:
 	var game = Game.instance

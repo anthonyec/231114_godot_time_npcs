@@ -63,7 +63,7 @@ script = ExtResource("1_0kg3b")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0641744, 0.844664, 35.33)
 script = ExtResource("1_0kg3b")
 
-[node name="PierWater" type="Marker3D" parent="."]
+[node name="Beach" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.7468, -4.37849, 30.3308)
 script = ExtResource("1_0kg3b")
 
