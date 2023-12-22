@@ -24,6 +24,7 @@ Raycast="*res://autoload/raycast.gd"
 
 [display]
 
+window/stretch/mode="canvas_items"
 window/dpi/allow_hidpi=false
 
 [editor_plugins]

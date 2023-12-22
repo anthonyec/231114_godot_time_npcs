@@ -23,6 +23,7 @@ grow_vertical = 2
 script = ExtResource("3_f0qal")
 
 [node name="World" parent="." instance=ExtResource("2_ifymh")]
+minute = 25
 
 [node name="NPCSchedule" parent="." instance=ExtResource("3_5nqap")]
 
