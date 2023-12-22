@@ -20,10 +20,11 @@ func update(_delta: float) -> void:
 	var is_within_distance = closest_npc.global_position.distance_to(player.global_position) < 3
 	var is_facing = player.forward.dot(player.global_position.direction_to(closest_npc.global_position)) > 0.6
 	
-	if is_within_distance and is_facing:
-		DebugDraw.draw_cube(closest_npc.global_position, 1, Color.WHITE)
+	if is_within_distance and is_facing and state_machine.time_in_current_state > 1000:
+		DebugDraw.set_text("Speak to", closest_npc.npc_name, closest_npc.global_position)
 		
 		if Input.is_action_just_pressed("interact"):
+			# TODO: Replace with real UI, this is temporary.
 			closest_npc.request_conversation()
 
 func physics_update(delta: float) -> void:
@@ -51,5 +52,9 @@ func handle_input(event: InputEvent) -> void:
 		DebugDraw.draw_cube(hit.position, 0.2, Color.RED)
 
 func handle_message(title: String, _params: Dictionary) -> void:
+	# TODO: Replace all this message passing with concreate function calls or 
+	# something? It's too each for either player or NPC to not hear messages 
+	# because they are in the wrong state from each other, and end up stuck 
+	# in a state.
 	if title == "start_conversation":
 		return state_machine.transition_to("Conversation")

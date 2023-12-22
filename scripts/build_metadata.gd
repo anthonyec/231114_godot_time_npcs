@@ -24,8 +24,6 @@ func _run() -> void:
 	var levels = get_files("res://levels")
 	var dialogue = get_files("res://dialogue")
 	
-	print(dialogue)
-		
 	var file: String
 	
 	file += "## This file has been auto-generated!\n"

@@ -26,7 +26,7 @@ func _process(_delta: float) -> void:
 			var next_point = points[index + 1]
 			DebugDraw.draw_line_3d(point, next_point, Color.WHITE)
 			
-func request_conversation() -> void:	
+func request_conversation() -> void:
 	state_machine.send_message("start_conversation")
 	
 func set_schedule_event(target_position: Vector3) -> void:

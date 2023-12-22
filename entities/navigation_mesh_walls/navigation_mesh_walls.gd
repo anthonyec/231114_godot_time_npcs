@@ -9,6 +9,5 @@ func _ready() -> void:
 	navigation_region.bake_finished.connect(_on_navigation_region_bake_finished)
 	
 func _on_navigation_region_bake_finished() -> void:
-	print("_on_navigation_region_bake_finished")
-	
-	print(navigation_region.navigation_mesh.polygons)
+	# TODO: Implement walls using `navigation_region.navigation_mesh.polygons`
+	pass
