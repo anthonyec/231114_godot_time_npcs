@@ -5,6 +5,8 @@ signal level_loaded(level_name: String)
 
 static var instance: Game = null
 
+@onready var npc_schedule = $NPCSchedule as NPCSchedule
+
 var current_level: Node3D = null
 var current_level_name: String
 var temp_balloon
@@ -13,17 +15,24 @@ func _ready() -> void:
 	if instance != null: push_error("Game instance already exists in this scene, overriding previous")
 	instance = self
 	
+	assert(npc_schedule, "NPCSchedule required")
+	
 	load_level(Metadata.Levels.PIER)
 	temp_balloon = get_node("ExampleBalloon")
+	
+func _process(_delta: float) -> void:
+	DebugDraw.set_text("Controls", "[WASD/Click] Movement, [Esc] Debug menu, [Space] Interact/speak")
 
 func load_level(level_name: String, ignore_level_portal: bool = false) -> void:
 	if current_level != null:
 		current_level.queue_free()
 	
-	var scene = load("res://levels/" + level_name + "/" + level_name + ".tscn") as PackedScene
-	if not scene: return
+	var scene_path = "res://levels/%s/%s.tscn" % [level_name, level_name]
+	if not ResourceLoader.exists(scene_path): return push_error("Failed to load level: " + scene_path)
 	
+	var scene = load(scene_path) as PackedScene
 	var level = scene.instantiate() as Node3D
+	
 	add_child(level)
 	World.instance.root = level # TODO: Kinda ugly.
 	
@@ -53,3 +62,4 @@ func load_level(level_name: String, ignore_level_portal: bool = false) -> void:
 	current_level = level
 	current_level_name = level_name
 	level_loaded.emit(level_name)
+	npc_schedule.spawn_npcs_if_needed()

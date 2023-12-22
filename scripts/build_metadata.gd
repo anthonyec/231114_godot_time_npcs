@@ -58,7 +58,8 @@ func _run() -> void:
 	file += "class Places:\n"
 	
 	for name in levels:
-		var scene = load("res://levels/" + name + "/" + name + ".tscn") as PackedScene
+		var scene_path = "res://levels/%s/%s.tscn" % [name, name]
+		var scene = load(scene_path) as PackedScene
 		var level = scene.instantiate()
 		
 		for child in level.get_children():

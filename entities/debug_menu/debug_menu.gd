@@ -197,7 +197,10 @@ func load_menu(entry: String) -> void:
 	var exists = ResourceLoader.exists("res://entities/debug_menu/menus/" + entry + ".gd")
 	if not exists: return push_error("Debug menu does not exist for: " + entry)
 	
-	var resource = load("res://entities/debug_menu/menus/" + entry + ".gd")
+	var menu_path = "res://entities/debug_menu/menus/%s.gd" % entry
+	if not ResourceLoader.exists(menu_path): return push_error("Menu path does not exist: ", menu_path)
+	
+	var resource = load(menu_path)
 	
 	var menu = Object.new()
 	menu.set_script(resource)
