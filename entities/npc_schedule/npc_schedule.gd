@@ -48,11 +48,14 @@ class Event:
 		return "<NPCSchedule.Event " + get_start_display_time() + ">"
 
 var events: Array[Event] = [
-	Event.new(13_30, 15_00).set_npc("john").set_level(Metadata.Levels.PIER).set_location(Metadata.Places.PIER_BEACH),
 	Event.new(08_30, 09_00).set_npc("john").set_level(Metadata.Levels.PIER).set_location(Metadata.Places.PIER_PIER_END_LOWER),
 	Event.new(09_00, 10_30).set_npc("john").set_level(Metadata.Levels.PIER).set_location(Metadata.Places.PIER_PIER_END_MIDDLE),
 	Event.new(10_30, 12_00).set_npc("john").set_level(Metadata.Levels.CAFE_WALK).set_location(Metadata.Places.CAFE_WALK_CAFE_SIDE_BIT),
 	Event.new(12_30, 14_00).set_npc("john").set_level(Metadata.Levels.PIER).set_location(Metadata.Places.PIER_PIER_END_LOWER),
+	Event.new(13_30, 15_00).set_npc("john").set_level(Metadata.Levels.PIER).set_location(Metadata.Places.PIER_BEACH),
+	
+	Event.new(8_00, 10_00).set_npc("steve").set_level(Metadata.Levels.PIER).set_location(Metadata.Places.PIER_BEACH),
+	Event.new(10_00, 12_00).set_npc("steve").set_level(Metadata.Levels.CAFE_WALK).set_location(Metadata.Places.CAFE_WALK_CAFE_SIDE_BIT)
 ]
 
 func _ready() -> void:
