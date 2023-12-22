@@ -25,7 +25,6 @@ func _input(event: InputEvent) -> void:
 		
 	if event.is_action_pressed("ui_cancel"):
 		end()
-		
 
 func start(dialogue_name: String) -> void:
 	if is_active: return
@@ -35,6 +34,7 @@ func start(dialogue_name: String) -> void:
 
 	resouce = load(resouce_path) as DialogueResource
 	is_active = true
+	World.instance.ticking = false
 	
 	animate_in()
 	next()
@@ -58,6 +58,7 @@ func next(line_id: String = "") -> void:
 
 func end() -> void:
 	animate_out()
+	World.instance.ticking = true
 	is_active = false
 	resouce = null
 	line = null
