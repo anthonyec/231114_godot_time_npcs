@@ -28,6 +28,20 @@ func _input(event: InputEvent) -> void:
 		back()
 		
 	if not visible: return
+	
+	var current = get_current()
+	if not current: return
+	
+	var first_letters = current.menu.map(func(menu_item: Dictionary):
+		return (menu_item.get("label", "") as String).to_lower()[0]
+	)
+	
+	if event is InputEventKey and event.is_pressed():
+		var key_letter = event.as_text().to_lower()
+		var letter_index = first_letters.find(key_letter)
+		
+		if letter_index != -1:
+			current.index = letter_index
 		
 	if event.is_action_pressed("ui_down"):
 		navigate(1)
@@ -42,6 +56,7 @@ func _input(event: InputEvent) -> void:
 
 func _process(delta: float) -> void:
 	var current = get_current()
+	if not current: return
 	
 	if not current.menu.is_empty():
 		var item = current.menu[current.index]
@@ -56,15 +71,28 @@ func _process(delta: float) -> void:
 	
 func _draw() -> void:
 	var current = get_current()
+	if not current: return
+	
+	var total_height: float = 0
 	
 	var title_params = TextInBoxParams.new()
-	
 	title_params.box_color = Color.DARK_BLUE
+	title_params.font_size = 20
+	title_params.padding = 4
 	
 	var title_rect = draw_text_in_box(Vector2(8, 0), "Debug Menu", title_params)
+	total_height += title_rect.size.y + menu_item_gutter
+	
+	var instructions_params = TextInBoxParams.new()
+	instructions_params.box_color = Color.DIM_GRAY
+	instructions_params.font_size = 12
+	instructions_params.padding = 4
+	
+	var instructions_text = "[Arrows] Navigate, [Enter] Select, [Esc] Back/Exit, [Letter] Jump to item"
+	var instructions_rect = draw_text_in_box(Vector2(8, total_height), instructions_text, instructions_params)
+	total_height += instructions_rect.size.y + menu_item_gutter
 	
 	var items_origin = Vector2(8, title_rect.position.y + title_rect.size.y)
-	var total_items_height: float = 0
 	
 	for index in get_current().menu.size():
 		var item = current.menu[index]
@@ -77,7 +105,7 @@ func _draw() -> void:
 		var width = text_size.x + (menu_item_padding * 2)
 		var height = text_size.y + (menu_item_padding * 2)
 		
-		var menu_item_origin = Vector2(items_origin.x + 0, items_origin.y + total_items_height + menu_item_gutter)
+		var menu_item_origin = Vector2(items_origin.x + 0, total_height + menu_item_gutter)
 		var checkbox_rect = Rect2(Vector2(menu_item_origin.x + menu_item_padding, menu_item_origin.y + (height / 2) - 5), Vector2(10, 10))
 		var rect = Rect2(menu_item_origin, Vector2(width, height))
 		var color = Color.DARK_VIOLET if get_current().index == index else Color.BLACK
@@ -102,7 +130,7 @@ func _draw() -> void:
 		if is_active != null:
 			draw_rect(checkbox_rect, Color.WHITE if is_active else Color.DIM_GRAY)
 			
-		total_items_height += text_box_rect.size.y + menu_item_gutter
+		total_height += text_box_rect.size.y + menu_item_gutter
 		
 	current.draw.call(self)
 
@@ -110,15 +138,21 @@ class TextInBoxParams:
 	var font_size: float = 16
 	var text_color: Color = Color.WHITE
 	var box_color: Color = Color.BLACK
+	var padding: float = 0
 	var padding_left: float = 0
 	var padding_right: float = 0
 	var padding_top: float = 0
 	var padding_bottom: float = 0
 
 func draw_text_in_box(origin: Vector2, text: String, params: TextInBoxParams = TextInBoxParams.new()) -> Rect2:
+	var padding_left = params.padding if not params.padding_left else params.padding_left
+	var padding_right = params.padding if not params.padding_right else params.padding_right
+	var padding_top = params.padding if not params.padding_top else params.padding_top
+	var padding_bottom = params.padding if not params.padding_bottom else params.padding_bottom
+	
 	var text_size = menu_item_font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, params.font_size)
-	var text_position = origin + Vector2(params.padding_left, params.padding_top + menu_item_font.get_ascent(params.font_size))
-	var box_rect = Rect2(origin, text_size + Vector2(params.padding_left + params.padding_right, params.padding_top + params.padding_bottom))
+	var text_position = origin + Vector2(padding_left, padding_top + menu_item_font.get_ascent(params.font_size))
+	var box_rect = Rect2(origin, text_size + Vector2(padding_left + padding_right, padding_top + padding_bottom))
 	
 	draw_rect(box_rect, params.box_color)
 	draw_string(menu_item_font, text_position, text, HORIZONTAL_ALIGNMENT_LEFT, -1, params.font_size, params.text_color)
@@ -126,6 +160,7 @@ func draw_text_in_box(origin: Vector2, text: String, params: TextInBoxParams = T
 	return box_rect
 
 func get_current() -> NavigationStackEntry:
+	if navigation_stack.is_empty(): return null
 	return navigation_stack[-1]
 	
 func navigate(direction: int) -> void:
