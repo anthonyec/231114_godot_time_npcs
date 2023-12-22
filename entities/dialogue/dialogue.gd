@@ -36,9 +36,7 @@ func start(dialogue_name: String) -> void:
 	resouce = load(resouce_path) as DialogueResource
 	is_active = true
 	
-	var tween = get_tree().create_tween()
-	tween.tween_property(balloon, "modulate", Color(1, 1, 1, 1), 0.3)
-	
+	animate_in()
 	next()
 	
 func next(line_id: String = "") -> void:
@@ -55,11 +53,20 @@ func next(line_id: String = "") -> void:
 	dialogue_label.dialogue_line = line
 	dialogue_label.type_out()
 	
-	print(line.responses)
-	print(line)
-	
+	# TODO: Handle responses.
+	#print(line.responses)
+
 func end() -> void:
+	animate_out()
 	is_active = false
 	resouce = null
 	line = null
+	
+func animate_in() -> void:
+	var tween = get_tree().create_tween()
+	tween.tween_property(balloon, "modulate", Color(1, 1, 1, 1), 0.3)
+	
+func animate_out() -> void:
+	var tween = get_tree().create_tween()
+	tween.tween_property(balloon, "modulate", Color(1, 1, 1, 0), 0.3)
 	
