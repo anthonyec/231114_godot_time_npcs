@@ -2,17 +2,14 @@ class_name World
 extends Node
 
 signal minute_tick
-signal decasecond_tick
 signal hour_tick
 signal day_tick
 
 @export_group("Time")
+@export var time: int = 08_25
+@export var day: int = 0
 @export var ticking: bool = true
 @export var tick_per_milliseconds: int = 1000
-# TODO: Convert time to military time EVERWHERE. It's easier.
-@export var day: int = 0
-@export var hour: int = 8
-@export var minute: int = 30
 
 @onready var root: Node3D = get_parent()
 
@@ -31,45 +28,45 @@ func _process(_delta: float) -> void:
 		DebugDraw.set_text("Time", get_display_time() + " Day: " + str(day))
 	
 func update_time() -> void:
-	if not ticking:
-		return
-	
-	var now = Time.get_ticks_msec()
+	if not ticking: return
 	
 	var minute_ticked = false
 	var hour_ticked = false
 	var day_ticked = false
 	
-	if now - last_time > tick_per_milliseconds:
-		minute += 1
-		last_time = now
-		minute_ticked = true
+	var now = Time.get_ticks_msec()
 	
-	if minute > 59:
-		minute = 0
-		hour += 1
-		hour_ticked = true
+	if now - last_time > tick_per_milliseconds:
+		var new_time = time + 1
+	
+		var hours = floor(new_time / 100)
+		var minutes = new_time % 100
 		
-	if hour > 23:
-		minute = 0
-		hour = 0
-		day += 1
-		day_ticked = true
+		# Reset the minutes part of time, rolling over to the new hour.
+		if minutes >= 60:
+			new_time = (hours + 1) * 100
+			hour_ticked = true
+			
+		new_time = wrapi(new_time, 0, 2359)
+		
+		time = new_time
+		minute_ticked = true
+		
+		last_time = now
 	
 	# Perform tick events after modifying values to ensure they are up to date.
 	if minute_ticked: minute_tick.emit()
-	if minute_ticked and minute % 10 == 0: decasecond_tick.emit()
 	if hour_ticked: hour_tick.emit()
 	if day_ticked: day_tick.emit()
 
 func get_display_time() -> String:
-	return str(hour).lpad(2, "0") + ":" + str(minute).lpad(2, "0")
+	var hours = floor(time / 100)
+	var minutes = time % 100
+	
+	return str(hours).lpad(2, "0") + ":" + str(minutes).lpad(2, "0")
 
 func get_time_percent() -> float:
 	return 0
-	
-func get_military_time() -> int:
-	return hour * 100  + minute
 
 func get_player_or_null() -> Player:
 	return root.get_node_or_null("./Player")

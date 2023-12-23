@@ -13,24 +13,18 @@ class Event:
 	func _init(start_time: int, end_time: int) -> void:
 		self.start_time = start_time
 		self.end_time = end_time
-		
-	func get_start_hour() -> int:
-		return int(floor(start_time / 100))
-		
-	func get_start_minute() -> int:
-		return start_time % 100
-		
-	func get_end_hour() -> int:
-		return int(floor(end_time / 100))
-		
-	func get_end_minute() -> int:
-		return end_time % 100
 	
 	func get_start_display_time() -> String:
-		return str(get_start_hour()).lpad(2, "0") + ":" + str(get_start_minute()).lpad(2, "0")
+		var hours = floor(start_time / 100)
+		var minutes = start_time % 100
+		
+		return str(hours).lpad(2, "0") + ":" + str(minutes).lpad(2, "0")
 		
 	func get_end_display_time() -> String:
-		return str(get_end_hour()).lpad(2, "0") + ":" + str(get_end_minute()).lpad(2, "0")
+		var hours = floor(end_time / 100)
+		var minutes = end_time % 100
+		
+		return str(hours).lpad(2, "0") + ":" + str(minutes).lpad(2, "0")
 		
 	func set_npc(npc_name: String) -> Event:
 		self.npc = npc_name
@@ -74,7 +68,7 @@ func _ready() -> void:
 func _on_world_minute_tick() -> void:
 	var game = Game.instance
 	var world = World.instance
-	var events = query_events(world.get_military_time())
+	var events = query_events(world.time)
 	
 	for event in events:
 		var existing_npc = world.find_npc_or_null(event.npc)
@@ -111,12 +105,12 @@ func query_events(start_time: int, npc_name: String = "") -> Array[Event]:
 	
 func get_current_events_for_npc(npc_name: String) -> Array[Event]:
 	var world = World.instance
-	return query_events(world.get_military_time(), npc_name)
+	return query_events(world.time, npc_name)
 
 func spawn_npcs_if_needed() -> void:
 	var game = Game.instance
 	var world = World.instance
-	var events = query_events(world.get_military_time())
+	var events = query_events(world.time)
 	
 	var events_by_npc: Dictionary = {}
 	
@@ -147,7 +141,7 @@ func spawn_npcs_if_needed() -> void:
 
 func should_npc_be_in_level(npc_name: String, level_name: String) -> bool:
 	var world = World.instance
-	var events = query_events(world.get_military_time())
+	var events = query_events(world.time)
 	
 	for event in events:
 		if npc_name.to_lower() == event.npc.to_lower() and level_name.to_lower() == event.level.to_lower():
@@ -157,7 +151,7 @@ func should_npc_be_in_level(npc_name: String, level_name: String) -> bool:
 
 func get_npc_target_position(npc_name: String) -> Vector3:
 	var world = World.instance
-	var events = query_events(world.get_military_time(), npc_name)
+	var events = query_events(world.time, npc_name)
 	
 	if events.is_empty(): 
 		push_error("No events found for npc: " + npc_name)

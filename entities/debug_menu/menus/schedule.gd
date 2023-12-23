@@ -17,7 +17,7 @@ func get_items() -> Array[Dictionary]:
 	var npc_schedule = NPCSchedule.instance
 	
 	for event: NPCSchedule.Event in npc_schedule.events:
-		var is_active = world.get_military_time() >= event.start_time and world.get_military_time() < event.end_time
+		var is_active = world.time >= event.start_time and world.time < event.end_time
 		
 		items.append({
 			"label": event.get_start_display_time() + " - " + event.get_end_display_time() + ": " + event.npc + " at " + event.location + " in " + event.level,
