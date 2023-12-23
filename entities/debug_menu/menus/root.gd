@@ -1,7 +1,7 @@
 extends DebugMenuEntry
 
 func get_items() -> Array[Dictionary]:
-	var items: Array[Dictionary]
+	var items: Array[Dictionary] = []
 	
 	var directory = DirAccess.open("res://entities/debug_menu/menus")
 	if not directory: return items

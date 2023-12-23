@@ -54,7 +54,7 @@ func _input(event: InputEvent) -> void:
 		
 	get_viewport().set_input_as_handled()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	var current = get_current()
 	if not current: return
 	
@@ -108,7 +108,6 @@ func _draw() -> void:
 		var menu_item_origin = Vector2(items_origin.x + 0, total_height + menu_item_gutter)
 		var checkbox_rect = Rect2(Vector2(menu_item_origin.x + menu_item_padding, menu_item_origin.y + (height / 2) - 5), Vector2(10, 10))
 		var rect = Rect2(menu_item_origin, Vector2(width, height))
-		var color = Color.DARK_VIOLET if get_current().index == index else Color.BLACK
 		
 		var text_position = Vector2(rect.position.x + menu_item_padding, rect.position.y)
 		

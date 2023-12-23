@@ -21,7 +21,7 @@ func get_items() -> Array[Dictionary]:
 		
 		items.append({
 			"label": event.get_start_display_time() + " - " + event.get_end_display_time() + ": " + event.npc + " at " + event.location + " in " + event.level,
-			"action": func(): World.instance.hour = event.get_start_hour(); World.instance.minute = event.get_start_minute(),
+			"action": func(): World.instance.time = event.start_time,
 			"is_active": is_active
 		})
 	
