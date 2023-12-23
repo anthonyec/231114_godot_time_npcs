@@ -15,18 +15,30 @@ class Levels:
 	const PIER = "pier"
 
 class Places:
-	const TEST_ROOM_SAFE_SPAWN = "SafeSpawn"
-	const TEST_ROOM_BOTTOM_OF_STAIRS = "BottomOfStairs"
-	const TEST_ROOM_BEHIND_STAIRS = "BehindStairs"
-	const TEST_ROOM_TOP_OF_STAIRS = "TopOfStairs"
-	const CAFE_WALK_SAFE_SPAWN = "SafeSpawn"
-	const CAFE_WALK_CAFE_SIDE_BIT = "CafeSideBit"
-	const PIER_PIER_END_LOWER = "PierEndLower"
-	const PIER_PIER_END_MIDDLE = "PierEndMiddle"
-	const PIER_PIER_END_UPPER = "PierEndUpper"
-	const PIER_END_PIER_LAMPOST = "EndPierLampost"
-	const PIER_MIDDLE_PIER_LOWER = "MiddlePierLower"
-	const PIER_MIDDLE_PIER_UPPER = "MiddlePierUpper"
-	const PIER_START_PIER_MIDDLE = "StartPierMiddle"
-	const PIER_BEACH = "Beach"
-	const PIER_SAFE_SPAWN = "SafeSpawn"
+	class TestRoom:
+		const SAFE_SPAWN = "SafeSpawn"
+		const BOTTOM_OF_STAIRS = "BottomOfStairs"
+		const BEHIND_STAIRS = "BehindStairs"
+		const TOP_OF_STAIRS = "TopOfStairs"
+		pass
+
+	class TestRoom2:
+		pass
+
+	class CafeWalk:
+		const SAFE_SPAWN = "SafeSpawn"
+		const CAFE_SIDE_BIT = "CafeSideBit"
+		pass
+
+	class Pier:
+		const PIER_END_LOWER = "PierEndLower"
+		const PIER_END_MIDDLE = "PierEndMiddle"
+		const PIER_END_UPPER = "PierEndUpper"
+		const END_PIER_LAMPOST = "EndPierLampost"
+		const MIDDLE_PIER_LOWER = "MiddlePierLower"
+		const MIDDLE_PIER_UPPER = "MiddlePierUpper"
+		const START_PIER_MIDDLE = "StartPierMiddle"
+		const BEACH = "Beach"
+		const SAFE_SPAWN = "SafeSpawn"
+		pass
+

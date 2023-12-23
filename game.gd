@@ -21,7 +21,7 @@ func _ready() -> void:
 	temp_balloon = get_node("ExampleBalloon")
 	
 func _process(_delta: float) -> void:
-	DebugDraw.set_text("Controls", "[WASD/Click] Movement, [Esc] Debug menu, [Space] Interact/speak")
+	DebugDraw.set_text("Controls", "[W/A/S/D/Click] Movement, [Esc] Debug menu, [Space] Interact/speak")
 
 func load_level(level_name: String, ignore_level_portal: bool = false) -> void:
 	if current_level != null:

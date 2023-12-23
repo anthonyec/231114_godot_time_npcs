@@ -60,13 +60,25 @@ func _run() -> void:
 		var scene = load(scene_path) as PackedScene
 		var level = scene.instantiate()
 		
+		file += "\tclass %s:\n" % name.to_pascal_case()
+		
 		for child in level.get_children():
 			if child is PlaceMarker:
-				var identifier = name.to_snake_case().to_upper()
-				file += "\tconst " + identifier + "_" + child.name.to_snake_case().to_upper() + " = " + "\"" + child.name + "\""
-				file += "\n"
+				var identifier = child.name.to_snake_case().to_upper()
+				file += "\t\tconst %s = \"%s\"\n" % [identifier, child.name]
+				
+		file += "\t\tpass\n\n"
 		
 		level.queue_free()
+		
+	# var places_class = file.add_class("Places")
+	#
+	# for name in levels:
+	# 	var place_class = places_class.add_class(name.to_pascal_case())
+	#
+	#	for child in level.get_children():
+	#		place_class.add_const(identifier, child.name)
+	
 		
 	var script = FileAccess.open("res://metadata.gd", FileAccess.WRITE)
 	if not script: push_error("Failed to open file to write")
