@@ -24,67 +24,22 @@ func _run() -> void:
 	var levels = get_files("res://levels")
 	var dialogue = get_files("res://dialogue")
 	
-	var file: String
+	var metadata = MetaGen.Collection.new("Metadata")
+	var levels_collection = metadata.add_collection("Levels")
+	var places_collection = metadata.add_collection("Places")
 	
-	file += "## This file has been auto-generated!\n"
-	file += "## Don't edit directly, instead edit the script found at:\n"
-	file += "## ./scripts/build_metadata.gd \n\n"
-	file += "class_name Metadata\n"
-	file += "extends Object\n"
-	
-	file += "\n"
-	
-	# Dialogue.
-	file += "class Dialogues:\n"
-	
-	for name in dialogue:
-		var identifier = name.to_snake_case().to_upper()
-		file += "\tconst " + identifier + " = " + "\"" + name + "\"" + "\n"
-		
-	file += "\n"
-	
-	# Levels.
-	file += "class Levels:\n"
-	
-	for name in levels:
-		var identifier = name.to_snake_case().to_upper()
-		file += "\tconst " + identifier + " = " + "\"" + name + "\"" + "\n"
-		
-	file += "\n"
-	
-	# Places.
-	file += "class Places:\n"
-	
-	for name in levels:
-		var scene_path = "res://levels/%s/%s.tscn" % [name, name]
+	for level in levels:
+		var scene_path = "res://levels/%s/%s.tscn" % [level, level]
 		var scene = load(scene_path) as PackedScene
-		var level = scene.instantiate()
+		var level_node = scene.instantiate()
 		
-		file += "\tclass %s:\n" % name.to_pascal_case()
+		var level_places_collection = places_collection.add_collection(level.to_pascal_case())
 		
-		for child in level.get_children():
+		for child in level_node.get_children():
 			if child is PlaceMarker:
-				var identifier = child.name.to_snake_case().to_upper()
-				file += "\t\tconst %s = \"%s\"\n" % [identifier, child.name]
+				level_places_collection.add_entry(child.name.to_snake_case().to_upper(), child.name)
 				
-		file += "\t\tpass\n\n"
-		
-		level.queue_free()
-		
-	# var places_class = file.add_class("Places")
-	#
-	# for name in levels:
-	# 	var place_class = places_class.add_class(name.to_pascal_case())
-	#
-	#	for child in level.get_children():
-	#		place_class.add_const(identifier, child.name)
+		levels_collection.add_entry(level.to_upper(), level)
 	
-		
-	var script = FileAccess.open("res://metadata.gd", FileAccess.WRITE)
-	if not script: push_error("Failed to open file to write")
-	
-	script.store_string(file)
-	script.close()
-	
+	metadata.to_file("res://metadata.gd", "res://scripts/build_metadata.gd")
 	print("Compiled meatadata.gd")
-	

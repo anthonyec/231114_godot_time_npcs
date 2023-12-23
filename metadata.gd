@@ -1,12 +1,6 @@
-## This file has been auto-generated!
-## Don't edit directly, instead edit the script found at:
-## ./scripts/build_metadata.gd 
-
+## This is an auto-generated metadata file, do not edit directly.
+## To make changes, edit the script found at: res://scripts/build_metadata.gd
 class_name Metadata
-extends Object
-
-class Dialogues:
-	const TEST = "test"
 
 class Levels:
 	const TEST_ROOM = "test_room"
@@ -20,7 +14,6 @@ class Places:
 		const BOTTOM_OF_STAIRS = "BottomOfStairs"
 		const BEHIND_STAIRS = "BehindStairs"
 		const TOP_OF_STAIRS = "TopOfStairs"
-		pass
 
 	class TestRoom2:
 		pass
@@ -28,7 +21,6 @@ class Places:
 	class CafeWalk:
 		const SAFE_SPAWN = "SafeSpawn"
 		const CAFE_SIDE_BIT = "CafeSideBit"
-		pass
 
 	class Pier:
 		const PIER_END_LOWER = "PierEndLower"
@@ -40,5 +32,4 @@ class Places:
 		const START_PIER_MIDDLE = "StartPierMiddle"
 		const BEACH = "Beach"
 		const SAFE_SPAWN = "SafeSpawn"
-		pass
 
