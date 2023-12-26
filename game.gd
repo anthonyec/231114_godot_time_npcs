@@ -38,7 +38,6 @@ func load_level(level_name: String, ignore_level_portal: bool = false) -> void:
 	
 	var world = World.instance
 	var player = world.spawn_player_or_null()
-	
 	var safe_spawn = world.find_node_or_null("SafeSpawn")
 	
 	if safe_spawn:

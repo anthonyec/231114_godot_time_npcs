@@ -25,7 +25,10 @@ func _process(_delta: float) -> void:
 			var point = points[index]
 			var next_point = points[index + 1]
 			DebugDraw.draw_line_3d(point, next_point, Color.WHITE)
-			
+
+func can_have_conversation() -> bool:
+	return state_machine.get_current_state_path() == "Stand"
+
 func request_conversation() -> void:
 	state_machine.send_message("start_conversation")
 	

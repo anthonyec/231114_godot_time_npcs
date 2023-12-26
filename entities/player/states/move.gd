@@ -21,11 +21,19 @@ func update(_delta: float) -> void:
 	var is_facing = player.forward.dot(player.global_position.direction_to(closest_npc.global_position)) > 0.6
 	
 	if is_within_distance and is_facing and state_machine.time_in_current_state > 1000:
+		if not closest_npc.can_have_conversation(): return
+		
+		var events = NPCSchedule.instance.get_current_events_for_npc(closest_npc.npc_name)
+		if events.is_empty(): return
+		
+		var event = events[0]
+		if not event.dialogue: return
+		
 		DebugDraw.set_text("Speak to", closest_npc.npc_name, closest_npc.global_position)
 		
 		if Input.is_action_just_pressed("interact"):
-			# TODO: Replace with real UI, this is temporary.
-			closest_npc.request_conversation()
+			state_machine.transition_to("Conversation", { "dialogue": event.dialogue })
+			closest_npc.state_machine.transition_to("Conversation")
 
 func physics_update(delta: float) -> void:
 	if not player.is_near_ground():

@@ -22,11 +22,12 @@ func get_files(path: String) -> Array[String]:
 
 func _run() -> void:
 	var levels = get_files("res://levels")
-	var dialogue = get_files("res://dialogue")
+	var dialogues = get_files("res://dialogue")
 	
 	var metadata = MetaGen.Collection.new("Metadata")
 	var levels_collection = metadata.add_collection("Levels")
 	var places_collection = metadata.add_collection("Places")
+	var dialogues_collection = metadata.add_collection("Dialogues")
 	
 	for level in levels:
 		var scene_path = "res://levels/%s/%s.tscn" % [level, level]
@@ -40,6 +41,9 @@ func _run() -> void:
 				level_places_collection.add_entry(child.name.to_snake_case().to_upper(), child.name)
 				
 		levels_collection.add_entry(level.to_upper(), level)
+		
+	for dialogue in dialogues:
+		dialogues_collection.add_entry(dialogue.to_snake_case().to_upper(), dialogue)
 	
 	metadata.to_file("res://metadata.gd", "res://scripts/build_metadata.gd")
 	print("Compiled meatadata.gd")

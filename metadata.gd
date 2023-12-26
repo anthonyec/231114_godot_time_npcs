@@ -33,3 +33,8 @@ class Places:
 		const BEACH = "Beach"
 		const SAFE_SPAWN = "SafeSpawn"
 
+class Dialogues:
+	const INTRO = "intro"
+	const BOKU = "boku"
+	const TEST = "test"
+
