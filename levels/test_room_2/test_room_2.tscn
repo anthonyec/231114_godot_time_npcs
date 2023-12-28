@@ -3,8 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://bfpjbjjoy6qmi" path="res://entities/level_portal/level_portal.tscn" id="4_65j2q"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_oreio"]
-vertices = PackedVector3Array(-2.674, -0.917495, -5.01766, -2.674, -0.917495, 5.23234, 5.076, -0.917495, 5.23234, 5.076, -0.917495, -5.01766, 5.076, -0.917495, -5.01766, 5.076, -0.917495, -15.2677, -2.674, -0.917495, -15.2677, -2.674, -0.917495, -5.01766)
-polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1), PackedInt32Array(7, 6, 4), PackedInt32Array(4, 6, 5)]
+vertices = PackedVector3Array(-2.674, -0.917495, -15.2677, -2.674, -0.917495, 5.23234, 5.076, -0.917495, 5.23234, 5.076, -0.917495, -15.2677)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
 agent_radius = 1.0
 
 [node name="TestRoom" type="Node3D"]
@@ -25,6 +25,7 @@ size = Vector3(11.0076, 2.11871, 23.9214)
 
 [node name="Floor2" type="CSGBox3D" parent="NavigationRegion3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.10228, -1.31265, -5.05696)
+visible = false
 use_collision = true
 collision_layer = 3
 size = Vector3(0.637858, 2.11871, 23.9214)
@@ -48,7 +49,12 @@ collision_layer = 3
 size = Vector3(0.637858, 2.11871, 10.6732)
 
 [node name="Camera1" type="Camera3D" parent="."]
-transform = Transform3D(-3.88364e-08, 0.458929, -0.888473, 2.00604e-08, 0.888473, 0.458929, 1, 1.53548e-15, -4.37114e-08, -11.3854, 6.99939, -0.800195)
+transform = Transform3D(-1.51758e-08, 0.937798, -0.347181, 4.09925e-08, 0.347181, 0.937798, 1, 2.77148e-14, -4.37114e-08, -1.91273, 12.4655, -0.800195)
+fov = 48.6
+
+[node name="Camera2" type="Camera3D" parent="."]
+transform = Transform3D(-4.32508e-08, 0.144788, -0.989463, 6.32888e-09, 0.989463, 0.144788, 1, 1.23644e-14, -4.37114e-08, -7.89218, 3.51549, -0.800195)
+current = true
 fov = 48.6
 
 [node name="LevelPortal" parent="." instance=ExtResource("4_65j2q")]

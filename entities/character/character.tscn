@@ -1,6 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://dh3g6c6ssvoby"]
+[gd_scene load_steps=14 format=3 uid="uid://dh3g6c6ssvoby"]
 
 [ext_resource type="Script" path="res://entities/character/character.gd" id="1_7iyhm"]
+[ext_resource type="PackedScene" uid="uid://dnyqvvalaiwrg" path="res://entities/player/player_model.glb" id="2_3rkd3"]
+[ext_resource type="Script" path="res://addons/anthonyec.state_machine/state_machine.gd" id="3_4t2l5"]
+[ext_resource type="Script" path="res://entities/character/move_states/move.gd" id="3_fhbai"]
+[ext_resource type="Script" path="res://entities/character/move_states/fall.gd" id="4_drhe2"]
+[ext_resource type="Script" path="res://entities/character/control_states/idle.gd" id="6_447vf"]
+[ext_resource type="Script" path="res://entities/character/control_states/follow_path.gd" id="7_eujaq"]
+[ext_resource type="Script" path="res://entities/character/control_states/look_at.gd" id="8_7m5vx"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xfmkw"]
 radius = 0.3
@@ -39,3 +46,31 @@ mesh = SubResource("BoxMesh_ft8a8")
 shape = SubResource("SphereShape3D_dyin6")
 target_position = Vector3(2.08165e-12, -2, 2.08165e-12)
 max_results = 12
+
+[node name="Model" parent="." instance=ExtResource("2_3rkd3")]
+transform = Transform3D(-1, 3.48787e-16, -8.74228e-08, 3.48787e-16, 1, -3.48787e-16, 8.74228e-08, -3.48787e-16, -1, 0, -0.93523, 0)
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 2.0
+debug_enabled = true
+
+[node name="MoveStateMachine" type="Node" parent="."]
+script = ExtResource("3_4t2l5")
+
+[node name="Move" type="Node" parent="MoveStateMachine"]
+script = ExtResource("3_fhbai")
+
+[node name="Fall" type="Node" parent="MoveStateMachine"]
+script = ExtResource("4_drhe2")
+
+[node name="ControlStateMachine" type="Node" parent="."]
+script = ExtResource("3_4t2l5")
+
+[node name="None" type="Node" parent="ControlStateMachine"]
+script = ExtResource("6_447vf")
+
+[node name="FollowPath" type="Node" parent="ControlStateMachine"]
+script = ExtResource("7_eujaq")
+
+[node name="LookAt" type="Node" parent="ControlStateMachine"]
+script = ExtResource("8_7m5vx")

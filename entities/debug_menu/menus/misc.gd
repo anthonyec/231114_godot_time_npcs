@@ -18,7 +18,7 @@ func reset_player_and_npc_states() -> void:
 	if not player: return
 	
 	# TODO: Why does state_machine type here not auto complete?
-	player.state_machine.transition_to("Move")
+	player.move_state_machine.transition_to("Move")
 	
 	var npcs = World.instance.get_npcs()
-	for npc in npcs: npc.state_machine.transition_to("Move")
+	for npc in npcs: npc.move_state_machine.transition_to("Move")

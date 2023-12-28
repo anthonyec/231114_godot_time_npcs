@@ -14,11 +14,7 @@ func enter(params: Dictionary) -> void:
 	var npc = world.find_npc_or_null(character)
 	
 	if npc:
-		target = npc.global_position
+		player.control_state_machine.transition_to("LookAt", { "node": npc })
 	
 	await DialogueManager.dialogue_ended
 	state_machine.transition_to_previous_state()
-
-func update(delta: float) -> void:
-	player.face_towards(target, 5, delta)
-	

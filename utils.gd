@@ -15,3 +15,12 @@ static func get_closest(nodes: Array[Variant], target: Node3D) -> Node3D:
 			closest_node = node
 			
 	return closest_node
+
+static func is_near(from: Vector3, to: Vector3, tolerance: Vector3 = Vector3(0, 0, 0)) -> bool:
+	var distance = Vector3(
+		to.x - from.x,
+		to.y - from.y,
+		to.z - from.z,
+	).abs()
+	
+	return distance.x < tolerance.x and distance.y < tolerance.y and distance.z < tolerance.z

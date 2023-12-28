@@ -1,12 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://dta10froqpgnl"]
+[gd_scene load_steps=7 format=3 uid="uid://dta10froqpgnl"]
 
 [ext_resource type="Script" path="res://entities/npc/npc.gd" id="1_1c244"]
 [ext_resource type="PackedScene" uid="uid://dh3g6c6ssvoby" path="res://entities/character/character.tscn" id="1_2o71n"]
-[ext_resource type="Script" path="res://addons/anthonyec.state_machine/state_machine.gd" id="2_il4er"]
-[ext_resource type="Script" path="res://entities/npc/states/stand.gd" id="3_fni3f"]
-[ext_resource type="Script" path="res://entities/npc/states/move.gd" id="3_yawqp"]
-[ext_resource type="PackedScene" uid="uid://b8g4d7v3el4j3" path="res://entities/npc/npc_model.glb" id="5_bmh0m"]
-[ext_resource type="Script" path="res://entities/npc/states/conversation.gd" id="5_mkyxd"]
+[ext_resource type="Script" path="res://addons/anthonyec.state_machine/state_machine.gd" id="3_lpu70"]
+[ext_resource type="Script" path="res://entities/npc/npc_state.gd" id="4_3kb3p"]
+[ext_resource type="Script" path="res://entities/npc/states/conversation.gd" id="4_f03tr"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_isamb"]
 radius = 0.4
@@ -15,26 +13,16 @@ radius = 0.4
 script = ExtResource("1_1c244")
 npc_name = ""
 
-[node name="StateMachine" type="Node" parent="." index="4"]
-script = ExtResource("2_il4er")
-
-[node name="Stand" type="Node" parent="StateMachine" index="0"]
-script = ExtResource("3_fni3f")
-
-[node name="Move" type="Node" parent="StateMachine" index="1"]
-script = ExtResource("3_yawqp")
-
-[node name="Conversation" type="Node" parent="StateMachine" index="2"]
-script = ExtResource("5_mkyxd")
-
-[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." index="5"]
-path_desired_distance = 0.5
-path_height_offset = -0.5
-
-[node name="Model" parent="." index="6" instance=ExtResource("5_bmh0m")]
-transform = Transform3D(-1, 3.48787e-16, -8.74228e-08, 3.48787e-16, 1, -3.48787e-16, 8.74228e-08, -3.48787e-16, -1, 0, -0.850203, 0)
-
-[node name="AreaCollision" type="Area3D" parent="." index="7" groups=["npc"]]
+[node name="AreaCollision" type="Area3D" parent="." index="4" groups=["npc"]]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AreaCollision" index="0"]
 shape = SubResource("CapsuleShape3D_isamb")
+
+[node name="StateMachine" type="Node" parent="." index="9"]
+script = ExtResource("3_lpu70")
+
+[node name="None" type="Node" parent="StateMachine" index="0"]
+script = ExtResource("4_3kb3p")
+
+[node name="Conversation" type="Node" parent="StateMachine" index="1"]
+script = ExtResource("4_f03tr")

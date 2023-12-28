@@ -1,44 +1,32 @@
-[gd_scene load_steps=10 format=3 uid="uid://cdagbn44of2w"]
+[gd_scene load_steps=7 format=3 uid="uid://cdagbn44of2w"]
 
-[ext_resource type="Script" path="res://entities/player/player.gd" id="1_ao2qh"]
 [ext_resource type="PackedScene" uid="uid://dh3g6c6ssvoby" path="res://entities/character/character.tscn" id="1_mfqk2"]
-[ext_resource type="Script" path="res://addons/anthonyec.state_machine/state_machine.gd" id="2_vmdeo"]
+[ext_resource type="Script" path="res://entities/player/player.gd" id="2_sj5l4"]
+[ext_resource type="Script" path="res://addons/anthonyec.state_machine/state_machine.gd" id="3_1elg0"]
 [ext_resource type="Script" path="res://entities/player/states/move.gd" id="3_t48bn"]
-[ext_resource type="Script" path="res://entities/player/states/fall.gd" id="4_nxsqy"]
-[ext_resource type="Script" path="res://entities/player/states/goto.gd" id="4_vvlym"]
-[ext_resource type="PackedScene" uid="uid://dnyqvvalaiwrg" path="res://entities/player/player_model.glb" id="5_3ohut"]
-[ext_resource type="Script" path="res://entities/player/states/conversation.gd" id="5_xu3mv"]
+[ext_resource type="Script" path="res://entities/player/states/conversation.gd" id="5_gw064"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dl6m7"]
 radius = 0.4
 
 [node name="Player" groups=["player"] instance=ExtResource("1_mfqk2")]
-script = ExtResource("1_ao2qh")
+script = ExtResource("2_sj5l4")
 walk_speed = 5.0
 
-[node name="StateMachine" type="Node" parent="." index="4"]
-script = ExtResource("2_vmdeo")
+[node name="AreaCollision" type="Area3D" parent="." index="4" groups=["player"]]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AreaCollision" index="0"]
+shape = SubResource("CapsuleShape3D_dl6m7")
+
+[node name="NavigationAgent3D" parent="." index="6"]
+path_desired_distance = 0.5
+path_height_offset = 0.5
+
+[node name="StateMachine" type="Node" parent="." index="9"]
+script = ExtResource("3_1elg0")
 
 [node name="Move" type="Node" parent="StateMachine" index="0"]
 script = ExtResource("3_t48bn")
 
-[node name="Goto" type="Node" parent="StateMachine" index="1"]
-script = ExtResource("4_vvlym")
-
-[node name="Fall" type="Node" parent="StateMachine" index="2"]
-script = ExtResource("4_nxsqy")
-
-[node name="Conversation" type="Node" parent="StateMachine" index="3"]
-script = ExtResource("5_xu3mv")
-
-[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." index="5"]
-path_desired_distance = 0.5
-path_height_offset = -0.5
-
-[node name="Model" parent="." index="6" instance=ExtResource("5_3ohut")]
-transform = Transform3D(-1, 3.48787e-16, -8.74228e-08, 3.48787e-16, 1, -3.48787e-16, 8.74228e-08, -3.48787e-16, -1, 0, -0.96644, 0)
-
-[node name="AreaCollision" type="Area3D" parent="." index="7" groups=["player"]]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="AreaCollision" index="0"]
-shape = SubResource("CapsuleShape3D_dl6m7")
+[node name="Conversation" type="Node" parent="StateMachine" index="1"]
+script = ExtResource("5_gw064")
