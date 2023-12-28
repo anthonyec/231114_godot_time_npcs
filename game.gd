@@ -24,11 +24,11 @@ func _process(_delta: float) -> void:
 	DebugDraw.set_text("Controls", "[W/A/S/D/Click] Movement, [Esc] Debug menu, [Space] Interact/speak")
 
 func load_level(level_name: String, ignore_level_portal: bool = false) -> void:
+	var scene_path = "res://levels/%s/%s.tscn" % [level_name, level_name]
+	if not ResourceLoader.exists(scene_path): return push_error("Level does not exist:" + scene_path)
+	
 	if current_level != null:
 		current_level.queue_free()
-	
-	var scene_path = "res://levels/%s/%s.tscn" % [level_name, level_name]
-	if not ResourceLoader.exists(scene_path): return push_error("Failed to load level: " + scene_path)
 	
 	var scene = load(scene_path) as PackedScene
 	var level = scene.instantiate() as Node3D

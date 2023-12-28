@@ -17,6 +17,8 @@ func _ready() -> void:
 	if instance != null: push_error("Dialogue instance already exists in this scene, overriding previous")
 	instance = self
 	
+	DialogueManager
+	
 	balloon.modulate = Color(0, 0, 0, 0)
 	
 func _input(event: InputEvent) -> void:
@@ -47,7 +49,7 @@ func next(line_id: String = "") -> void:
 	if line_id:
 		next_id = line_id
 
-	line = await resouce.get_next_dialogue_line(next_id)
+	line = await resouce.get_next_dialogue_line(next_id, [self])
 	if not line: return end()
 	
 	dialogue_label.dialogue_line = line

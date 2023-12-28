@@ -21,6 +21,7 @@ boot_splash/show_image=false
 DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
 DebugDraw="*res://addons/zylann.debug_draw/debug_draw.gd"
 Raycast="*res://autoload/raycast.gd"
+Stage="*res://autoload/stage.gd"
 
 [display]
 

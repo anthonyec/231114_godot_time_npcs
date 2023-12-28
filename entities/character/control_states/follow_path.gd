@@ -3,27 +3,16 @@ extends CharacterState
 const next_distance_tolerance = Vector3(0.25, 2, 0.25)
 const target_distance_tolerance = Vector3(1, 2, 1)
 
+var align_to_target_position: bool
 var navigation_index: int
 var navigation_path: PackedVector3Array
 var last_position: Vector3
 
-# Using this instead of built-in get_next_path_position because I can't 
-# get it to work. But also gives me more control over how it's decided the next
-# position is reached, with a bigger Y axis tolerance.
-func get_next_path_position() -> Vector3:
-	if navigation_path.is_empty(): return Vector3.ZERO
-	
-	var index = clamp(navigation_index, 0, navigation_path.size() - 1)
-	var next_position = navigation_path[index]
-	
-	if Utils.is_near(character.global_position, next_position, target_distance_tolerance):
-		navigation_index += 1
-	
-	return next_position
-
 func enter(params: Dictionary) -> void:
 	var target_position = params.get("target")
 	assert(target_position != null)
+	
+	align_to_target_position = params.get("align", false)
 	
 	character.nav_agent.debug_enabled = Flags.is_enabled(Flags.DEBUG_NAV_AGENT)
 	
@@ -45,6 +34,9 @@ func physics_update(delta: float) -> void:
 	
 	# TODO: Fix infinite spinning when not reaching destination completely sometimes.
 	if Utils.is_near(character.global_position, character.nav_agent.target_position, next_distance_tolerance):
+		if align_to_target_position:
+			print("ALIGN")
+			
 		return state_machine.transition_to("None")
 		
 	var next_position = get_next_path_position()
@@ -81,3 +73,16 @@ func physics_update(delta: float) -> void:
 	else:
 		character.move_input = 0
 	
+# Using this instead of built-in get_next_path_position because I can't 
+# get it to work. But also gives me more control over how it's decided the next
+# position is reached, with a bigger Y axis tolerance.
+func get_next_path_position() -> Vector3:
+	if navigation_path.is_empty(): return Vector3.ZERO
+	
+	var index = clamp(navigation_index, 0, navigation_path.size() - 1)
+	var next_position = navigation_path[index]
+	
+	if Utils.is_near(character.global_position, next_position, target_distance_tolerance):
+		navigation_index += 1
+	
+	return next_position

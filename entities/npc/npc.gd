@@ -7,6 +7,7 @@ extends Character
 
 func _ready() -> void:
 	assert(get_groups().has("npc"), "NPC node needs to be in the npc group")
+	id = npc_name
 
 func _process(_delta: float) -> void:
 	if Flags.is_enabled(Flags.DEBUG_NPCS):

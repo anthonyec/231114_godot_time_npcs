@@ -3,6 +3,7 @@ extends CharacterBody3D
 
 const WORLD_COLLISION_MASK: int = 1
 
+@export var id: String
 @export var walk_speed: float = 3
 @export var turn_speed: float = 3
 @export var height: float = 2

@@ -87,6 +87,19 @@ func get_npcs() -> Array[NPC]:
 	
 	return nodes
 	
+func get_characters() -> Array[Character]:
+	if not root: return []
+		
+	var nodes: Array[Character] = []
+	
+	for child in root.get_children():
+		var groups = child.get_groups()
+		
+		if child is Character and not (child as Character).id.is_empty():
+			nodes.append(child)
+	
+	return nodes
+	
 func get_level_portals() -> Array[LevelPortal]:
 	if not root: return []
 		
@@ -159,6 +172,16 @@ func find_npc_or_null(npc_name: String) -> NPC:
 	for npc in get_npcs():
 		if npc.npc_name.to_lower() == npc_name.to_lower():
 			return npc
+	
+	return null
+	
+## Finds an NPC or the Player. They are all characters and have IDs.
+func find_character_or_null(character_id: String) -> Character:
+	if not root: return null
+	
+	for character in get_characters():
+		if character.id.to_lower() == character_id.to_lower():
+			return character
 	
 	return null
 	
