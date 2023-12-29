@@ -30,7 +30,7 @@ window/dpi/allow_hidpi=false
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/anthonyec.state_machine/plugin.cfg", "res://addons/dialogue_manager/plugin.cfg")
+enabled=PackedStringArray("res://addons/anthonyec.metagen/plugin.cfg", "res://addons/anthonyec.state_machine/plugin.cfg", "res://addons/anthonyec.timeline/plugin.cfg", "res://addons/dialogue_manager/plugin.cfg")
 
 [input]
 
