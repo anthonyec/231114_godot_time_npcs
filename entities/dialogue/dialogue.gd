@@ -41,6 +41,11 @@ func start(dialogue_name: String) -> void:
 	animate_in()
 	next()
 	
+	var player = World.instance.find_player_or_null()
+	
+	if player:
+		player.state_machine.transition_to("Cutscene")
+	
 func next(line_id: String = "") -> void:
 	if not is_active: return
 	
@@ -64,6 +69,11 @@ func end() -> void:
 	is_active = false
 	resouce = null
 	line = null
+	
+	var player = World.instance.find_player_or_null()
+	
+	if player:
+		player.state_machine.transition_to("Move")
 	
 func animate_in() -> void:
 	var tween = get_tree().create_tween()

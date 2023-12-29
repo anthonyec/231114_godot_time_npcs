@@ -69,7 +69,7 @@ func get_time_percent() -> float:
 	return 0
 
 func get_player_or_null() -> Player:
-	return root.get_node_or_null("./Player")
+	return root.get_node_or_null("./Player") as Player
 	
 func get_level_or_null() -> Node3D:
 	return root
@@ -165,6 +165,15 @@ func get_random_position_on_nav_mesh() -> Vector3:
 	
 func is_position_obstructed() -> bool:
 	return false
+
+func find_player_or_null() -> Player:
+	if not root: return null
+	
+	for child in root.get_children():
+		if child is Player:
+			return child
+	
+	return null
 
 func find_npc_or_null(npc_name: String) -> NPC:
 	if not root: return null

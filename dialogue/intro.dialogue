@@ -4,8 +4,9 @@ do Stage.load_level("pier")
 do Stage.switch_to_camera("PierSideCamera")
 do Stage.spawn_characters(["player", "boatman", "mitsuko", "genta", "yasuko", "yasukos_sister", "shigeru", "takeshi", "simon"])
 
-do Stage.walk_to_and_align("player", "PlayerExitBoat")
 do Stage.walk_to_and_align("yasuko", "YasukoStandNearParents")
+do wait(1)
+do Stage.walk_to_and_align("player", "PlayerExitBoat")
 boatman: Here we are! Watch your step getting off the boat!
 
 do Stage.walk_to_and_align("mitsuko", "MitsukoStandNearPlayer")
@@ -14,12 +15,13 @@ mitsuko: Hi Boku! It's good to see you!
 mitsuko: How was your trip?
 player: Hi Uncle Genta and Aunt Mitsuko!
 
-do Stage.look_at_character("mitsuko", "yasuko")
-do Stage.look_at_character("yasuko", "mitsuko")
+do Stage.face_towards_character("mitsuko", "yasuko")
+do Stage.face_towards_character("yasuko", "mitsuko")
+do Stage.face_towards_character("genta", "player")
 genta: These are our boys, Takeshi and Shigeru.
 
-do Stage.look_at_character("mitsuko", "player")
-do Stage.look_at_character("yasuko", "player")
+do Stage.face_towards_character("mitsuko", "player")
+do Stage.face_towards_character("yasuko", "player")
 genta: It's been a few years, but I'm sure you remember 'em!
 
 do Stage.walk_to_and_align("yasukos_sister", "YasukosSisterWave")
@@ -28,7 +30,7 @@ yasukos_sister: Yasuko! Over here!
 do Stage.walk_to_and_align("yasukos_sister", "YasukosSisterKneel")
 shigeru: So, what grade are you?
 
-do Stage.look_at_character("player", "takeshi")
+do Stage.face_towards_character("player", "takeshi")
 player: Me? I'm a third-year student.
 
 takeshi: Heh-heh, I'm a fifth-year!

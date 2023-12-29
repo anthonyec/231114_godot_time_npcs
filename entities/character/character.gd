@@ -25,16 +25,15 @@ func _ready() -> void:
 	up_direction = Vector3.UP
 	floor_stop_on_slope = true
 	
-func _process(delta: float) -> void:
-	if Flags.is_enabled(Flags.DEBUG_PLAYER):
-		DebugDraw.set_text("Player state", move_state_machine.get_current_state_path() + ", " + control_state_machine.get_current_state_path())
-	
 func _get_forward() -> Vector3:
 	return -global_transform.basis.z
 	
 func reset_input() -> void:
 	move_input = 0
 	turn_input = 0
+	
+func reset_control() -> void:
+	control_state_machine.transition_to("None")
 	
 func transform_direction_to_camera_angle(direction: Vector3) -> Vector3:
 	var camera = get_viewport().get_camera_3d()

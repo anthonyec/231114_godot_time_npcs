@@ -4,6 +4,9 @@ func load_level(level_name: String) -> void:
 	var game = Game.instance
 	if not game: return print("Stage: load_level %s" % level_name)
 	
+	if game.current_level_name.to_lower() == level_name.to_lower():
+		return
+	
 	# TODO: Add check or method that won't load level if already loaded.
 	game.load_level(level_name)
 	
@@ -26,7 +29,7 @@ func switch_to_camera(camera_name: String) -> void:
 	
 func spawn_characters(character_names: Array) -> void:
 	var world = World.instance
-	if not world: return print("Stage: spawn_or_teleport_characters %s" % character_names)
+	if not world: return print("Stage: spawn_or_teleport_characters %s" % str(character_names))
 	
 	for character_name in character_names:
 		if typeof(character_name) != TYPE_STRING: continue
@@ -44,6 +47,8 @@ func spawn_characters(character_names: Array) -> void:
 		if character and marker:
 			character.global_position = marker.global_position + Vector3.UP
 			character.global_rotation = marker.global_rotation
+			character.reset_control()
+			character.reset_input()
 
 func walk_to_and_align(character_name: String, marker_name: String) -> void:
 	var world = World.instance
@@ -57,7 +62,7 @@ func walk_to_and_align(character_name: String, marker_name: String) -> void:
 	
 	character.control_state_machine.transition_to("FollowPath", { "target": marker.global_position, "align": true })
 	
-func look_at_character(character_name_a: String, character_name_b: String) -> void:
+func face_towards_character(character_name_a: String, character_name_b: String) -> void:
 	var world = World.instance
 	if not world: return print("Stage: look_at_character %s %s" % [character_name_a, character_name_b])
 	
