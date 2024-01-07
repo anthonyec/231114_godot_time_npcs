@@ -22,7 +22,7 @@ static func is_enabled(flag: String) -> bool:
 	return flags.find(flag) != -1
 
 static func toggle(flag: String) -> void:
-	var index = flags.find(flag)
+	var index := flags.find(flag)
 	
 	if index == -1:
 		flags.append(flag)
