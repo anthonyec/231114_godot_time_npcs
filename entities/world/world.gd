@@ -39,7 +39,7 @@ func update_time() -> void:
 	if now - last_time > tick_per_milliseconds:
 		var new_time = time + 1
 	
-		var hours = floor(new_time / 100)
+		var hours = floor(float(new_time) / 100)
 		var minutes = new_time % 100
 		
 		# Reset the minutes part of time, rolling over to the new hour.
@@ -60,7 +60,7 @@ func update_time() -> void:
 	if day_ticked: day_tick.emit()
 
 func get_display_time() -> String:
-	var hours = floor(time / 100)
+	var hours = floor(float(time) / 100)
 	var minutes = time % 100
 	
 	return str(hours).lpad(2, "0") + ":" + str(minutes).lpad(2, "0")
@@ -92,9 +92,7 @@ func get_characters() -> Array[Character]:
 		
 	var nodes: Array[Character] = []
 	
-	for child in root.get_children():
-		var groups = child.get_groups()
-		
+	for child in root.get_children():		
 		if child is Character and not (child as Character).id.is_empty():
 			nodes.append(child)
 	

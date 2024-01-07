@@ -134,7 +134,7 @@ func _draw() -> void:
 	current.draw.call(self)
 
 class TextInBoxParams:
-	var font_size: float = 16
+	var font_size: int = 16
 	var text_color: Color = Color.WHITE
 	var box_color: Color = Color.BLACK
 	var padding: float = 0

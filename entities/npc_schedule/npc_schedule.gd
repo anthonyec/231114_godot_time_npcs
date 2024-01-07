@@ -16,13 +16,13 @@ class Event:
 		self.end_time = end_time
 	
 	func get_start_display_time() -> String:
-		var hours = floor(start_time / 100)
+		var hours = floor(float(start_time) / 100)
 		var minutes = start_time % 100
 		
 		return str(hours).lpad(2, "0") + ":" + str(minutes).lpad(2, "0")
 		
 	func get_end_display_time() -> String:
-		var hours = floor(end_time / 100)
+		var hours = floor(float(end_time) / 100)
 		var minutes = end_time % 100
 		
 		return str(hours).lpad(2, "0") + ":" + str(minutes).lpad(2, "0")
@@ -77,9 +77,9 @@ func _ready() -> void:
 func _on_world_minute_tick() -> void:
 	var game = Game.instance
 	var world = World.instance
-	var events = query_events(world.time)
+	var events_at_time = query_events(world.time)
 	
-	for event in events:
+	for event in events_at_time:
 		var existing_npc = world.find_npc_or_null(event.npc)
 		
 		if existing_npc:
@@ -119,11 +119,11 @@ func get_current_events_for_npc(npc_name: String) -> Array[Event]:
 func spawn_npcs_if_needed() -> void:
 	var game = Game.instance
 	var world = World.instance
-	var events = query_events(world.time)
+	var events_at_time = query_events(world.time)
 	
 	var events_by_npc: Dictionary = {}
 	
-	for event in events:
+	for event in events_at_time:
 		if event.level != game.current_level_name:
 			continue
 		
@@ -150,9 +150,9 @@ func spawn_npcs_if_needed() -> void:
 
 func should_npc_be_in_level(npc_name: String, level_name: String) -> bool:
 	var world = World.instance
-	var events = query_events(world.time)
+	var events_at_time = query_events(world.time)
 	
-	for event in events:
+	for event in events_at_time:
 		if npc_name.to_lower() == event.npc.to_lower() and level_name.to_lower() == event.level.to_lower():
 			return true
 	
@@ -160,14 +160,14 @@ func should_npc_be_in_level(npc_name: String, level_name: String) -> bool:
 
 func get_npc_target_position(npc_name: String) -> Vector3:
 	var world = World.instance
-	var events = query_events(world.time, npc_name)
+	var events_at_time = query_events(world.time, npc_name)
 	
-	if events.is_empty(): 
+	if events_at_time.is_empty(): 
 		push_error("No events found for npc: " + npc_name)
 		return Vector3.ZERO # TODO: Return null.
 	
 	var game = Game.instance
-	var event = events[0] # TODO: Pioritise
+	var event = events_at_time[0] # TODO: Pioritise
 	
 	# TODO: Add helper to get level name to world or game?
 	if event.level != game.current_level_name:

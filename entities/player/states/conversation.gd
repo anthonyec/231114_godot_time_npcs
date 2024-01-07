@@ -7,10 +7,10 @@ func enter(params: Dictionary) -> void:
 	assert(dialogue_name)
 	
 	var dialogue = Dialogue.instance
-	Dialogue.instance.start(dialogue_name)
+	dialogue.start(dialogue_name)
 	
 	var world = World.instance
-	var character = Dialogue.instance.line.character
+	var character = dialogue.line.character
 	var npc = world.find_npc_or_null(character)
 	
 	if npc:

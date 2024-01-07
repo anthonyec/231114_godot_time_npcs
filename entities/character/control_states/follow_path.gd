@@ -28,7 +28,7 @@ func exit() -> void:
 	character.reset_input()
 	character.nav_agent.debug_enabled = false
 
-func physics_update(delta: float) -> void:
+func physics_update(_delta: float) -> void:
 	if not character.nav_agent.is_target_reachable():
 		return state_machine.transition_to("None")
 	

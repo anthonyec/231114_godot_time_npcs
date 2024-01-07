@@ -32,7 +32,7 @@ func update(_delta: float) -> void:
 			# the dialogue system.
 			closest_npc.state_machine.transition_to("Conversation", { "node": player })
 
-func physics_update(delta: float) -> void:
+func physics_update(_delta: float) -> void:
 	if player.global_position.distance_to(player.last_grounded_position) > 3:
 		player.last_grounded_position = player.global_position
 		

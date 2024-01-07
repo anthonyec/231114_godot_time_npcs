@@ -17,8 +17,6 @@ func _ready() -> void:
 	if instance != null: push_error("Dialogue instance already exists in this scene, overriding previous")
 	instance = self
 	
-	DialogueManager
-	
 	balloon.modulate = Color(0, 0, 0, 0)
 	
 func _input(event: InputEvent) -> void:
