@@ -89,6 +89,19 @@ class Collection:
 			
 		for entry in entries:
 			serialized_collection += nested_indent + entry._to_string() + "\n"
+		
+		if not entries.is_empty():
+			var serialized_keys: String
+			
+			var keys: Array = entries.map(func (entry: Entry):
+				return entry.key
+			)
+			
+			for key in keys:
+				serialized_keys += key + ", "
+				
+			serialized_collection += nested_indent + "static func all() -> Array: return [%s]" % serialized_keys.trim_suffix(", ")
+			serialized_collection += "\n"
 			
 		if not entries.is_empty():
 			serialized_collection += "\n"
@@ -111,4 +124,6 @@ class Collection:
 		
 		file.store_string(str(self))
 		file.close()
+		
+		print("Compiled %s" % path)
 		
