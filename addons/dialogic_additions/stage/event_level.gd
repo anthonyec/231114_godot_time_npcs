@@ -6,10 +6,7 @@ var level_name: String
 
 func _execute() -> void:
 	var game = Game.instance
-	
-	if not game:
-		print("Load level \"%s\"" % level_name)
-		return finish()
+	if not game: return finish()
 	
 	game.load_level(level_name)
 	await game.level_loaded
