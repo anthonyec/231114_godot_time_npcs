@@ -1,5 +1,9 @@
 [load_level name="pier"]
+[switch_camera name="Pier/PierSideCamera"]
+[walk_to character="yasuko" marker="YasukoStandNearParents"]
+[walk_to character="player" marker="PlayerExitBoat"]
 boatman: Here we are! Watch your step getting off the boat!
+[walk_to character="mitsuko" marker="MitsukoStandNearPlayer"]
 mitsuko: Hi Boku! It's good to see you!
 mitsuko: How was your trip?
 player: Hi Uncle Genta and Aunt Mitsuko!
@@ -8,7 +12,9 @@ genta: It's been a few years, but I'm sure you remember 'em!
 yasukos_sister: Yasuko! Over here!
 shigeru: So, what grade are you?
 player: Me? I'm a third-year student.
+takeshi: Heh-heh, I'm a fifth-year!
 shigeru: Am I the youngest then? Aww, man...
 mitsuko: You three are going to have so much fun this month!
 simon: Heeey! Mind if I take a photo?
+[switch_camera name="Pier/BeachCamera"]
 simon: Say, 'Cheese!'
