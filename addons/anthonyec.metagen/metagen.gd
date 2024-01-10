@@ -100,7 +100,7 @@ class Collection:
 			for key in keys:
 				serialized_keys += key + ", "
 				
-			serialized_collection += nested_indent + "static func all() -> Array: return [%s]" % serialized_keys.trim_suffix(", ")
+			serialized_collection += nested_indent + "static func get_entries() -> Array: return [%s]" % serialized_keys.trim_suffix(", ")
 			serialized_collection += "\n"
 			
 		if not entries.is_empty():
@@ -108,6 +108,9 @@ class Collection:
 			
 		for collection in collections:
 			serialized_collection += collection._to_string()
+		
+		if not collections.is_empty():
+			serialized_collection += "\n"
 			
 		if depth > 0 and collections.is_empty() and entries.is_empty():
 			serialized_collection += nested_indent + "pass\n\n"
@@ -126,4 +129,3 @@ class Collection:
 		file.close()
 		
 		print("Compiled %s" % path)
-		
