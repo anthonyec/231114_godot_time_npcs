@@ -26,7 +26,7 @@ func get_shortcode_parameters() -> Dictionary:
 	}
 
 func build_event_editor() -> void:
-	var levels = Metadata.Levels.all()
+	var levels = Metadata.Levels.get_entries()
 	
 	var selector_options = levels.map(func(level_name: String):
 		return {
