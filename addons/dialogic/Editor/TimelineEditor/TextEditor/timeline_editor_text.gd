@@ -48,7 +48,7 @@ func save_timeline():
 
 	timeline_editor.current_resource.set_meta("timeline_not_saved", false)
 	timeline_editor.current_resource_state = DialogicEditor.ResourceStates.SAVED
-	DialogicResourceUtil.update_directory('dtl')
+	timeline_editor.editors_manager.resource_helper.rebuild_timeline_directory()
 
 
 func text_timeline_to_array(text:String) -> Array:

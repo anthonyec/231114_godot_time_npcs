@@ -16,7 +16,7 @@ var style_name: String = ""
 ################################################################################
 
 func _execute() -> void:
-	dialogic.Styles.load_style(style_name)
+	dialogic.Styles.add_layout_style(style_name)
 	# we need to wait till the new layout is ready before continuing
 	await dialogic.get_tree().process_frame
 	finish()
@@ -61,11 +61,9 @@ func build_event_editor():
 
 
 func get_style_suggestions(filter:String="") -> Dictionary:
-	var styles: Array = ProjectSettings.get_setting('dialogic/layout/style_list', [])
-
+	var styles := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
 	var suggestions := {}
 	suggestions['<Default Style>'] = {'value':'', 'editor_icon':["MenuBar", "EditorIcons"]}
 	for i in styles:
-		var style: DialogicStyle = load(i)
-		suggestions[style.name] = {'value': style.name, 'editor_icon': ["PopupMenu", "EditorIcons"]}
+		suggestions[i] = {'value': i, 'editor_icon': ["PopupMenu", "EditorIcons"]}
 	return suggestions

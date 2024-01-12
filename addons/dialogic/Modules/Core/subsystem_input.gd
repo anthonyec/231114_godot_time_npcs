@@ -16,13 +16,12 @@ var auto_advance : DialogicAutoAdvance = null
 
 ####### SUBSYSTEM METHODS ######################################################
 #region SUBSYSTEM METHODS
-func clear_game_state(clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR) -> void:
+func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR) -> void:
 	if not is_node_ready():
 		await ready
 
 
 	set_manualadvance(true)
-
 
 func pause() -> void:
 	auto_advance.autoadvance_timer.paused = true
@@ -42,7 +41,7 @@ func resume() -> void:
 #region MAIN METHODS
 
 func handle_input():
-	if dialogic.paused or is_input_blocked():
+	if Dialogic.paused or is_input_blocked():
 		return
 
 	if !action_was_consumed:
@@ -104,7 +103,7 @@ func _ready() -> void:
 	set_process(false)
 
 func post_install() -> void:
-	dialogic.Settings.connect_to_change('autoadvance_delay_modifier', auto_advance._update_autoadvance_delay_modifier)
+	Dialogic.Settings.connect_to_change('autoadvance_delay_modifier', auto_advance._update_autoadvance_delay_modifier)
 	auto_skip.toggled.connect(_on_autoskip_toggled)
 	add_child(input_block_timer)
 	input_block_timer.one_shot = true
@@ -170,14 +169,14 @@ func is_manualadvance_enabled() -> bool:
 func effect_input(text_node:Control, skipped:bool, argument:String) -> void:
 	if skipped:
 		return
-	dialogic.Text.show_next_indicators()
-	await dialogic.Input.dialogic_action_priority
-	dialogic.Text.hide_next_indicators()
-	dialogic.Input.action_was_consumed = true
+	Dialogic.Text.show_next_indicators()
+	await Dialogic.Input.dialogic_action_priority
+	Dialogic.Text.hide_next_indicators()
+	Dialogic.Input.action_was_consumed = true
 
 
 func effect_noskip(text_node:Control, skipped:bool, argument:String) -> void:
-	dialogic.Text.set_text_reveal_skippable(false, true)
+	Dialogic.Text.set_text_reveal_skippable(false, true)
 	set_manualadvance(false, true)
 	effect_autoadvance(text_node, skipped, argument)
 

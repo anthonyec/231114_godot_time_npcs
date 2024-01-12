@@ -4,7 +4,10 @@ class_name DialogicUtil
 ## Script that container helper methods for both editor and game execution.
 ## Used whenever the same thing is needed in different parts of the plugin.
 
-#region EDITOR
+enum AnimationType {ALL, IN, OUT, ACTION}
+
+################################################################################
+##					EDITOR
 ################################################################################
 static func get_editor_scale() -> float:
 	return get_dialogic_plugin().get_editor_interface().get_editor_scale()
@@ -18,17 +21,10 @@ static func get_dialogic_plugin() -> Node:
 			return child.get_node('DialogicPlugin')
 	return null
 
-#endregion
 
-## Returns the autoload when in-game.
-static func autoload() -> DialogicGameHandler:
-	if Engine.is_editor_hint():
-		return null
-	if not Engine.get_main_loop().root.has_node("Dialogic"):
-		return null
-	return Engine.get_main_loop().root.get_node("Dialogic")
 
-#region FILE SYSTEM
+################################################################################
+##					FILE SYSTEM
 ################################################################################
 static func listdir(path: String, files_only: bool = true, throw_error:bool = true, full_file_path:bool = false, include_imports := false) -> Array:
 	var files: Array = []
@@ -54,6 +50,34 @@ static func listdir(path: String, files_only: bool = true, throw_error:bool = tr
 		dir.list_dir_end()
 	return files
 
+
+static func list_resources_of_type(extension:String) -> Array:
+	var all_resources := scan_folder('res://', extension)
+	return all_resources
+
+
+static func scan_folder(path:String, extension:String) -> Array:
+	var list: Array = []
+	if DirAccess.dir_exists_absolute(path):
+		var dir := DirAccess.open(path)
+		dir.list_dir_begin()
+		var file_name := dir.get_next()
+		while file_name != "":
+			if dir.current_is_dir() and not file_name.begins_with("."):
+				list += scan_folder(path.path_join(file_name), extension)
+			else:
+				if file_name.ends_with(extension):
+					list.append(path.path_join(file_name))
+			file_name = dir.get_next()
+	return list
+
+
+static func guess_resource(extension:String, identifier:String) -> String:
+	var resources := list_resources_of_type(extension)
+	for resource_path in resources:
+		if resource_path.get_file().trim_suffix(extension) == identifier:
+			return resource_path
+	return ""
 
 
 static func get_module_path(name:String, builtin:=true) -> String:
@@ -85,9 +109,20 @@ static func get_indexers(include_custom := true, force_reload := false) -> Array
 	return indexers
 
 
-enum AnimationType {ALL, IN, OUT, ACTION}
+static func guess_animation_file(animation_name: String) -> String:
+	for file in DialogicUtil.get_portrait_animation_scripts():
+		if DialogicUtil.pretty_name(animation_name) == DialogicUtil.pretty_name(file):
+			return file
+	return animation_name
+
 static func get_portrait_animation_scripts(type:=AnimationType.ALL, include_custom:=true) -> Array:
-	var animations := DialogicResourceUtil.list_special_resources_of_type("PortraitAnimation")
+	var animations := []
+	if Engine.get_main_loop().has_meta('dialogic_animation_names'):
+		animations = Engine.get_main_loop().get_meta('dialogic_animation_names')
+	else:
+		for i in get_indexers():
+			animations.append_array(i._get_portrait_animations())
+		Engine.get_main_loop().set_meta('dialogic_animation_names', animations)
 
 	return animations.filter(
 		func(script):
@@ -104,33 +139,21 @@ static func pretty_name(script:String) -> String:
 	return _name
 
 
-#endregion
+static func str_to_bool(boolstring:String) -> bool:
+	return true if boolstring == "true" else false
 
 
-#region EDITOR SETTINGS & COLORS
-################################################################################
-
-static func set_editor_setting(setting:String, value:Variant) -> void:
-	var cfg := ConfigFile.new()
-	if FileAccess.file_exists('user://dialogic/editor_settings.cfg'):
-		cfg.load('user://dialogic/editor_settings.cfg')
-
-	cfg.set_value('DES', setting, value)
-
-	if !DirAccess.dir_exists_absolute('user://dialogic'):
-		DirAccess.make_dir_absolute('user://dialogic')
-	cfg.save('user://dialogic/editor_settings.cfg')
-
-
-static func get_editor_setting(setting:String, default:Variant=null) -> Variant:
-	var cfg := ConfigFile.new()
-	if !FileAccess.file_exists('user://dialogic/editor_settings.cfg'):
-		return default
-
-	if !cfg.load('user://dialogic/editor_settings.cfg') == OK:
-		return default
-
-	return cfg.get_value('DES', setting, default)
+static func logical_convert(value:Variant) -> Variant:
+	if typeof(value) == TYPE_STRING:
+		if value.is_valid_int():
+			return value.to_int()
+		if value.is_valid_float():
+			return value.to_float()
+		if value == 'true':
+			return true
+		if value == 'false':
+			return false
+	return value
 
 
 static func get_color_palette(default:bool = false) -> Dictionary:
@@ -154,11 +177,7 @@ static func get_color(value:String) -> Color:
 	var colors := get_color_palette()
 	return colors[value]
 
-#endregion
 
-
-#region TIMER PROCESS MODE
-################################################################################
 static func is_physics_timer() -> bool:
 	return ProjectSettings.get_setting('dialogic/timer/process_in_physics', false)
 
@@ -166,143 +185,74 @@ static func is_physics_timer() -> bool:
 static func update_timer_process_callback(timer:Timer) -> void:
 	timer.process_callback = Timer.TIMER_PROCESS_PHYSICS if is_physics_timer() else Timer.TIMER_PROCESS_IDLE
 
-#endregion
-
-
-#region TRANSLATIONS
-################################################################################
 
 static func get_next_translation_id() -> String:
 	ProjectSettings.set_setting('dialogic/translation/id_counter', ProjectSettings.get_setting('dialogic/translation/id_counter', 16)+1)
 	return '%x' % ProjectSettings.get_setting('dialogic/translation/id_counter', 16)
 
-#endregion
-
-
-#region VARIABLES
-################################################################################
-
-enum VarTypes {ANY, STRING, FLOAT, INT, BOOL}
-
-
-static func get_default_variables() -> Dictionary:
-	return ProjectSettings.get_setting('dialogic/variables', {})
 
 # helper that converts a nested variable dictionary into an array with paths
-static func list_variables(dict:Dictionary, path := "", type:=VarTypes.ANY) -> Array:
-
+static func list_variables(dict:Dictionary, path := "") -> Array:
 	var array := []
 	for key in dict.keys():
 		if typeof(dict[key]) == TYPE_DICTIONARY:
-			array.append_array(list_variables(dict[key], path+key+".", type))
+			array.append_array(list_variables(dict[key], path+key+"."))
 		else:
-			if type == VarTypes.ANY or get_variable_value_type(dict[key]) == type:
-				array.append(path+key)
+			array.append(path+key)
 	return array
 
 
-static func get_variable_value_type(value:Variant) -> int:
-	match typeof(value):
-		TYPE_STRING:
-			return VarTypes.STRING
-		TYPE_FLOAT:
-			return VarTypes.FLOAT
-		TYPE_INT:
-			return VarTypes.INT
-		TYPE_BOOL:
-			return VarTypes.BOOL
-	return VarTypes.ANY
+static func get_default_layout_scene() -> String:
+	return DialogicUtil.get_module_path('DefaultLayouts').path_join("Default/DialogicDefaultLayout.tscn")
 
 
-static func get_variable_type(path:String, dict:Dictionary={}) -> VarTypes:
-	if dict.is_empty():
-		dict = get_default_variables()
-	return get_variable_value_type(_get_value_in_dictionary(path, dict))
+static func get_inherited_style_overrides(style_name:String) -> Dictionary:
+	var styles_info := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
+	if !style_name in styles_info:
+		return {}
+
+	var inheritance := [styles_info[style_name].get('inherits', '')]
+	var info :Dictionary = styles_info[style_name].get('export_overrides', {}).duplicate(true)
 
 
-## This will set a value in a dictionary (or a sub-dictionary based on the path)
-## e.g. it could set "Something.Something.Something" in {'Something':{'Something':{'Someting':"value"}}}
-static func _set_value_in_dictionary(path:String, dictionary:Dictionary, value):
-	if '.' in path:
-		var from := path.split('.')[0]
-		if from in dictionary.keys():
-			dictionary[from] = _set_value_in_dictionary(path.trim_prefix(from+"."), dictionary[from], value)
-	else:
-		if path in dictionary.keys():
-			dictionary[path] = value
-	return dictionary
+	while (!inheritance[-1].is_empty()) and inheritance[-1] in styles_info:
+		info.merge(styles_info[inheritance[-1]].get('export_overrides', {}))
+		if !styles_info[inheritance[-1]].get('inherits', '') in styles_info:
+			break
+		inheritance.append(styles_info[inheritance[-1]].get('inherits', ''))
+	return info
 
 
-## This will get a value in a dictionary (or a sub-dictionary based on the path)
-## e.g. it could get "Something.Something.Something" in {'Something':{'Something':{'Someting':"value"}}}
-static func _get_value_in_dictionary(path:String, dictionary:Dictionary, default= null) -> Variant:
-	if '.' in path:
-		var from := path.split('.')[0]
-		if from in dictionary.keys():
-			return _get_value_in_dictionary(path.trim_prefix(from+"."), dictionary[from], default)
-	else:
-		if path in dictionary.keys():
-			return dictionary[path]
-	return default
-
-#endregion
+static func get_inherited_style_layout(style_name:String="") -> String:
+	var style_list := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
+	if style_name.is_empty(): return get_default_layout_scene()
+	return style_list[get_inheritance_style_list(style_name)[-1]].get('layout', get_default_layout_scene())
 
 
+static func get_inheritance_style_list(style_name:String) -> Array:
+	var style_list := ProjectSettings.get_setting('dialogic/layout/styles', {'Default':{}})
+	if !style_name in style_list:
+		return []
+	var list := [style_name]
+	while !style_list[style_name].get('inherits', '').is_empty():
+		style_name = style_list[style_name].get('inherits', '')
+		list.append(style_name)
+	return list
 
 
-#region STYLES
-################################################################################
-
-static func get_default_layout_base() -> PackedScene:
-	return load(DialogicUtil.get_module_path('DefaultLayoutParts').path_join("Base_Default/default_layout_base.tscn"))
-
-
-static func get_fallback_style() -> DialogicStyle:
-	return load(DialogicUtil.get_module_path('DefaultLayoutParts').path_join("Style_VN_Default/default_vn_style.tres"))
-
-
-static func get_default_style() -> DialogicStyle:
-	var default: String = ProjectSettings.get_setting('dialogic/layout/default_style', '')
-	if !ResourceLoader.exists(default):
-		return get_fallback_style()
-	return load(default)
-
-
-static func get_style_by_name(name:String) -> DialogicStyle:
-	if name.is_empty():
-		return get_default_style()
-
-	var styles: Array = ProjectSettings.get_setting('dialogic/layout/style_list', [])
-	for style in styles:
-		if not ResourceLoader.exists(style):
-			continue
-		if load(style).name == name:
-			return load(style)
-
-	return get_default_style()
-#endregion
-
-
-#region SCENE EXPORT OVERRIDES
-################################################################################
-
-static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary, apply := true) -> void:
+static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary) -> void:
 	var default_info := get_scene_export_defaults(node)
 	if !node.script:
 		return
-	var property_info: Array[Dictionary] = node.script.get_script_property_list()
+	var property_info :Array[Dictionary] = node.script.get_script_property_list()
 	for i in property_info:
 		if i['usage'] & PROPERTY_USAGE_EDITOR:
 			if i['name'] in export_overrides:
-				if str_to_var(export_overrides[i['name']]) == null and typeof(node.get(i['name'])) == TYPE_STRING:
-					node.set(i['name'], export_overrides[i['name']])
-				else:
-					node.set(i['name'], str_to_var(export_overrides[i['name']]))
+				node.set(i['name'], str_to_var(export_overrides[i['name']]))
 			elif i['name'] in default_info:
 				node.set(i['name'], default_info.get(i['name']))
-	if apply:
-		if node.has_method('apply_export_overrides'):
-			node.apply_export_overrides()
+	if node.has_method('_apply_export_overrides'):
+		node._apply_export_overrides()
 
 
 static func get_scene_export_defaults(node:Node) -> Dictionary:
@@ -323,11 +273,6 @@ static func get_scene_export_defaults(node:Node) -> Dictionary:
 	Engine.get_main_loop().get_meta('dialogic_scene_export_defaults')[node.script.resource_path] = defaults
 	return defaults
 
-#endregion
-
-
-#region INSPECTOR FIELDS
-################################################################################
 
 static func setup_script_property_edit_node(property_info: Dictionary, value:Variant, property_changed:Callable) -> Control:
 	var input :Control = null
@@ -418,6 +363,7 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 			input.text_submitted.connect(DialogicUtil._on_export_input_text_submitted.bind(property_info.name, property_changed))
 	return input
 
+
 static func _on_export_input_text_submitted(text:String, property_name:String, callable: Callable) -> void:
 	callable.call(property_name, var_to_str(text))
 
@@ -442,11 +388,6 @@ static func _on_export_string_enum_submitted(value:int, property_name:String, li
 static func _on_export_vector_submitted(property_name:String, value:Vector2, callable: Callable) -> void:
 	callable.call(property_name, var_to_str(value))
 
-#endregion
-
-
-#region EVENT DEFAULTS
-################################################################################
 
 static func get_custom_event_defaults(event_name:String) -> Dictionary:
 	if Engine.is_editor_hint():
@@ -456,27 +397,28 @@ static func get_custom_event_defaults(event_name:String) -> Dictionary:
 			Engine.get_main_loop().set_meta('dialogic_event_defaults', ProjectSettings.get_setting('dialogic/event_default_overrides', {}))
 		return Engine.get_main_loop().get_meta('dialogic_event_defaults').get(event_name, {})
 
-#endregion
+
+static func set_editor_setting(setting:String, value:Variant) -> void:
+	var cfg := ConfigFile.new()
+	if FileAccess.file_exists('user://dialogic/editor_settings.cfg'):
+		cfg.load('user://dialogic/editor_settings.cfg')
+
+	cfg.set_value('DES', setting, value)
+
+	if !DirAccess.dir_exists_absolute('user://dialogic'):
+		DirAccess.make_dir_absolute('user://dialogic')
+	cfg.save('user://dialogic/editor_settings.cfg')
 
 
-#region CONVERSION
-################################################################################
+static func get_editor_setting(setting:String, default:Variant=null) -> Variant:
+	var cfg := ConfigFile.new()
+	if !FileAccess.file_exists('user://dialogic/editor_settings.cfg'):
+		return default
 
-static func str_to_bool(boolstring:String) -> bool:
-	return true if boolstring == "true" else false
+	if !cfg.load('user://dialogic/editor_settings.cfg') == OK:
+		return default
 
-
-static func logical_convert(value:Variant) -> Variant:
-	if typeof(value) == TYPE_STRING:
-		if value.is_valid_int():
-			return value.to_int()
-		if value.is_valid_float():
-			return value.to_float()
-		if value == 'true':
-			return true
-		if value == 'false':
-			return false
-	return value
+	return cfg.get_value('DES', setting, default)
 
 
 ## Takes [param source] and builds a dictionary of keys only.
@@ -488,5 +430,3 @@ static func str_to_hash_set(source: String) -> Dictionary:
 		dictionary[character] = null
 
 	return dictionary
-
-#endregion

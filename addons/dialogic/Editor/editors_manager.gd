@@ -11,7 +11,9 @@ signal editor_changed(previous, current)
 @onready var editors_holder = $HSplit/VBox/Editors
 @onready var toolbar = $HSplit/VBox/Toolbar
 @onready var tabbar = $HSplit/VBox/Toolbar/EditorTabBar
-
+var resource_helper: Node:
+	get:
+		return get_node("ResourceHelper")
 var reference_manager: Node:
 	get:
 		return get_node("../../ReferenceManager")
@@ -40,6 +42,7 @@ func _ready() -> void:
 	_add_editor("res://addons/dialogic/Editor/TimelineEditor/timeline_editor.tscn")
 	_add_editor("res://addons/dialogic/Editor/CharacterEditor/character_editor.tscn")
 
+
 	# Load custom editors
 	for indexer in DialogicUtil.get_indexers():
 		for editor_path in indexer._get_editors():
@@ -53,11 +56,8 @@ func _ready() -> void:
 		editor.editors_manager = self
 		editor._register()
 
-	DialogicResourceUtil.update()
-
 	await get_parent().get_parent().ready
 	await get_tree().process_frame
-
 	load_saved_state()
 	used_resources_cache = DialogicUtil.get_editor_setting('last_resources', [])
 	sidebar.update_resource_list(used_resources_cache)
@@ -160,7 +160,6 @@ func open_editor(editor:DialogicEditor, save_previous: bool = true, extra_info:V
 		previous_editor = current_editor
 
 	editor._open(extra_info)
-	editor.opened.emit()
 	current_editor = editor
 	editor.show()
 	tabbar.current_tab = editor.get_index()
@@ -177,7 +176,7 @@ func open_editor(editor:DialogicEditor, save_previous: bool = true, extra_info:V
 	editor_changed.emit(previous_editor, current_editor)
 
 
-## Rarely used to completely clear an editor.
+## Rarely used to completely clear a editor.
 func clear_editor(editor:DialogicEditor, save:bool = false) -> void:
 	if save:
 		editor._save()

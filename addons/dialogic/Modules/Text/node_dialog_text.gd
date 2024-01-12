@@ -35,9 +35,6 @@ func _ready() -> void:
 	add_to_group('dialogic_dialog_text')
 
 	bbcode_enabled = true
-	if textbox_root == null:
-		textbox_root = self
-
 	if start_hidden:
 		textbox_root.hide()
 	text = ""
@@ -65,7 +62,7 @@ func reveal_text(_text:String, keep_previous:=false) -> void:
 
 		# If Auto-Skip is enabled and we append the text (keep_previous),
 		# we can skip revealing the text and just show it all at once.
-		if DialogicUtil.autoload().Input.auto_skip.enabled:
+		if Dialogic.Input.auto_skip.enabled:
 			visible_characters = 1
 			return
 
@@ -78,7 +75,7 @@ func reveal_text(_text:String, keep_previous:=false) -> void:
 func continue_reveal() -> void:
 	if visible_characters <= get_total_character_count():
 		revealing = false
-		await DialogicUtil.autoload().Text.execute_effects(visible_characters-base_visible_characters, self, false)
+		await Dialogic.Text.execute_effects(visible_characters-base_visible_characters, self, false)
 
 		if visible_characters == -1:
 			return
@@ -91,28 +88,27 @@ func continue_reveal() -> void:
 		finish_text()
 		# if the text finished organically, add a small input block
 		# this prevents accidental skipping when you expected the text to be longer
-		# TODO! Make this configurable in the settings!
-		DialogicUtil.autoload().Input.block_input(0.3)
+		Dialogic.Input.block_input(0.3)
 
 
 # shows all the text imidiatly
 # called by this thing itself or the DialogicGameHandler
 func finish_text() -> void:
 	visible_ratio = 1
-	DialogicUtil.autoload().Text.execute_effects(-1, self, true)
+	Dialogic.Text.execute_effects(-1, self, true)
 	revealing = false
-	DialogicUtil.autoload().current_state = DialogicGameHandler.States.IDLE
+	Dialogic.current_state = Dialogic.States.IDLE
 
 	finished_revealing_text.emit()
 
 
 # Calls continue_reveal. Used instead of a timer to allow multiple reveals per frame.
 func _process(delta:float) -> void:
-	if !revealing or DialogicUtil.autoload().paused:
+	if !revealing or Dialogic.paused:
 		return
 
 	speed_counter += delta
 
-	while speed_counter > lspeed and revealing and !DialogicUtil.autoload().paused:
+	while speed_counter > lspeed and revealing and !Dialogic.paused:
 		speed_counter -= lspeed
 		continue_reveal()
