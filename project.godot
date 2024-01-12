@@ -60,7 +60,7 @@ choices/reveal_by_input=false
 save/autosave_delay=60.0
 save/encryption_on_exports_only=true
 text/autopauses={}
-extensions_folder="res://addons/dialogic_additions"
+extensions_folder="res://dialogic_additions"
 
 [display]
 
