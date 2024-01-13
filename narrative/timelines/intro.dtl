@@ -1,4 +1,5 @@
 [load_level name="pier"]
+[setup_characters]
 [switch_camera name="PierSideCamera"]
 [walk_to character="yasuko" marker="YasukoStandNearParents"]
 [walk_to character="player" marker="PlayerExitBoat"]
@@ -7,14 +8,28 @@ boatman: Here we are! Watch your step getting off the boat!
 mitsuko: Hi Boku! It's good to see you!
 mitsuko: How was your trip?
 player: Hi Uncle Genta and Aunt Mitsuko!
+# [face_towards character"mitsuko" target="yasuko"]
+# [face_towards character"yasuko" target=mitsuko"]
+# [face_towards character"genta" target=layer"]
 genta: These are our boys, Takeshi and Shigeru.
+# [face_towards character="mitsuko" target="player"]
+# [face_towards character="yasuko" target="player"]
 genta: It's been a few years, but I'm sure you remember 'em!
 yasukos_sister: Yasuko! Over here!
+[walk_to character="yasukos_sister" marker="YasukosSisterWave"]
+[walk_to character="yasukos_sister" marker="YasukosSisterKneel"]
 shigeru: So, what grade are you?
+# [face_towards character"player" target="takeshi"]
 player: Me? I'm a third-year student.
 takeshi: Heh-heh, I'm a fifth-year!
 shigeru: Am I the youngest then? Aww, man...
 mitsuko: You three are going to have so much fun this month!
+[switch_camera name="BeachCamera"]
 simon: Heeey! Mind if I take a photo?
-[switch_camera name="Pier/BeachCamera"]
+[switch_camera name="PierSideCamera"]
+[walk_to character="yasukos_sister" marker="OffStage" wait="false"]
+[walk_to character="shigeru" marker="OffStage" wait="false"]
+[walk_to character="takeshi" marker="OffStage" wait="false"]
+[wait time="4.0"]
+[switch_camera name="BeachCamera"]
 simon: Say, 'Cheese!'

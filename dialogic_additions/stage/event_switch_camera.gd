@@ -33,7 +33,7 @@ func get_shortcode() -> String:
 
 func get_shortcode_parameters() -> Dictionary:
 	return {
-		"name": { "property": "camera_name", "default": "wow" },
+		"name": { "property": "camera_name", "default": "" },
 	}
 
 func build_event_editor() -> void:

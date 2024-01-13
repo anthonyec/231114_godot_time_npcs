@@ -4,6 +4,7 @@ class_name DialogicWalkToEvent
 
 var character_name: String
 var marker_name: String
+var wait_to_complete: bool = true
 
 func _execute() -> void:
 	var world = World.instance
@@ -28,12 +29,14 @@ func _execute() -> void:
 		"align": true
 	})
 	
+	if not wait_to_complete:
+		return finish()
+	
 	# TODO: Maybe this should go before a transition incase it instanly sends 
 	# a message?
 	character_state_machine.state_messaged.connect(func(title: String, _params: Dictionary):
 		# TODO: Tidy this up.
 		if title == Metadata.StateMessages.FOLLOW_PATH_REACHED_TARGET:
-			print("done")
 			finish()
 	)
 
@@ -48,6 +51,7 @@ func get_shortcode_parameters() -> Dictionary:
 	return {
 		"character": { "property": "character_name", "default": "" },
 		"marker": { "property": "marker_name", "default": "" },
+		"wait": { "property": "wait_to_complete", "default": true }
 	}
 
 func build_event_editor() -> void:
@@ -78,4 +82,8 @@ func build_event_editor() -> void:
 		"placeholder": "Select marker",
 		"left_text": "to marker",
 		'selector_options': marker_selector_options
+	})
+	
+	add_header_edit("wait_to_complete", ValueType.BOOL, {
+		"left_text": "wait"
 	})
