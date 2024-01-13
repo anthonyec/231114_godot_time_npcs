@@ -10,18 +10,32 @@ func _execute() -> void:
 	if not world: return finish()
 	
 	var character = world.find_character_or_null(character_name)
-	if not character: return finish()
+	
+	if not character:
+		push_warning("Character not found: %s" % character_name)
+		return finish()
 	
 	var marker = world.find_node_or_null(marker_name)
-	if not marker: return finish()
 	
-	character.control_state_machine.transition_to("FollowPath", {
+	if not marker:
+		push_warning("Marker not found: %s" % character_name)
+		return finish()
+	
+	var character_state_machine = (character.control_state_machine as StateMachine)
+	
+	character_state_machine.transition_to("FollowPath", {
 		"target": marker.global_position,
 		"align": true
 	})
 	
-	# TODO: Await for state event.
-	finish()
+	# TODO: Maybe this should go before a transition incase it instanly sends 
+	# a message?
+	character_state_machine.state_messaged.connect(func(title: String, _params: Dictionary):
+		# TODO: Tidy this up.
+		if title == Metadata.StateMessages.FOLLOW_PATH_REACHED_TARGET:
+			print("done")
+			finish()
+	)
 
 func _init() -> void:
 	event_name = "Walk to"

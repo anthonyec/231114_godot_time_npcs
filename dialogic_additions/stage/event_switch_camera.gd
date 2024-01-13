@@ -16,8 +16,10 @@ func _execute() -> void:
 		if camera.name == camera_name:
 			target_camera = camera
 			break
-	
-	if not target_camera: return finish()
+
+	if not target_camera:
+		push_warning("Camera not found called: %s" % camera_name)
+		return finish()
 	
 	target_camera.make_current()
 	finish()
@@ -40,7 +42,7 @@ func build_event_editor() -> void:
 	var selector_options = cameras.map(func(camera_name: String):
 		return {
 			"label": camera_name,
-			"value": camera_name
+			"value": camera_name.split("/")[1] # TODO: This isn't great.
 		}
 	)
 	

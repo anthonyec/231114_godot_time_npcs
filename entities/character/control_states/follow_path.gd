@@ -36,7 +36,9 @@ func physics_update(_delta: float) -> void:
 	if Utils.is_near(character.global_position, character.nav_agent.target_position, target_distance_tolerance):
 		if align_to_target_position:
 			pass # TODO: Implement.
-			
+		
+		state_machine.send_message(Metadata.StateMessages.FOLLOW_PATH_REACHED_TARGET)
+		
 		return state_machine.transition_to("None")
 		
 	var next_position = get_next_path_position()

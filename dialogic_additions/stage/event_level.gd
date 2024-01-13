@@ -9,8 +9,6 @@ func _execute() -> void:
 	if not game: return finish()
 	
 	game.load_level(level_name)
-	await game.level_loaded
-	
 	finish()
 
 func _init() -> void:

@@ -39,6 +39,7 @@ func _run() -> void:
 	var places_collection = metadata.add_collection("Places")
 	var dialogues_collection = metadata.add_collection("Dialogues")
 	var characters_collection = metadata.add_collection("Characters")
+	var state_messages_collection = metadata.add_collection("StateMessages")
 	
 	for level in levels:
 		var scene_path = "res://levels/%s/%s.tscn" % [level, level]
@@ -66,5 +67,7 @@ func _run() -> void:
 		
 	for character in characters:
 		characters_collection.add_entry(character.to_snake_case().to_upper(), character)
+		
+	state_messages_collection.add_entry("FOLLOW_PATH_REACHED_TARGET", "follow_path_reached_target")
 	
 	metadata.to_file("res://metadata.gd", "res://scripts/build_metadata.gd")

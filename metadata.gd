@@ -120,4 +120,8 @@ class Characters:
 	const YASUKO = "yasuko"
 	static func get_entries() -> Array: return [GENTA, YASUKOS_SISTER, PLAYER, SIMON, BOATMAN, MITSUKO, SHIGERU, TAKESHI, YASUKO]
 
+class StateMessages:
+	const FOLLOW_PATH_REACHED_TARGET = "follow_path_reached_target"
+	static func get_entries() -> Array: return [FOLLOW_PATH_REACHED_TARGET]
+
 

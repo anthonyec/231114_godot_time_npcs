@@ -1,5 +1,5 @@
 [load_level name="pier"]
-[switch_camera name="Pier/PierSideCamera"]
+[switch_camera name="PierSideCamera"]
 [walk_to character="yasuko" marker="YasukoStandNearParents"]
 [walk_to character="player" marker="PlayerExitBoat"]
 boatman: Here we are! Watch your step getting off the boat!
