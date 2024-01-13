@@ -5,6 +5,7 @@ extends Node
 
 ## Fired after a state change.
 signal state_changed(previous_state: State, next_state: State, params: Dictionary)
+signal state_messaged(title: String, params: Dictionary)
 
 # Additional signal "hooks" for debugging purposes.
 signal state_transition_requested(state_name: String, params: Dictionary)
@@ -170,6 +171,7 @@ func send_message(title: String, params: Dictionary = {}) -> void:
 		current_parent_state.handle_message(title, params)
 
 	current_state.handle_message(title, params)
+	state_messaged.emit(title, params)
 
 ## Return the path of the current parent and substate. E.g "Grounded/Run"
 func get_current_state_path() -> String:
