@@ -102,12 +102,6 @@ class Places:
 		static func get_entries() -> Array: return [PLAYER, BOATMAN, YASUKO, MITSUKO, SHIGERU, TAKESHI, GENTA, YASUKOS_SISTER, SIMON, OFF_STAGE, PLAYER_EXIT_BOAT, MITSUKO_STAND_NEAR_PLAYER, YASUKO_STAND_NEAR_PARENTS, YASUKOS_SISTER_WAVE, YASUKOS_SISTER_KNEEL, PIER_END_LOWER, PIER_END_MIDDLE, PIER_END_UPPER, END_PIER_LAMPOST, MIDDLE_PIER_LOWER, MIDDLE_PIER_UPPER, START_PIER_MIDDLE, BEACH, SAFE_SPAWN]
 
 
-class Dialogues:
-	const INTRO = "intro"
-	const BOKU = "boku"
-	const TEST = "test"
-	static func get_entries() -> Array: return [INTRO, BOKU, TEST]
-
 class Characters:
 	const GENTA = "genta"
 	const YASUKOS_SISTER = "yasukos_sister"

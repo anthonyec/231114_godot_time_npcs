@@ -7,5 +7,5 @@ func enter(params: Dictionary) -> void:
 	if target_node:
 		npc.control_state_machine.transition_to("LookAt", { "node": target_node })
 	
-	await DialogueManager.dialogue_ended
+	# TOOD: Await dialogue ended here.
 	state_machine.transition_to_previous_state()

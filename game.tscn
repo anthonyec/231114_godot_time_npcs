@@ -1,12 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://lqgmmvrfaqm7"]
+[gd_scene load_steps=5 format=3 uid="uid://lqgmmvrfaqm7"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_aifxf"]
 [ext_resource type="PackedScene" uid="uid://daghraqki8qvm" path="res://entities/world/world.tscn" id="2_ifymh"]
 [ext_resource type="PackedScene" uid="uid://c6uv20ndwawks" path="res://entities/npc_schedule/npc_schedule.tscn" id="3_5nqap"]
 [ext_resource type="Script" path="res://entities/debug_menu/debug_menu.gd" id="3_f0qal"]
-[ext_resource type="Script" path="res://entities/dialogue/dialogue.gd" id="5_fr81t"]
-[ext_resource type="PackedScene" uid="uid://73jm5qjy52vq" path="res://addons/dialogue_manager/example_balloon/example_balloon.tscn" id="6_1kfyb"]
-[ext_resource type="PackedScene" uid="uid://ckvgyvclnwggo" path="res://addons/dialogue_manager/dialogue_label.tscn" id="6_27jlt"]
 
 [node name="Game" type="Node3D"]
 script = ExtResource("1_aifxf")
@@ -25,49 +22,3 @@ script = ExtResource("3_f0qal")
 [node name="World" parent="." instance=ExtResource("2_ifymh")]
 
 [node name="NPCSchedule" parent="." instance=ExtResource("3_5nqap")]
-
-[node name="Dialogue" type="Node" parent="."]
-script = ExtResource("5_fr81t")
-
-[node name="Screen" type="Control" parent="Dialogue"]
-unique_name_in_owner = true
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Balloon" type="Panel" parent="Dialogue/Screen"]
-unique_name_in_owner = true
-layout_mode = 0
-offset_left = 112.0
-offset_top = 263.0
-offset_right = 386.0
-offset_bottom = 397.0
-
-[node name="CharacterLabel" type="RichTextLabel" parent="Dialogue/Screen/Balloon"]
-unique_name_in_owner = true
-modulate = Color(1, 1, 1, 0.501961)
-layout_mode = 0
-offset_right = 1.0
-offset_bottom = 207.0
-mouse_filter = 1
-bbcode_enabled = true
-text = "Character"
-fit_content = true
-scroll_active = false
-
-[node name="DialogueLabel" parent="Dialogue/Screen/Balloon" instance=ExtResource("6_27jlt")]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_bottom = 1.0
-offset_left = 25.0
-offset_top = 12.0
-offset_right = -24.0
-offset_bottom = -12.0
-grow_vertical = 2
-
-[node name="ExampleBalloon" parent="." instance=ExtResource("6_1kfyb")]
-visible = false

@@ -1,10 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://cdagbn44of2w"]
+[gd_scene load_steps=7 format=3 uid="uid://cdagbn44of2w"]
 
 [ext_resource type="PackedScene" uid="uid://dh3g6c6ssvoby" path="res://entities/character/character.tscn" id="1_mfqk2"]
 [ext_resource type="Script" path="res://entities/player/player.gd" id="2_sj5l4"]
 [ext_resource type="Script" path="res://addons/anthonyec.state_machine/state_machine.gd" id="3_1elg0"]
 [ext_resource type="Script" path="res://entities/player/states/move.gd" id="3_t48bn"]
-[ext_resource type="Script" path="res://entities/player/states/conversation.gd" id="5_gw064"]
 [ext_resource type="Script" path="res://entities/player/states/cutscene.gd" id="6_v5a0g"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dl6m7"]
@@ -32,6 +31,3 @@ script = ExtResource("3_t48bn")
 
 [node name="Cutscene" type="Node" parent="StateMachine" index="1"]
 script = ExtResource("6_v5a0g")
-
-[node name="Conversation" type="Node" parent="StateMachine" index="2"]
-script = ExtResource("5_gw064")

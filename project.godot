@@ -18,7 +18,6 @@ boot_splash/show_image=false
 
 [autoload]
 
-DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
 DebugDraw="*res://addons/zylann.debug_draw/debug_draw.gd"
 Raycast="*res://autoload/raycast.gd"
 Stage="*res://autoload/stage.gd"
@@ -69,7 +68,7 @@ window/dpi/allow_hidpi=false
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/anthonyec.metagen/plugin.cfg", "res://addons/anthonyec.state_machine/plugin.cfg", "res://addons/dialogic/plugin.cfg", "res://addons/dialogue_manager/plugin.cfg")
+enabled=PackedStringArray("res://addons/anthonyec.camera_preview/plugin.cfg", "res://addons/anthonyec.metagen/plugin.cfg", "res://addons/anthonyec.state_machine/plugin.cfg", "res://addons/dialogic/plugin.cfg")
 
 [input]
 
@@ -121,7 +120,7 @@ dialogic_default_action={
 
 [internationalization]
 
-locale/translations_pot_files=PackedStringArray("?", "res://dialogue/test.dialogue", "res://dialogue/boku.dialogue", "res://dialogue/intro.dialogue")
+locale/translations_pot_files=PackedStringArray("?")
 
 [rendering]
 

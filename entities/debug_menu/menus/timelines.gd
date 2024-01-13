@@ -5,9 +5,6 @@ const narratives_path: String = "res://narrative/timelines"
 func get_items() -> Array[Dictionary]:
 	var items: Array[Dictionary]
 	
-	var dialogue = Dialogue.instance
-	if not dialogue: return items
-	
 	var directory = DirAccess.open("res://narrative/timelines")
 	if not directory: return items
 	
@@ -30,4 +27,3 @@ func load_timeline(path: String) -> void:
 	print("start %s" % path)
 	
 	Dialogic.start(path)
-	#get_viewport().set_input_as_handled()

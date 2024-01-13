@@ -29,7 +29,6 @@ func get_files(path: String) -> Array[String]:
 
 func _run() -> void:
 	var levels = get_files("res://levels")
-	var dialogues = get_files("res://dialogue")
 	var characters = get_files("res://narrative/characters")
 	
 	var metadata = MetaGen.Collection.new("Metadata")
@@ -37,7 +36,6 @@ func _run() -> void:
 	var levels_collection = metadata.add_collection("Levels")
 	var cameras_collection = metadata.add_collection("Cameras")
 	var places_collection = metadata.add_collection("Places")
-	var dialogues_collection = metadata.add_collection("Dialogues")
 	var characters_collection = metadata.add_collection("Characters")
 	var state_messages_collection = metadata.add_collection("StateMessages")
 	
@@ -61,9 +59,6 @@ func _run() -> void:
 				places_collection.add_entry(level_identifier + "__" + child_identifier, child.name)
 				
 		levels_collection.add_entry(level.to_upper(), level)
-		
-	for dialogue in dialogues:
-		dialogues_collection.add_entry(dialogue.to_snake_case().to_upper(), dialogue)
 		
 	for character in characters:
 		characters_collection.add_entry(character.to_snake_case().to_upper(), character)

@@ -9,7 +9,6 @@ static var instance: Game = null
 
 var current_level: Node3D = null
 var current_level_name: String
-var temp_balloon
 
 func _ready() -> void:
 	if instance != null: push_error("Game instance already exists in this scene, overriding previous")
@@ -18,7 +17,6 @@ func _ready() -> void:
 	assert(npc_schedule, "NPCSchedule required")
 	
 	load_level(Metadata.Levels.PIER)
-	temp_balloon = get_node("ExampleBalloon")
 	
 func _process(_delta: float) -> void:
 	DebugDraw.set_text("Controls", "[W/A/S/D/Click] Movement, [Esc] Debug menu, [Space] Interact/speak")
