@@ -8,3 +8,7 @@ func enter(params: Dictionary) -> void:
 	
 func update(delta: float) -> void:
 	character.face_towards(target_node.global_position, 5, delta)
+	
+	if character.is_facing(target_node.global_position):
+		state_machine.send_message(Metadata.StateMessages.LOOK_AT_FACING_TARGET)
+		state_machine.transition_to_previous_state()

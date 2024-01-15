@@ -64,5 +64,6 @@ func _run() -> void:
 		characters_collection.add_entry(character.to_snake_case().to_upper(), character)
 		
 	state_messages_collection.add_entry("FOLLOW_PATH_REACHED_TARGET", "follow_path_reached_target")
+	state_messages_collection.add_entry("LOOK_AT_FACING_TARGET", "look_at_facing_target")
 	
 	metadata.to_file("res://metadata.gd", "res://scripts/build_metadata.gd")
