@@ -19,7 +19,8 @@ func _ready() -> void:
 	load_level(Metadata.Levels.PIER)
 	
 func _process(_delta: float) -> void:
-	DebugDraw.set_text("Controls", "[W/A/S/D/Click] Movement, [Esc] Debug menu, [Space] Interact/speak")
+	if Flags.is_enabled(Flags.DEBUG_CONTROL_INFO):
+		DebugDraw.set_text("Controls", "[W/A/S/D/Click] Movement, [Esc] Debug menu, [Space] Interact/speak")
 
 func load_level(level_name: String, ignore_level_portal: bool = false) -> void:
 	var scene_path = "res://levels/%s/%s.tscn" % [level_name, level_name]

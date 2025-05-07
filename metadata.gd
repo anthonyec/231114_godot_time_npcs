@@ -118,5 +118,3 @@ class StateMessages:
 	const FOLLOW_PATH_REACHED_TARGET = "follow_path_reached_target"
 	const LOOK_AT_FACING_TARGET = "look_at_facing_target"
 	static func get_entries() -> Array: return [FOLLOW_PATH_REACHED_TARGET, LOOK_AT_FACING_TARGET]
-
-
