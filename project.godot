@@ -12,7 +12,7 @@ config_version=5
 
 config/name="231114_godot_time_npcs"
 run/main_scene="res://game.tscn"
-config/features=PackedStringArray("4.3", "GL Compatibility")
+config/features=PackedStringArray("4.4", "GL Compatibility")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/show_image=false
 
@@ -21,7 +21,7 @@ boot_splash/show_image=false
 DebugDraw="*res://addons/zylann.debug_draw/debug_draw.gd"
 Raycast="*res://autoload/raycast.gd"
 Stage="*res://autoload/stage.gd"
-Dialogic="*res://addons/dialogic/Other/DialogicGameHandler.gd"
+Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
 
 [dialogic]
 
@@ -37,7 +37,8 @@ directories/dch_directory={
 "yasukos_sister": "res://narrative/characters/yasukos_sister.dch"
 }
 directories/dtl_directory={
-"intro": "res://narrative/timelines/intro.dtl"
+"intro": "res://narrative/timelines/intro.dtl",
+"test": "res://narrative/timelines/test.dtl"
 }
 layout/style_list=[]
 layout/default_style="Default"
@@ -60,6 +61,7 @@ save/autosave_delay=60.0
 save/encryption_on_exports_only=true
 text/autopauses={}
 extensions_folder="res://dialogic_additions"
+layout/style_directory={}
 
 [display]
 

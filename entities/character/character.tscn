@@ -1,13 +1,13 @@
 [gd_scene load_steps=14 format=3 uid="uid://dh3g6c6ssvoby"]
 
-[ext_resource type="Script" path="res://entities/character/character.gd" id="1_7iyhm"]
+[ext_resource type="Script" uid="uid://oe2n623d3dmi" path="res://entities/character/character.gd" id="1_7iyhm"]
 [ext_resource type="PackedScene" uid="uid://dnyqvvalaiwrg" path="res://entities/player/player_model.glb" id="2_3rkd3"]
-[ext_resource type="Script" path="res://addons/anthonyec.state_machine/state_machine.gd" id="3_4t2l5"]
-[ext_resource type="Script" path="res://entities/character/move_states/move.gd" id="3_fhbai"]
-[ext_resource type="Script" path="res://entities/character/move_states/fall.gd" id="4_drhe2"]
-[ext_resource type="Script" path="res://entities/character/control_states/idle.gd" id="6_447vf"]
-[ext_resource type="Script" path="res://entities/character/control_states/follow_path.gd" id="7_eujaq"]
-[ext_resource type="Script" path="res://entities/character/control_states/look_at.gd" id="8_7m5vx"]
+[ext_resource type="Script" uid="uid://bk6u8g3bncu0w" path="res://addons/anthonyec.state_machine/state_machine.gd" id="3_4t2l5"]
+[ext_resource type="Script" uid="uid://bismxlc4ocbjy" path="res://entities/character/move_states/move.gd" id="3_fhbai"]
+[ext_resource type="Script" uid="uid://chu8fps4y16tc" path="res://entities/character/move_states/fall.gd" id="4_drhe2"]
+[ext_resource type="Script" uid="uid://b68mf008wfx3v" path="res://entities/character/control_states/idle.gd" id="6_447vf"]
+[ext_resource type="Script" uid="uid://djnniuumlmr3b" path="res://entities/character/control_states/follow_path.gd" id="7_eujaq"]
+[ext_resource type="Script" uid="uid://bnwpueg5fnrv4" path="res://entities/character/control_states/look_at.gd" id="8_7m5vx"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xfmkw"]
 radius = 0.3

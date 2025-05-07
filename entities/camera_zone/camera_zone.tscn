@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://borisdwggifsf"]
 
-[ext_resource type="Script" path="res://entities/camera_zone/camera_zone.gd" id="1_sds5h"]
+[ext_resource type="Script" uid="uid://bba5n50kmjnta" path="res://entities/camera_zone/camera_zone.gd" id="1_sds5h"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_oen43"]
 resource_local_to_scene = true

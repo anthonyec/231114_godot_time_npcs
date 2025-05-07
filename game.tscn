@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://lqgmmvrfaqm7"]
 
-[ext_resource type="Script" path="res://game.gd" id="1_aifxf"]
+[ext_resource type="Script" uid="uid://ihq1h3n1acfn" path="res://game.gd" id="1_aifxf"]
 [ext_resource type="PackedScene" uid="uid://daghraqki8qvm" path="res://entities/world/world.tscn" id="2_ifymh"]
 [ext_resource type="PackedScene" uid="uid://c6uv20ndwawks" path="res://entities/npc_schedule/npc_schedule.tscn" id="3_5nqap"]
-[ext_resource type="Script" path="res://entities/debug_menu/debug_menu.gd" id="3_f0qal"]
+[ext_resource type="Script" uid="uid://b7m3j5kp5aisl" path="res://entities/debug_menu/debug_menu.gd" id="3_f0qal"]
 
 [node name="Game" type="Node3D"]
 script = ExtResource("1_aifxf")

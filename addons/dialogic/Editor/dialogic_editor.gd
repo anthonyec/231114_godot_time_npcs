@@ -8,6 +8,9 @@ extends Control
 signal resource_saved()
 signal resource_unsaved()
 
+@warning_ignore("unused_signal")# This is emitted from the Editors Manager
+signal opened
+
 var current_resource: Resource
 
 ## State of the current resource
@@ -39,7 +42,7 @@ func _get_title() -> String:
 
 
 ## If this editor supports editing resources, load them here (overwrite in subclass)
-func _open_resource(resource:Resource) -> void:
+func _open_resource(_resource:Resource) -> void:
 	pass
 
 
@@ -49,16 +52,16 @@ func _save() -> void:
 
 
 ## Overwrite. Called when this editor is shown. (show() doesn't have to be called)
-func _open(extra_info:Variant = null) -> void:
+func _open(_extra_info:Variant = null) -> void:
 	pass
 
 
 ## Overwrite. Called when another editor is opened. (hide() doesn't have to be called)
-func _close():
+func _close() -> void:
 	pass
 
 
 ## Overwrite. Called to clear all current state and resource from the editor.
 ## Although rarely used, sometimes you just want NO timeline to be open.
-func _clear():
+func _clear() -> void:
 	pass

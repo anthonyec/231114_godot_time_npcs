@@ -1,6 +1,9 @@
 @tool
 extends DialogicEditor
 
+## Editor that allows
+
+#region EDITOR STUFF
 
 func _get_title() -> String:
 	return "Variables"
@@ -15,41 +18,45 @@ func _register() -> void:
 	alternative_text = "Create and edit dialogic variables and their default values"
 
 
-func _ready() -> void:
-	%ReferenceInfo.get_node('Label').add_theme_color_override('font_color', get_theme_color("warning_color", "Editor"))
-
-
-func _open(argument:Variant = null):
+func _open(_argument:Variant = null) -> void:
 	%ReferenceInfo.hide()
-	%MainVariableGroup.update()
-	%MainVariableGroup.variables_editor = self
-	
-	%MainVariableGroup.load_data('Variables', ProjectSettings.get_setting('dialogic/variables', {}))
+	%Tree.load_info(ProjectSettings.get_setting('dialogic/variables', {}))
 
 
-func _save():
-	ProjectSettings.set_setting('dialogic/variables', %MainVariableGroup.get_data())
+func _save() -> void:
+	ProjectSettings.set_setting('dialogic/variables', %Tree.get_info())
 	ProjectSettings.save()
 
 
-func variable_renamed(old_name:String, new_name:String):
-	editors_manager.reference_manager.add_variable_ref_change(old_name, new_name)
-	%ReferenceInfo.show()
-
-
-func group_renamed(old_name:String, new_name:String, group_data:Dictionary):
-	for i in group_data:
-		if group_data[i] is Dictionary:
-			group_renamed(old_name+'.'+i, new_name+'.'+i, group_data[i])
-		else:
-			editors_manager.reference_manager.add_variable_ref_change(old_name+'.'+i, new_name+'.'+i)
-	%ReferenceInfo.show()
-
-
-
-func _close():
+func _close() -> void:
 	_save()
 
 
-func _on_reference_manager_pressed():
+#endregion
+
+func _ready() -> void:
+	%ReferenceInfo.get_node('Label').add_theme_color_override('font_color', get_theme_color("warning_color", "Editor"))
+	%Search.right_icon = get_theme_icon("Search", "EditorIcons")
+
+#region RENAMING
+
+func variable_renamed(old_name:String, new_name:String):
+	if old_name == new_name:
+		return
+	var count: int = editors_manager.reference_manager.get_change_count()
+	editors_manager.reference_manager.add_variable_ref_change(old_name, new_name)
+	var new_count: int = editors_manager.reference_manager.get_change_count()
+	if count > new_count:
+		%ReferenceInfo.hide()
+	elif count < new_count:
+		%ReferenceInfo.show()
+
+func _on_reference_manager_pressed() -> void:
 	editors_manager.reference_manager.open()
+	%ReferenceInfo.hide()
+
+#endregion
+
+
+func _on_search_text_changed(new_text: String) -> void:
+	%Tree.filter(new_text)

@@ -72,13 +72,13 @@ func build_event_editor() -> void:
 		}
 	)
 	
-	add_header_edit("character_name", ValueType.FIXED_OPTION_SELECTOR, {
+	add_header_edit("character_name", ValueType.FIXED_OPTIONS, {
 		"placeholder": "Select character",
 		"left_text": "Walk",
 		'selector_options': character_selector_options
 	})
 	
-	add_header_edit("marker_name", ValueType.FIXED_OPTION_SELECTOR, {
+	add_header_edit("marker_name", ValueType.FIXED_OPTIONS, {
 		"placeholder": "Select marker",
 		"left_text": "to marker",
 		'selector_options': marker_selector_options

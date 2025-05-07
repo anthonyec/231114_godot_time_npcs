@@ -70,13 +70,13 @@ func build_event_editor() -> void:
 		}
 	)
 	
-	add_header_edit("character_name", ValueType.FIXED_OPTION_SELECTOR, {
+	add_header_edit("character_name", ValueType.FIXED_OPTIONS, {
 		"placeholder": "Select character",
 		"left_text": "Face towards",
 		'selector_options': character_selector_options
 	})
 	
-	add_header_edit("target_name", ValueType.FIXED_OPTION_SELECTOR, {
+	add_header_edit("target_name", ValueType.FIXED_OPTIONS, {
 		"placeholder": "Select target",
 		"left_text": "target",
 		'selector_options': target_selector_options

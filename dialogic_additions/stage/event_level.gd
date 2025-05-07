@@ -33,7 +33,7 @@ func build_event_editor() -> void:
 		}
 	)
 	
-	add_header_edit("level_name", ValueType.FIXED_OPTION_SELECTOR, {
+	add_header_edit("level_name", ValueType.FIXED_OPTIONS, {
 		"left_text": "Load level",
 		'selector_options': selector_options
 	})

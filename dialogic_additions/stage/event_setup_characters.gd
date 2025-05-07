@@ -46,7 +46,7 @@ func get_shortcode_parameters() -> Dictionary:
 	}
 
 func build_event_editor() -> void:
-	add_header_edit("method", ValueType.FIXED_OPTION_SELECTOR, {
+	add_header_edit("method", ValueType.FIXED_OPTIONS, {
 		"left_text": "Setup characters",
 		'selector_options': [
 			{ "label": "Spawn all at markers", "value": "spawn_all_at_markers" },

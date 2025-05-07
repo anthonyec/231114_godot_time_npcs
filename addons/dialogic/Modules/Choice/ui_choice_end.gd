@@ -3,7 +3,9 @@ extends HBoxContainer
 
 var parent_resource: DialogicChoiceEvent = null
 
-func refresh():
+func refresh() -> void:
+	$AddChoice.icon = get_theme_icon("Add", "EditorIcons")
+
 	if parent_resource is DialogicChoiceEvent:
 		show()
 		if len(parent_resource.text) > 12:
@@ -12,3 +14,15 @@ func refresh():
 			$Label.text = "End of choice ("+parent_resource.text+")"
 	else:
 		hide()
+
+
+func _on_add_choice_pressed() -> void:
+	var timeline := find_parent('VisualEditor')
+	if timeline:
+		var resource := DialogicChoiceEvent.new()
+		resource.created_by_button = true
+		timeline.add_event_undoable(resource, get_parent().get_index()+1)
+		timeline.indent_events()
+		timeline.something_changed()
+		# Prevent focusing on future redos
+		resource.created_by_button = false

@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://b3nmjv5mjtpi5"]
 
-[ext_resource type="Script" path="res://entities/place_marker/place_marker.gd" id="1_5rrb2"]
+[ext_resource type="Script" uid="uid://btj0vhpbmjqs2" path="res://entities/place_marker/place_marker.gd" id="1_5rrb2"]
 [ext_resource type="PackedScene" uid="uid://borisdwggifsf" path="res://entities/camera_zone/camera_zone.tscn" id="2_mw1j8"]
 [ext_resource type="PackedScene" uid="uid://bfpjbjjoy6qmi" path="res://entities/level_portal/level_portal.tscn" id="3_5hytc"]
 

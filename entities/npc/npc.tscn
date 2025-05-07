@@ -1,10 +1,10 @@
 [gd_scene load_steps=7 format=3 uid="uid://dta10froqpgnl"]
 
-[ext_resource type="Script" path="res://entities/npc/npc.gd" id="1_1c244"]
+[ext_resource type="Script" uid="uid://ddv8qt8nvr3ai" path="res://entities/npc/npc.gd" id="1_1c244"]
 [ext_resource type="PackedScene" uid="uid://dh3g6c6ssvoby" path="res://entities/character/character.tscn" id="1_2o71n"]
-[ext_resource type="Script" path="res://addons/anthonyec.state_machine/state_machine.gd" id="3_lpu70"]
-[ext_resource type="Script" path="res://entities/npc/npc_state.gd" id="4_3kb3p"]
-[ext_resource type="Script" path="res://entities/npc/states/conversation.gd" id="4_f03tr"]
+[ext_resource type="Script" uid="uid://bk6u8g3bncu0w" path="res://addons/anthonyec.state_machine/state_machine.gd" id="3_lpu70"]
+[ext_resource type="Script" uid="uid://bdmcqah2nx51c" path="res://entities/npc/npc_state.gd" id="4_3kb3p"]
+[ext_resource type="Script" uid="uid://buh0q226bhc5t" path="res://entities/npc/states/conversation.gd" id="4_f03tr"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_isamb"]
 radius = 0.4

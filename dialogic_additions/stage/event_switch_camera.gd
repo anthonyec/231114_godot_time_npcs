@@ -46,7 +46,7 @@ func build_event_editor() -> void:
 		}
 	)
 	
-	add_header_edit("camera_name", ValueType.FIXED_OPTION_SELECTOR, {
+	add_header_edit("camera_name", ValueType.FIXED_OPTIONS, {
 		"placeholder": "Select camera",
 		"left_text": "Switch to camera",
 		'selector_options': selector_options

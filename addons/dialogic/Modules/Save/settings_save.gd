@@ -7,11 +7,8 @@ extends DialogicSettingsPage
 func _get_priority() -> int:
 	return 0
 
-func _get_info_section() -> Control:
-	return $InfoSection
 
-
-func _refresh():
+func _refresh() -> void:
 	%Autosave.button_pressed = ProjectSettings.get_setting('dialogic/save/autosave', false)
 	%AutosaveMode.select(ProjectSettings.get_setting('dialogic/save/autosave_mode', 0))
 	%AutosaveDelay.value = ProjectSettings.get_setting('dialogic/save/autosave_delay', 60)

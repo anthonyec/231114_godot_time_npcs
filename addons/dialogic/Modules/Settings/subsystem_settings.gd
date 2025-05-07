@@ -1,23 +1,25 @@
 extends DialogicSubsystem
-
 ## Subsystem that allows setting and getting settings that are automatically saved slot independent.
+##
 ## All settings that are stored in the project settings dialogic/settings section are supported.
 ## For example the text_speed setting is stored there.
-## Thus it can be acessed like this:
-##    Dialogic.Settings.text_speed = 0.05
+## How to access this subsystem via code:
+##    ```gd
+##        Dialogic.Settings.text_speed = 0.05
+##    ```
 ##
 ## Settings stored there can also be changed with the Settings event.
 
-var settings := {}
 
+var settings := {}
 var _connections := {}
 
-####################################################################################################
-##					MAIN METHODS
+
+#region MAIN METHODS
 ####################################################################################################
 
 ## Built-in, called by DialogicGameHandler.
-func clear_game_state(clear_flag:=Dialogic.ClearFlags.FULL_CLEAR):
+func clear_game_state(_clear_flag:=DialogicGameHandler.ClearFlags.FULL_CLEAR):
 	_reload_settings()
 
 
@@ -52,17 +54,24 @@ func _setting_changed(property:StringName, value:Variant) -> void:
 		return
 
 	for i in _connections[property]:
+		if not is_instance_valid(i.get_object()):
+			var remove := func(): _connections[property].erase(i)
+			remove.call_deferred()
+			continue
 		i.call(value)
 
-####################################################################################################
-##					HANDY METHODS
+#endregion
+
+
+#region HANDY METHODS
 ####################################################################################################
 
-func get_setting(property:StringName, default:Variant) -> Variant:
+## Get a setting named `property`, if it does not exist, falls back to `default`.
+func get_setting(property: StringName, default: Variant) -> Variant:
 	return _get(property) if _get(property) != null else default
 
-
-func has_setting(property:StringName) -> bool:
+## Whether a setting has been set/stored before.
+func has_setting(property: StringName) -> bool:
 	return property in settings
 
 
@@ -71,7 +80,7 @@ func reset_all() -> void:
 		reset_setting(setting)
 
 
-func reset_setting(property:StringName) -> void:
+func reset_setting(property: StringName) -> void:
 	if ProjectSettings.has_setting('dialogic/settings/'+property):
 		settings[property] = ProjectSettings.get_setting('dialogic/settings/'+property)
 		_setting_changed(property, settings[property])
@@ -80,7 +89,10 @@ func reset_setting(property:StringName) -> void:
 		_setting_changed(property, null)
 
 
-func connect_to_change(setting:StringName, callable:Callable) -> void:
-	if !setting in _connections:
-		_connections[setting] = []
-	_connections[setting].append(callable)
+## If a setting named `property` changes its value, this will emit `Callable`.
+func connect_to_change(property: StringName, callable: Callable) -> void:
+	if not property in _connections:
+		_connections[property] = []
+	_connections[property].append(callable)
+
+#endregion
